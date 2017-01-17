@@ -2,27 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e44653d4-9628-4c1a-bc43-982605c29e4c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\AbstractDao.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\common\Dao.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\common\EntityDao.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\common\Page.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\common\SqlBuilder.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\common\SqlStatement.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\BeanResultTransFormer$Setter.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\BeanResultTransFormer.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\FieldResultTransFormer.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\HibernateDao$1.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\HibernateDao$2.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\HibernateDao.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\MapResultTransFormer$ColumnHandler.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\dao\hibernate\MapResultTransFormer.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\utils\CaseInsensitiveMap.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\classes\liang\utils\ExceptionHandler.class" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\endorsed\javaee-endorsed-api-6.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\maven-archiver\pom.properties" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\target\web-dao-1.0-SNAPSHOT.jar" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\target\endorsed\javaee-endorsed-api-6.0.jar" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="web-base.iws" />
@@ -668,12 +647,19 @@
       <created>1484619661550</created>
       <option name="number" value="Default" />
       <updated>1484619661550</updated>
-      <workItem from="1484619662826" duration="8827000" />
+      <workItem from="1484619662826" duration="8853000" />
     </task>
+    <task id="LOCAL-00001" summary="加上gitignore">
+      <created>1484638672894</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1484638672894</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8827000" />
+    <option name="totallyTimeSpent" value="8853000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1040" extended-state="0" />
@@ -682,6 +668,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -722,6 +709,8 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="加上gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="加上gitignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
