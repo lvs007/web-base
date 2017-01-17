@@ -2,7 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e44653d4-9628-4c1a-bc43-982605c29e4c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\.name" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\copyright\profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__antlr_antlr_2_7_7.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__com_alibaba_druid_1_0_18.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__commons_beanutils_commons_beanutils_1_9_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__commons_collections_commons_collections_3_2_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__commons_logging_commons_logging_1_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__dom4j_dom4j_1_6_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__mysql_mysql_connector_java_5_1_40.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_apache_commons_commons_lang3_3_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_apache_commons_commons_lang3__.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_common_hibernate_commons_annotations_4_0_5_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_hibernate_annotations_3_5_6_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_hibernate_commons_annotations_3_2_0_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_hibernate_core_4_3_8_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_javax_persistence_hibernate_jpa_2_0_api_1_0_0_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_javax_persistence_hibernate_jpa_2_1_api_1_0_0_Draft_16.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_hibernate_javax_persistence_hibernate_jpa_2_1_api_1_0_0_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_javassist_javassist_3_18_1_GA.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_jboss_jandex_1_1_0_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_jboss_logging_jboss_logging_3_1_3_GA.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_jboss_logging_jboss_logging_annotations_1_2_0_Beta1.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_jboss_spec_javax_transaction_jboss_transaction_api_1_2_spec_1_0_0_Final.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_slf4j_slf4j_api_1_5_8.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_aop_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_beans_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_context_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_core_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_expression_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_jdbc_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_orm_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_tx_4_3_2_RELEASE.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__xml_apis_xml_apis_1_0_b2.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__xml_apis_xml_apis_1_3_04.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\scopes\scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\data-base.iml" afterPath="" />
+      <change type="DELETED" beforePath="D:\code\liang\web-base\web-base.iml" afterPath="" />
     </list>
     <ignored path="web-base.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,8 +96,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.1908397" vertical-offset="0" max-vertical-offset="1120">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.57251906" vertical-offset="480" max-vertical-offset="1120">
+              <caret line="39" column="6" selection-start-line="39" selection-start-column="6" selection-end-line="39" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -379,7 +422,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -398,9 +440,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web-base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web-base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data-base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -647,7 +704,7 @@
       <created>1484619661550</created>
       <option name="number" value="Default" />
       <updated>1484619661550</updated>
-      <workItem from="1484619662826" duration="8853000" />
+      <workItem from="1484619662826" duration="9056000" />
     </task>
     <task id="LOCAL-00001" summary="加上gitignore">
       <created>1484638672894</created>
@@ -655,15 +712,21 @@
       <option name="project" value="LOCAL" />
       <updated>1484638672894</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="加上gitignore">
+      <created>1484638689788</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1484638689788</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8853000" />
+    <option name="totallyTimeSpent" value="9056000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1040" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -679,7 +742,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32993197" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -800,14 +863,6 @@
             <element signature="e#2710#2711#0" expanded="false" />
             <element signature="e#2764#2765#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data-base/data-base.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.4571949" vertical-offset="251" max-vertical-offset="860">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1079,8 +1134,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1908397" vertical-offset="0" max-vertical-offset="1120">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.57251906" vertical-offset="480" max-vertical-offset="1120">
+          <caret line="39" column="6" selection-start-line="39" selection-start-column="6" selection-end-line="39" selection-end-column="6" />
           <folding />
         </state>
       </provider>
