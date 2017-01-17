@@ -25,5 +25,9 @@
         <module name="data-base" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="data-base" target="1.7" />
+      <module name="web-base" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
