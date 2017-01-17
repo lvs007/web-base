@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e44653d4-9628-4c1a-bc43-982605c29e4c" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\.name" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\compiler.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\copyright\profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\encodings.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__antlr_antlr_2_7_7.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__com_alibaba_druid_1_0_18.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__commons_beanutils_commons_beanutils_1_9_3.xml" afterPath="" />
@@ -38,14 +35,8 @@
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__org_springframework_spring_tx_4_3_2_RELEASE.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__xml_apis_xml_apis_1_0_b2.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\libraries\Maven__xml_apis_xml_apis_1_3_04.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\modules.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\scopes\scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\uiDesigner.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\vcs.xml" afterPath="" />
       <change type="DELETED" beforePath="D:\code\liang\web-base\.idea\workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\data-base\data-base.iml" afterPath="" />
-      <change type="DELETED" beforePath="D:\code\liang\web-base\web-base.iml" afterPath="" />
     </list>
     <ignored path="web-base.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -704,7 +695,7 @@
       <created>1484619661550</created>
       <option name="number" value="Default" />
       <updated>1484619661550</updated>
-      <workItem from="1484619662826" duration="9056000" />
+      <workItem from="1484619662826" duration="9106000" />
     </task>
     <task id="LOCAL-00001" summary="加上gitignore">
       <created>1484638672894</created>
@@ -718,11 +709,17 @@
       <option name="project" value="LOCAL" />
       <updated>1484638689788</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="加上gitignore">
+      <created>1484638889615</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1484638889615</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9056000" />
+    <option name="totallyTimeSpent" value="9106000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1040" extended-state="0" />
