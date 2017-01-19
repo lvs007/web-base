@@ -96,17 +96,6 @@ public class SpringMvcConfiguration extends WebMvcConfigurationSupport {
         return adapter;
     }
 
-    private HandlerMethodReturnValueHandler getCustomerReturnValueHandler(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
-        for (HandlerMethodReturnValueHandler handler : returnValueHandlers) {
-            if (handler instanceof ResponseBodyEmitterReturnValueHandler) {
-                System.out.println("[HandlerMethodReturnValueHandler=]" + handler);
-                return handler;
-            }
-        }
-        return null;
-    }
-
-
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         addDefaultHttpMessageConverters(converters);
