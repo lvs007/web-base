@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>data-base</module>
+        <module>mvc-base</module>
     </modules>
 
     <properties>
@@ -17,9 +18,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring.version>4.3.2.RELEASE</spring.version>
+        <spring.version>4.3.4.RELEASE</spring.version>
         <hibernate.version>4.3.8.Final</hibernate.version>
         <commons.version>3.4</commons.version>
+        <common-lang.version>2.6</common-lang.version>
         <beanutils.version>1.9.3</beanutils.version>
         <druid.version>1.0.18</druid.version>
         <mysql.version>5.1.40</mysql.version>
@@ -51,6 +53,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${common-lang.version}</version>
             </dependency>
 
             <dependency>
@@ -89,9 +97,18 @@
                 <version>${druid.version}</version>
             </dependency>
 
-        </dependencies>
-    </dependencyManagement>
+            <!-- spring boot-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.4.2.RELEASE</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
 
+        </dependencies>
+
+    </dependencyManagement>
 
     <build>
         <plugins>
