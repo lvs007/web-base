@@ -60,8 +60,8 @@ public class LogUtils {
                 long nowTime = System.currentTimeMillis();
                 if (nowTime - lastUpdateTime > updateInterval) {
                     lastUpdateTime = nowTime;
-                    properties.load(new FileInputStream(LogUtils.class.getResource(FILE_PATH).getPath()));
-//                    properties.load(LogUtils.class.getResourceAsStream(FILE_PATH));
+//                    properties.load(new FileInputStream(LogUtils.class.getResource(FILE_PATH).getPath()));
+                    properties.load(LogUtils.class.getResourceAsStream(FILE_PATH));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
