@@ -22,6 +22,7 @@
         <hibernate.version>4.3.8.Final</hibernate.version>
         <commons.version>3.4</commons.version>
         <common-lang.version>2.6</common-lang.version>
+        <common-io>2.5</common-io>
         <beanutils.version>1.9.3</beanutils.version>
         <druid.version>1.0.18</druid.version>
         <mysql.version>5.1.40</mysql.version>
@@ -61,6 +62,12 @@
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>${common-lang.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${common-io}</version>
             </dependency>
 
             <dependency>
