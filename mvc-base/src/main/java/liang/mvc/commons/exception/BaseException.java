@@ -6,22 +6,33 @@ package liang.mvc.commons.exception;
  */
 public class BaseException extends RuntimeException {
 
-    private static BaseException baseException;
-
-    private static final Object LOCK = new Object();
+    private String message;
+    private int code;
 
     public BaseException(String message) {
         super(message);
     }
 
-    public static <T extends BaseException> T getInstance(String message) {
-        if (baseException == null) {
-            synchronized (BaseException.LOCK) {
-                if (baseException == null) {
-                    baseException = new BaseException(message);
-                }
-            }
-        }
-        return (T) baseException;
+    public BaseException(String message, int code) {
+        super(message);
+        this.message = message;
+        this.code = code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

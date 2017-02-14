@@ -30,6 +30,7 @@
         <hinerbate-annotation.version>3.5.6-Final</hinerbate-annotation.version>
         <fastjson.version>1.2.23</fastjson.version>
         <google-guava.version>21.0-rc2</google-guava.version>
+        <poi-version>3.15</poi-version>
     </properties>
 
     <dependencyManagement>
@@ -50,6 +51,18 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-annotations</artifactId>
                 <version>${hinerbate-annotation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi-version}</version>
             </dependency>
 
             <dependency>

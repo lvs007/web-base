@@ -20,7 +20,7 @@ public interface BaseFile {
             } else if (StringUtils.endsWithIgnoreCase(name, FileType.CSV.toString())) {
                 return CSV;
             } else {
-                throw TypeErrorException.getInstance("文件类型错误！");
+                throw TypeErrorException.throwException("文件类型错误！");
             }
         }
 
@@ -30,10 +30,12 @@ public interface BaseFile {
             } else if (StringUtils.endsWithIgnoreCase(name, FileType.XLSX.toString())) {
                 return XLSX;
             } else {
-                throw TypeErrorException.getInstance("文件类型错误！");
+                throw TypeErrorException.throwException("文件类型错误！");
             }
         }
     }
 
     <T> List<T> readFile(File file, String lineSplit, Class clazz);
+
+    void writeFile(File file, List<List<Object>> dataList, String lineSplit);
 }

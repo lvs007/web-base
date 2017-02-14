@@ -10,4 +10,7 @@ public class UnExistException extends BaseException {
         super(message);
     }
 
+    public static UnExistException throwException(String message) {
+        return new UnExistException(message);
+    }
 }

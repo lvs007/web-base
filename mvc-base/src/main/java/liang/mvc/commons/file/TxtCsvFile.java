@@ -1,13 +1,13 @@
 package liang.mvc.commons.file;
 
 import liang.mvc.commons.ReflectUtils;
+import liang.mvc.commons.valid.ParameterValidate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ public class TxtCsvFile implements BaseFile {
     @Override
     public <T> List<T> readFile(File file, String lineSplit, Class clazz) {
         List<T> result = new ArrayList<>();
+        FileType fileType = FileType.isTxtCsvType(file.getName());
         try {
-            FileType fileType = FileType.isTxtCsvType(file.getName());
             List<String> lineList = FileUtils.readLines(file);
             Field[] fields = clazz.getDeclaredFields();
             for (String line : lineList) {
@@ -52,5 +52,37 @@ public class TxtCsvFile implements BaseFile {
             LOG.error("值的类型转换异常！", e);
         }
         return result;
+    }
+
+    @Override
+    public void writeFile(File file, List<List<Object>> dataList, String lineSplit) {
+        ParameterValidate.assertNull(file);
+        ParameterValidate.assertNull(lineSplit);
+        ParameterValidate.assertCollectionNull(dataList);
+        FileType fileType = FileType.isTxtCsvType(file.getName());
+        try (OutputStream outputStream = new FileOutputStream(file)) {
+            StringBuffer sb = new StringBuffer();
+            for (List<Object> line : dataList) {
+                for (Object value : line) {
+                    if (fileType == FileType.CSV) {
+                        sb.append("\"");
+                        sb.append(value);
+                        sb.append("\"");
+                    } else {
+                        sb.append(value);
+                    }
+                    sb.append(lineSplit);
+                }
+                sb.delete(sb.length() - lineSplit.length(), sb.length());
+                sb.append("\r\n");
+                outputStream.write(sb.toString().getBytes());
+                outputStream.flush();
+                sb.delete(0, sb.length());
+            }
+        } catch (FileNotFoundException e) {
+            LOG.error("不存在这个文件！", e);
+        } catch (IOException e) {
+            LOG.error("文件写入发生异常！", e);
+        }
     }
 }

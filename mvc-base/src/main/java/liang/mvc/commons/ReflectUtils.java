@@ -56,7 +56,7 @@ public class ReflectUtils {
         } else if (StringUtils.containsIgnoreCase(fieldType.getTypeName(), "date")) {
             return DateUtils.parseDate(param, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss");
         } else {
-            throw TypeErrorException.getInstance("暂时不支持这种类型的转换！");
+            throw TypeErrorException.throwException("暂时不支持这种类型的转换！");
         }
     }
 }

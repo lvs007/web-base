@@ -21,10 +21,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -88,9 +85,13 @@ public class UploadUtils {
      * @throws Exception
      */
     public static List<UploadFileInfo> savePartItems(HttpServletRequest request, String savePath) throws Exception {
+        String contentType = request.getHeader("Content-Type");
+        if (!StringUtils.startsWith(contentType, "multipart/form-data")) {
+            return Collections.emptyList();
+        }
         Collection<Part> parts = request.getParts();
         if (CollectionUtils.isEmpty(parts)) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         List<UploadFileInfo> uploadFileInfos = new ArrayList<>();
         for (Part part : parts) {

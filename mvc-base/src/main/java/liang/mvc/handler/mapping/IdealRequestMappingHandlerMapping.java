@@ -1,5 +1,6 @@
 package liang.mvc.handler.mapping;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringValueResolver;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,8 @@ public class IdealRequestMappingHandlerMapping extends
      * 匹配类名的正则表达式
      */
     private String classPattern = "(.*)Controller";
+
+    private String classPatternAction = "(.*)Action";
     /**
      * 替换匹配类名的表达式
      */
@@ -150,7 +153,7 @@ public class IdealRequestMappingHandlerMapping extends
      * the RequestMappingInfo.
      *
      * @return the created RequestMappingInfo, or {@code null} if the method
-     *         does not have a {@code @RequestMapping} annotation.
+     * does not have a {@code @RequestMapping} annotation.
      * @see #getCustomMethodCondition(java.lang.reflect.Method)
      * @see #getCustomTypeCondition(Class)
      */
@@ -198,14 +201,19 @@ public class IdealRequestMappingHandlerMapping extends
         RequestMapping annotation = AnnotationUtils.findAnnotation(handlerType, RequestMapping.class);
         Package aPackage = handlerType.getPackage();
         String packageName = aPackage != null ? aPackage.getName() : "";
-//        String baseName = packageReplacement;
         String baseName = packageName.replaceAll(packagePattern.replaceAll("\\.+$", ""), packageReplacement);
         String[] values = annotation != null && annotation.value().length != 0 ?
                 annotation.value() :
-                new String[]{nameResolver.resolveStringValue(handlerType.getSimpleName().replaceAll(classPattern, classReplacement))};
+                new String[]{nameResolver.resolveStringValue(handlerType.getSimpleName()
+                        .replaceAll(classPattern, classReplacement).replaceAll(classPatternAction, classReplacement))};
         int i = 0;
         for (String value : values) {
-            values[i++] = (baseName + "/" + value).replaceAll("/+", "/");
+            if (StringUtils.endsWithIgnoreCase(baseName, "action")
+                    || StringUtils.endsWithIgnoreCase(baseName, "controller")) {
+                values[i++] = (packageReplacement + "/" + value).replaceAll("/+", "/");
+            } else {
+                values[i++] = (baseName + "/" + value).replaceAll("/+", "/");
+            }
         }
         config.value(values);
         config.requestCondition(getCustomTypeCondition(handlerType));

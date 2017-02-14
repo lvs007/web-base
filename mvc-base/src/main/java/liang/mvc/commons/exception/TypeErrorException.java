@@ -9,7 +9,7 @@ public class TypeErrorException extends BaseException {
         super(message);
     }
 
-    public static void main(String[] args) {
-        throw TypeErrorException.getInstance("nihao");
+    public static TypeErrorException throwException(String message) {
+        return new TypeErrorException(message);
     }
 }
