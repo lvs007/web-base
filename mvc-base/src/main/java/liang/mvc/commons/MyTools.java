@@ -24,7 +24,7 @@ public class MyTools {
     private static final String pattern_1 = "yyyy-MM-dd";
     private static final String pattern_2 = "yyyy-MM-dd hh:mm:ss";
 
-    private static Logger LOG = LoggerFactory.getLogger(MyTools.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MyTools.class);
 
     /**
      * vo和bo之间的转换（两个对象list之间的转换）
@@ -261,6 +261,38 @@ public class MyTools {
                     && f.get(obj).toString().trim().length() != 0) {
                 result.put(f.getName(), f.get(obj));
             }
+        }
+        return result;
+    }
+
+    /**
+     * bean转换成一个list，list中的字段顺序跟bean中声明字段的顺序一致
+     *
+     * @param bean
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static <T> List<Object> beanToList(T bean) throws IllegalAccessException {
+        List<Object> result = new ArrayList<>();
+        Class clazz = bean.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field f : fields) {
+            result.add(ReflectUtils.getValue(bean, f));
+        }
+        return result;
+    }
+
+    /**
+     * 参考beanToList方法
+     *
+     * @param beanList
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static <T> List<List<Object>> beanListToList(List<T> beanList) throws IllegalAccessException {
+        List<List<Object>> result = new ArrayList<>();
+        for (Object bean : beanList) {
+            result.add(beanToList(bean));
         }
         return result;
     }

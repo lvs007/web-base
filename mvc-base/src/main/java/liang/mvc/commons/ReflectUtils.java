@@ -13,7 +13,7 @@ import java.text.ParseException;
  */
 public class ReflectUtils {
 
-    public static Object getValue(Object object, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+    public static <T> Object getValue(T object, String fieldName) throws NoSuchFieldException, IllegalAccessException {
         Class clazz = object.getClass();
         Field field = clazz.getDeclaredField(fieldName);
         field.setAccessible(true);
@@ -22,9 +22,9 @@ public class ReflectUtils {
         return value;
     }
 
-    public static Object getValue(Object object, Field field) throws IllegalAccessException {
+    public static <T> Object getValue(T t, Field field) throws IllegalAccessException {
         field.setAccessible(true);
-        Object value = field.get(object);
+        Object value = field.get(t);
         field.setAccessible(false);
         return value;
     }

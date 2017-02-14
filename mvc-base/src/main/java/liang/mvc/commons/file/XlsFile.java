@@ -22,30 +22,37 @@ public class XlsFile implements BaseFile {
 
     @Override
     public <T> List<T> readFile(File file, String lineSplit, Class clazz) {
+        ParameterValidate.assertNull(file);
+        ParameterValidate.assertNull(clazz);
         Workbook workbook = ExcelUtil.getWorkbook(file);
         Sheet sheet = ExcelUtil.getFirstSheet(workbook);
         List<T> result = new ArrayList<>();
         FileType.isXlsType(file.getName());
         for (Row row : sheet) {
             int i = 0;
-            for (Cell cell : row) {
-                try {
-                    Field[] fields = clazz.getDeclaredFields();
-                    T t = (T) clazz.newInstance();
-                    cell.setCellType(CellType.STRING);
-                    String cellValue = cell.getStringCellValue();
-                    if (StringUtils.isBlank(cellValue)) {
-                        continue;
+            T t = null;
+            try {
+                t = (T) clazz.newInstance();
+                for (Cell cell : row) {
+                    try {
+                        Field[] fields = clazz.getDeclaredFields();
+                        cell.setCellType(CellType.STRING);
+                        String cellValue = cell.getStringCellValue();
+                        if (StringUtils.isBlank(cellValue)) {
+                            continue;
+                        }
+                        ReflectUtils.setValue(t, fields[i], ReflectUtils.transferParamType(cellValue, fields[i]));
+                    } catch (Exception e) {
+                        LOG.error("读取设置每个单元格的数据出错！", e);
                     }
-                    ReflectUtils.setValue(t, fields[i], ReflectUtils.transferParamType(cellValue, fields[i]));
-                    result.add(t);
-                } catch (Exception e) {
-                    LOG.error("读取设置每个单元格的数据出错！", e);
+                    ++i;
                 }
-                ++i;
+                result.add(t);
+            } catch (Exception e) {
+                LOG.error("读取每行数据出错！", e);
             }
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -57,15 +64,13 @@ public class XlsFile implements BaseFile {
             Sheet sheet = workbook.createSheet(file.getName());
             int i = 0;
             for (List<Object> line : dataList) {
-                Row row = sheet.createRow(sheet.getLastRowNum() + i);
+                Row row = sheet.createRow(i++);
                 int j = 0;
                 for (Object value : line) {
-                    Cell cell = row.createCell(row.getLastCellNum() + j);
+                    Cell cell = row.createCell(j++);
                     cell.setCellType(CellType.STRING);
                     cell.setCellValue(value == null ? "" : value.toString());
-                    ++j;
                 }
-                ++i;
             }
             workbook.write(outputStream);
         } catch (FileNotFoundException e) {
