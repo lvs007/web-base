@@ -1,8 +1,9 @@
-package liang.mvc.commons;
+package liang.common;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import liang.mvc.commons.exception.ParameterException;
+import liang.common.exception.ParameterException;
+import liang.common.util.ReflectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

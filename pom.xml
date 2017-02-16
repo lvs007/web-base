@@ -11,6 +11,7 @@
     <modules>
         <module>data-base</module>
         <module>mvc-base</module>
+        <module>common-base</module>
     </modules>
 
     <properties>
