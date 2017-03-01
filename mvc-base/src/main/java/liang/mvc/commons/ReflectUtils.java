@@ -37,15 +37,15 @@ public class ReflectUtils {
 
     public static Object transferParamType(String param, Field field) throws ParseException {
         Class fieldType = field.getType();
-        if (fieldType.getTypeName().contains("String")) {
+        if (fieldType.getName().contains("String")) {
             return param;
-        } else if (StringUtils.containsIgnoreCase(fieldType.getTypeName(), "int")) {
+        } else if (StringUtils.containsIgnoreCase(fieldType.getName(), "int")) {
             return Integer.parseInt(param);
-        } else if (StringUtils.containsIgnoreCase(fieldType.getTypeName(), "double")) {
+        } else if (StringUtils.containsIgnoreCase(fieldType.getName(), "double")) {
             return Double.parseDouble(param);
-        } else if (StringUtils.containsIgnoreCase(fieldType.getTypeName(), "float")) {
+        } else if (StringUtils.containsIgnoreCase(fieldType.getName(), "float")) {
             return Float.parseFloat(param);
-        } else if (StringUtils.containsIgnoreCase(fieldType.getTypeName(), "boolean")) {
+        } else if (StringUtils.containsIgnoreCase(fieldType.getName(), "boolean")) {
             if ("0".equals(param)) {
                 return false;
             } else if ("1".equals(param)) {
@@ -53,7 +53,7 @@ public class ReflectUtils {
             } else {
                 return Boolean.parseBoolean(param);
             }
-        } else if (StringUtils.containsIgnoreCase(fieldType.getTypeName(), "date")) {
+        } else if (StringUtils.containsIgnoreCase(fieldType.getName(), "date")) {
             return DateUtils.parseDate(param, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss");
         } else {
             throw TypeErrorException.throwException("暂时不支持这种类型的转换！");

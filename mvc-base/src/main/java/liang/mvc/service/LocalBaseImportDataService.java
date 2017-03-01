@@ -4,6 +4,7 @@ import liang.mvc.commons.UploadUtils;
 import liang.mvc.commons.exception.TypeErrorException;
 import liang.mvc.commons.exception.UnExistException;
 import liang.mvc.commons.file.BaseFile;
+import liang.mvc.commons.file.FileFactory;
 import liang.mvc.commons.file.TxtCsvFile;
 import liang.mvc.commons.file.XlsFile;
 import liang.mvc.dto.UploadFileInfo;
@@ -17,9 +18,6 @@ import java.util.List;
  * KIVEN will tell you life,send email to xxx@163.com
  */
 public abstract class LocalBaseImportDataService {
-
-    private BaseFile txtCsvFile = new TxtCsvFile();
-    private BaseFile xlsFile = new XlsFile();
 
     /**
      * 从文件获取上传的内容，转换成自定义的dto，转换的格式是：dto中的每一个字段顺序必须对应文件中的每一列
@@ -36,16 +34,16 @@ public abstract class LocalBaseImportDataService {
             throw UnExistException.throwException("不存在这个文件");
         }
         File uploadFile = new File(uploadFileInfo.getPath());
-        List<T> dtoList = null;
+        BaseFile.FileType fileType;
         if (StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".txt")
                 || StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".csv")) {
-            dtoList = txtCsvFile.readFile(uploadFile, lineSplit, clazz);
+            fileType = BaseFile.FileType.TXT;
         } else if (StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".xls")
                 || StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".xlsx")) {
-            dtoList = xlsFile.readFile(uploadFile, lineSplit, clazz);
+            fileType = BaseFile.FileType.XLS;
         } else {
             throw TypeErrorException.throwException("文件类型不正确");
         }
-        return dtoList;
+        return FileFactory.getFileHandler(fileType).readFile(uploadFile, lineSplit, clazz);
     }
 }
