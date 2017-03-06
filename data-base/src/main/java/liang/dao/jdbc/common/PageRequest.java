@@ -20,6 +20,11 @@ public class PageRequest {
     private int limit;
     private List<Sort> sort = new ArrayList<>();
 
+    public PageRequest(){
+        page = 1;
+        limit = 20;
+    }
+
     /**
      * 获取数据时候的下标，优先级如下：
      * 1，当有start的时候，取start的值，

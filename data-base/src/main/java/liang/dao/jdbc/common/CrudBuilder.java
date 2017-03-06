@@ -4,8 +4,8 @@
  */
 package liang.dao.jdbc.common;
 
-import liang.dao.jdbc.annotation.*;
 import liang.dao.jdbc.ContentValues;
+import liang.dao.jdbc.annotation.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -33,7 +33,7 @@ public class CrudBuilder<T> {
     private final Class<T> clazz;
     private final Audit audit;//审计的配置，如果为null，则表示不需要审计
     private List<Field> fieldList;//实体类需要和数据库交互的属性列表
-//    private Map<String, EntityField> entityFieldMapping;//属性名到EntityField的映射
+    //    private Map<String, EntityField> entityFieldMapping;//属性名到EntityField的映射
     private Field idField;//做为ID那一列的属性名，上面也包括ID列
     private String idName;//主键的列名
     private Sql insert, update, selectById, selectAll, delete;
@@ -61,7 +61,7 @@ public class CrudBuilder<T> {
         if (className.endsWith("Entity")) {
             className = className.substring(0, className.length() - 6);
         }
-        return "t" + convertToColumnName(className);
+        return convertToColumnName(className);
     }
 
     /**
@@ -83,7 +83,11 @@ public class CrudBuilder<T> {
                 sb.append(c);
             }
         }
-        return sb.toString();
+        String columnName = sb.toString();
+        if (StringUtils.startsWith(columnName, "_")) {
+            return columnName.substring(1);
+        }
+        return columnName;
     }
 
     /**
@@ -227,7 +231,7 @@ public class CrudBuilder<T> {
             throw new IllegalArgumentException("当前实体类:{} 找不到主键");
         }
         //如果主键不是以Long型的，那就搞飞机了，肯定要抛异常了
-        if (idField.getType() != Long.class) {
+        if (idField.getType() != Long.class && idField.getType() != long.class) {
             throw new IllegalArgumentException("当前实体类:{} 主键类型不是Long，而是:" + idField.getType());
         }
     }
