@@ -35,7 +35,8 @@ public class TxtCsvFile implements BaseFile {
                     if (StringUtils.isBlank(paramArray[i])) {
                         continue;
                     }
-                    if (fileType == FileType.CSV && paramArray[i].startsWith("\"") && paramArray[i].endsWith("\"")) {
+                    if (fileType == FileType.CSV && paramArray[i].length() > 1
+                            && paramArray[i].startsWith("\"") && paramArray[i].endsWith("\"")) {
                         paramArray[i] = paramArray[i].substring(1, paramArray[i].length() - 1);
                     }
                     ReflectUtils.setValue(t, fields[i], ReflectUtils.transferParamType(paramArray[i], fields[i]));

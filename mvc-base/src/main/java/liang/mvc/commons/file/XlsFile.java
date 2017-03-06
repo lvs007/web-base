@@ -24,10 +24,10 @@ public class XlsFile implements BaseFile {
     public <T> List<T> readFile(File file, String lineSplit, Class clazz) {
         ParameterValidate.assertNull(file);
         ParameterValidate.assertNull(clazz);
+        FileType.isXlsType(file.getName());
         Workbook workbook = ExcelUtil.getWorkbook(file);
         Sheet sheet = ExcelUtil.getFirstSheet(workbook);
         List<T> result = new ArrayList<>();
-        FileType.isXlsType(file.getName());
         for (Row row : sheet) {
             int i = 0;
             T t = null;
