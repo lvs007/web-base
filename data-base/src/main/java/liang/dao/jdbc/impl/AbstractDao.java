@@ -289,7 +289,7 @@ public class AbstractDao<T> extends AbstractStorage implements BaseDao<T> {
     public boolean insert(T t) {
         boolean success = false;
         try {
-            success = insertByCrudBuilder(builder, t);
+            success = insertByCrudBuilder(getBuilder(), t);
             return success;
         } finally {
         }
