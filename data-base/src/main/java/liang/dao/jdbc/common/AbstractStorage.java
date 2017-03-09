@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 一个抽象的存储器，定义了一些常用的方法用于监控
  *
- * @author HadesLee
+ * @author
  */
 public abstract class AbstractStorage {
 
