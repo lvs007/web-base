@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -692,6 +693,39 @@ public class MiscUtils {
         if (obj == null) {
             throw new NullPointerException(name + "是null");
         }
+    }
+
+    /**
+     * 日期模式常量定义
+     */
+
+    public static String getFullUrl(HttpServletRequest request) {
+        String query = request.getQueryString();
+        if (StringUtils.isBlank(query)) {
+            return request.getRequestURI();
+        } else {
+            return request.getRequestURI() + "?" + query;
+        }
+    }
+
+    public static String getIp(HttpServletRequest request) {
+        try {
+            String header = request.getHeader("X-Real-IP");
+            if (StringUtils.isNotBlank(header)) {
+                return header;
+            }
+            header = request.getHeader("X-Forwarded-For");
+            if (StringUtils.isNotBlank(header)) {
+                String[] ss = header.split(",");
+                if (ss.length > 0) {
+                    return ss[0].trim();
+                }
+                return header;
+            }
+        } catch (Exception ex) {
+            LOG.error(null, ex);
+        }
+        return request.getRemoteAddr();
     }
 
     private static class Element {

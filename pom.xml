@@ -33,6 +33,8 @@
         <google-guava.version>21.0-rc2</google-guava.version>
         <poi-version>3.15</poi-version>
         <joda-version>2.9.7</joda-version>
+        <okhttp-version>2.7.5</okhttp-version>
+        <aliyun-oss-version>2.5.0</aliyun-oss-version>
     </properties>
 
     <dependencyManagement>
@@ -144,6 +146,19 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${joda-version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.squareup.okhttp/okhttp -->
+            <dependency>
+                <groupId>com.squareup.okhttp</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp-version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-oss-version}</version>
             </dependency>
 
             <!-- spring boot-->
