@@ -96,7 +96,7 @@ public abstract class BaseApi {
     protected ApiResponse httpGet(String url) throws ApiException, HttpException, InternalException {
         url = buildFullUrl(url);
         try {
-            String back = getMucangHttpClient().httpGet(url);
+            String back = getHttpClient().httpGet(url);
             JSONObject jsonObject = JSON.parseObject(back);
             ApiResponse response = new ApiResponse(jsonObject);
             handleResponse(url, response, HttpMethod.Get);
@@ -117,7 +117,7 @@ public abstract class BaseApi {
         }
         url = buildFullUrl(url);
         try {
-            String back = getMucangHttpClient().httpPostBody(url, data);
+            String back = getHttpClient().httpPostBody(url, data);
             JSONObject jsonObject = JSON.parseObject(back);
             ApiResponse response = new ApiResponse(jsonObject);
             handleResponse(url, response, HttpMethod.Post);
@@ -138,7 +138,7 @@ public abstract class BaseApi {
         }
         url = buildFullUrl(url);
         try {
-            String back = getMucangHttpClient().httpPost(url, pairList);
+            String back = getHttpClient().httpPost(url, pairList);
             JSONObject jsonObject = JSON.parseObject(back);
             ApiResponse response = new ApiResponse(jsonObject);
             handleResponse(url, response, HttpMethod.Post);
@@ -218,11 +218,11 @@ public abstract class BaseApi {
     }
 
     /**
-     * 子类可以通过重写此方法,返回自己需求相关的MucangHttpClient,自己可以决定是每次new一个新的,还是使用一个自己创建好的
+     * 子类可以通过重写此方法,返回自己需求相关的HttpClient,自己可以决定是每次new一个新的,还是使用一个自己创建好的
      *
      * @return
      */
-    protected HttpClient getMucangHttpClient() {
+    protected HttpClient getHttpClient() {
         return HttpClient.getDefault();
     }
 
