@@ -1,7 +1,7 @@
-package liang.mvc.commons.file;
+package liang.common.file;
 
-import liang.mvc.commons.exception.TypeErrorException;
-import liang.mvc.commons.valid.ParameterValidate;
+import liang.common.exception.TypeErrorException;
+import liang.common.valid.ParameterValidate;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -98,15 +98,33 @@ public class ExcelUtil {
 
     public static Workbook createWorkbook(File excelFile) {
         ParameterValidate.assertNull(excelFile);
+        return createWorkbook(excelFile.getName());
+    }
+
+    public static Workbook createWorkbook() {
+        return createWorkbook("xxx.xls");
+    }
+
+    public static Workbook createWorkbook(BaseFile.FileType fileType) {
+        String fileName = "";
+        if (fileType == BaseFile.FileType.XLS) {
+            fileName = "xxx.xls";
+        } else {
+            fileName = "xxx.xlsx";
+        }
+        return createWorkbook(fileName);
+    }
+
+    public static Workbook createWorkbook(String fileName) {
+        ParameterValidate.assertNull(fileName);
         Workbook wb = null;
-        String fileName = excelFile.getName();
         try {
             if (fileName.endsWith(".xls")) {
                 wb = new HSSFWorkbook();
             } else if (fileName.endsWith(".xlsx")) {
                 wb = new XSSFWorkbook();
             } else {
-                TypeErrorException.throwException("不支持这种类型：" + excelFile);
+                TypeErrorException.throwException("不支持这种类型：" + fileName);
             }
         } catch (Exception e) {
             LOG.error("workbook 创建出错！", e);

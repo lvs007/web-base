@@ -1,6 +1,6 @@
 package liang.mvc.handler.resolver;
 
-import liang.mvc.commons.Response;
+import liang.mvc.commons.ResponseData;
 import liang.mvc.commons.ThreadLocalMap;
 import org.springframework.core.Conventions;
 import org.springframework.core.GenericTypeResolver;
@@ -146,7 +146,7 @@ public class ScopeAttributeMethodProcessor implements HandlerMethodArgumentResol
 
     @Override
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest request) throws Exception {
-        Response response = new Response();
+        ResponseData responseData = new ResponseData();
         if (returnValue != null) {
             ScopeAttribute scopeAttribute = returnType.getMethodAnnotation(ScopeAttribute.class);
             if (scopeAttribute != null) {
@@ -169,9 +169,9 @@ public class ScopeAttributeMethodProcessor implements HandlerMethodArgumentResol
                     }
                 }
             }
-            response.addData(returnValue);
+            responseData.addData(returnValue);
         }
-        returnValue = response;
+        returnValue = responseData;
         handler.handleReturnValue(returnValue, returnType, mavContainer, request);
     }
 

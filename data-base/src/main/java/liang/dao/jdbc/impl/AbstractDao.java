@@ -47,10 +47,10 @@ public class AbstractDao<T> extends AbstractStorage implements BaseDao<T> {
     }
 
     private void doAudit(EntityLogEntity entity, boolean success) {
-        if (entity != null && DEBUG == false) {
-            entity.setSuccess(success);
-            insertByCrudBuilder(fuckBuilder, entity);
-        }
+//        if (entity != null && DEBUG == false) {
+//            entity.setSuccess(success);
+//            insertByCrudBuilder(fuckBuilder, entity);
+//        }
     }
 
     /**

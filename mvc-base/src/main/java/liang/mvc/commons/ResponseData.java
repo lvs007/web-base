@@ -6,7 +6,7 @@ import java.util.*;
 
 //import com.baidu.union.audit.commons.BeanUtils;
 
-public class Response {
+public class ResponseData {
 
     private Integer errorId;
     private String message;
@@ -14,7 +14,7 @@ public class Response {
     private Map<String, Object> data;
     private boolean success;
 
-    public Response() {
+    public ResponseData() {
         errorId = 0;
         message = "";
         fields = new ArrayList<ErrorField>();
@@ -26,7 +26,7 @@ public class Response {
         return errorId;
     }
 
-    public Response setErrorId(Integer errorId) {
+    public ResponseData setErrorId(Integer errorId) {
         this.errorId = errorId;
         return this;
     }
@@ -35,12 +35,12 @@ public class Response {
         return message;
     }
 
-    public Response setMessage(String message) {
+    public ResponseData setMessage(String message) {
         this.message = message;
         return this;
     }
 
-    public Response addErrorField(ErrorField errorField) {
+    public ResponseData addErrorField(ErrorField errorField) {
         if (fields == null) {
             fields = new ArrayList<ErrorField>();
         }
@@ -52,7 +52,7 @@ public class Response {
         return fields;
     }
 
-    public Response setFields(List<ErrorField> fields) {
+    public ResponseData setFields(List<ErrorField> fields) {
         this.fields = fields;
         return this;
     }
@@ -61,7 +61,7 @@ public class Response {
         return data;
     }
 
-    public Response addData(String key, Object value) {
+    public ResponseData addData(String key, Object value) {
         data.put(key, value);
         return this;
     }
@@ -86,7 +86,7 @@ public class Response {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Response addData(Object obj) {
+    public ResponseData addData(Object obj) {
         if (obj == null)
             return this;
         else if (obj instanceof Collection)
@@ -108,7 +108,7 @@ public class Response {
      * @param objs
      * @return
      */
-    public Response addMultiClassData(List<?> objs) {
+    public ResponseData addMultiClassData(List<?> objs) {
         for (Object obj : objs) {
             String className = obj.getClass().getSimpleName();
             String firstLetter = className.substring(0, 1).toLowerCase();
@@ -122,29 +122,29 @@ public class Response {
         return this;
     }
 
-    private Response addBean(Object obj) {
+    private ResponseData addBean(Object obj) {
         data.putAll(BeanUtils.copyProperties(obj));
         removeClass(data);
         return this;
     }
 
-    private Response addList(Collection<?> list) {
+    private ResponseData addList(Collection<?> list) {
         data.put("result", list);
         return this;
     }
 
-    private Response addMap(Map<String, Object> map) {
+    private ResponseData addMap(Map<String, Object> map) {
         data.putAll(map);
         return this;
     }
 
-    private Response addPage(Page<?> page) {
+    private ResponseData addPage(Page<?> page) {
         data.putAll(BeanUtils.copyProperties(page));
         removeClass(data);
         return this;
     }
 
-    private Response addString(String obj) {
+    private ResponseData addString(String obj) {
         data.put("value", obj);
         return this;
     }

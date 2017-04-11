@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.liang.web</groupId>
-    <artifactId>web-dao</artifactId>
+    <artifactId>data-base</artifactId>
 
     <dependencies>
         <dependency>

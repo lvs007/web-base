@@ -1,9 +1,11 @@
 package file;
 
-import liang.mvc.commons.MyTools;
-import liang.mvc.commons.file.BaseFile;
-import liang.mvc.commons.file.TxtCsvFile;
-import liang.mvc.commons.file.XlsFile;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import liang.common.MyTools;
+import liang.common.file.BaseFile;
+import liang.common.file.TxtCsvFile;
+import liang.common.file.XlsFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,17 +19,24 @@ public class FileTest {
 
     public static void main(String[] args) {
 //        testTxt();
-        try {
-            testXls();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            testXls();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+        testCache();
+    }
+
+    public static void testCache() {
+        Cache<String, String> cache = CacheBuilder.newBuilder().build();
+        cache.put("test", "bihao");
+        cache.getIfPresent("test");
     }
 
     private static void testTxt() {
         BaseFile txtCsvFile = new TxtCsvFile();
         File file = new File("D:\\test.csv");
-        System.out.println(txtCsvFile.readFile(file, ",", Xxx.class));
+        System.out.println(txtCsvFile.readFile(file, ",", Xxx.class, false));
 
         List<List<Object>> listList = new ArrayList<>();
         List<Object> list = new ArrayList<>();
@@ -44,7 +53,7 @@ public class FileTest {
     public static void testXls() throws IllegalAccessException {
         BaseFile baseFile = new XlsFile();
         File file = new File("D:\\员工信息.xls");
-        System.out.println(baseFile.readFile(file, ",", Yyy.class));
+        System.out.println(baseFile.readFile(file, ",", Yyy.class, false));
         file = new File("D:\\testttttt.xls");
         List<List<Object>> listList = new ArrayList<>();
         List<Xxx> xxxList = new ArrayList<>();

@@ -1,5 +1,8 @@
 package liang.mvc.filter;
 
+import liang.common.util.PropertiesManager;
+import liang.mvc.commons.SpringContextHolder;
+import liang.mvc.constants.MvcConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +25,22 @@ public class LoginFilter implements Filter {
 
     private static final String DEFAULT_CHARSET = "UTF8";
 
-    private static final String TOKEN = "token";
+    private static final String TOKEN = MvcConstants.TOKEN;
 
     public static final String INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
     public static final String INCLUDE_CONTEXT_PATH_ATTRIBUTE = "javax.servlet.include.context_path";
 
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
+    private PropertiesManager propertiesManager;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        propertiesManager = SpringContextHolder.getBean("propertiesManager");
         if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             request.setCharacterEncoding(DEFAULT_CHARSET);
             response.setCharacterEncoding(DEFAULT_CHARSET);
@@ -49,9 +54,9 @@ public class LoginFilter implements Filter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = getPathWithinApplication(request);
         String method = request.getMethod();
+
         //放过OPTIONS方法的请求。
         if (StringUtils.equalsIgnoreCase("OPTIONS", method)) {
-            //如果是四个URL，则自己处理跨域的问题，否则，让下一级处理
             chain.doFilter(request, response);
             return;
         }
@@ -62,14 +67,14 @@ public class LoginFilter implements Filter {
                 HttpSession session = request.getSession(false);
                 token = session == null ? null : (String) session.getAttribute(TOKEN);
             }
-            if (StringUtils.isBlank(token)){
+            if (StringUtils.isBlank(token)) {
                 token = request.getHeader(TOKEN);
             }
-            if (StringUtils.isBlank(token)){//重定向到登陆页
-                response.sendRedirect("");
+            //验证token
+            if (StringUtils.isBlank(token) || LoginUtils.getUser(token) == null) {//重定向到登陆页
+                response.sendRedirect(propertiesManager.getString("account.login.url","http://localhost:9091/v1/login/login"));
                 return;
             }
-            //验证token
         }
 
         chain.doFilter(request, response);

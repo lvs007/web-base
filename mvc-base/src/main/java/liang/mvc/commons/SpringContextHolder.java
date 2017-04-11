@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,6 +32,19 @@ public class SpringContextHolder implements ApplicationContextAware {
 
     @Autowired
     private ServletContext context;
+
+    private static final Map<String, Object> threadLocalMap = new HashMap<>();
+
+    private static final String REQUEST_KEY = "request";
+    private static final String RESPONSE_KEY = "response";
+    private static final String CONTEXT_KEY = "context";
+
+    @PostConstruct
+    private void init() {
+        threadLocalMap.put(REQUEST_KEY, request);
+        threadLocalMap.put(RESPONSE_KEY, response);
+        threadLocalMap.put(CONTEXT_KEY, context);
+    }
 
     //实现ApplicationContextAware接口的context注入函数, 将其存入静态变量.
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -71,21 +86,24 @@ public class SpringContextHolder implements ApplicationContextAware {
         }
     }
 
-    public HttpServletRequest getRequest() {
+    public static HttpServletRequest getRequest() {
+        HttpServletRequest request = (HttpServletRequest) threadLocalMap.get(REQUEST_KEY);
         if (request == null) {
             throw new IllegalStateException("HttpServletRequest没有注入成功");
         }
         return request;
     }
 
-    public HttpServletResponse getResponse() {
+    public static HttpServletResponse getResponse() {
+        HttpServletResponse response = (HttpServletResponse) threadLocalMap.get(RESPONSE_KEY);
         if (response == null) {
             throw new IllegalStateException("HttpServletResponse没有注入成功");
         }
         return response;
     }
 
-    public ServletContext getContext() {
+    public static ServletContext getContext() {
+        ServletContext context = (ServletContext) threadLocalMap.get(CONTEXT_KEY);
         if (context == null) {
             throw new IllegalStateException("ServletContext没有注入成功");
         }

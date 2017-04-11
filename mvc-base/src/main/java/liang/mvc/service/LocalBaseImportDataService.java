@@ -1,12 +1,9 @@
 package liang.mvc.service;
 
+import liang.common.exception.UnExistException;
+import liang.common.file.BaseFile;
+import liang.common.file.FileFactory;
 import liang.mvc.commons.UploadUtils;
-import liang.mvc.commons.exception.TypeErrorException;
-import liang.mvc.commons.exception.UnExistException;
-import liang.mvc.commons.file.BaseFile;
-import liang.mvc.commons.file.FileFactory;
-import liang.mvc.commons.file.TxtCsvFile;
-import liang.mvc.commons.file.XlsFile;
 import liang.mvc.dto.UploadFileInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,16 +31,7 @@ public abstract class LocalBaseImportDataService {
             throw UnExistException.throwException("不存在这个文件");
         }
         File uploadFile = new File(uploadFileInfo.getPath());
-        BaseFile.FileType fileType;
-        if (StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".txt")
-                || StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".csv")) {
-            fileType = BaseFile.FileType.TXT;
-        } else if (StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".xls")
-                || StringUtils.endsWithIgnoreCase(uploadFileInfo.getName(), ".xlsx")) {
-            fileType = BaseFile.FileType.XLS;
-        } else {
-            throw TypeErrorException.throwException("文件类型不正确");
-        }
-        return FileFactory.getFileHandler(fileType).readFile(uploadFile, lineSplit, clazz);
+        BaseFile.FileType fileType = BaseFile.FileType.getFileType(uploadFileInfo.getName());
+        return FileFactory.getFileHandler(fileType).readFile(uploadFile, lineSplit, clazz, true);
     }
 }

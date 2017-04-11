@@ -29,18 +29,18 @@
     <bean class="liang.mvc.handler.resolver.GlobalHandlerExceptionResolver"/>
 
     <!-- 方便在工具类中获取bean-->
-    <bean class="liang.mvc.commons.SpringContextHolder"/>
+    <bean class="liang.mvc.commons.SpringContextHolder" lazy-init="false"/>
 
     <mvc:interceptors>
 
         <mvc:interceptor>
-            <mvc:mapping path="/**" />
-            <mvc:exclude-mapping path="/checkAlive" />
-            <mvc:exclude-mapping path="/api/monitor/alive" />
-            <mvc:exclude-mapping path="/favicon.ico" />
-            <mvc:exclude-mapping path="/static/**" />
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/checkAlive"/>
+            <mvc:exclude-mapping path="/api/monitor/alive"/>
+            <mvc:exclude-mapping path="/favicon.ico"/>
+            <mvc:exclude-mapping path="/static/**"/>
 
-            <bean class="liang.mvc.interceptor.ControllerInterceptor" />
+            <bean class="liang.mvc.interceptor.ControllerInterceptor"/>
         </mvc:interceptor>
 
     </mvc:interceptors>

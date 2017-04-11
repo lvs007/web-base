@@ -1,7 +1,8 @@
 package liang.common;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import liang.common.exception.ParameterException;
 import liang.common.util.ReflectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,11 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 功能对象，提供多种便捷转换功能
@@ -28,25 +29,22 @@ public class MyTools {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyTools.class);
 
+    private static final Cache<String, Object> cache = CacheBuilder.newBuilder()
+            .initialCapacity(10000).maximumSize(100000).expireAfterAccess(10, TimeUnit.MINUTES).build();
+
     /**
      * vo和bo之间的转换（两个对象list之间的转换）
      *
-     * @param src     源
-     * @param desc    目标
      * @param srcList 源对象list
+     * @param desc    目标
      * @return 目标对象list
      * @throws Exception
      */
-    public static <T> List<T> voAndBoTransfer(Class src, Class desc,
-                                              List srcList) throws Exception {
+    public static <T> List<T> voAndBoTransfer(List srcList, Class desc) throws Exception {
         List<T> result = new ArrayList<T>();
         for (Object obj : srcList) {
-            result.add((T) voAndBoTransfer(src, desc, obj));
+            result.add((T) voAndBoTransfer(obj, desc));
         }
-
-        List a = Lists.newArrayList();
-
-        Collections.sort(a, Collections.reverseOrder());
         return result;
     }
 
@@ -54,33 +52,26 @@ public class MyTools {
     /**
      * vo和bo之间的转换（两个对象之间的转换）
      *
-     * @param src    源
-     * @param desc   目标
      * @param srcObj 源对象
+     * @param desc   目标
      * @return 目标对象
      * @throws Exception
      */
-    public static <T> T voAndBoTransfer(Class src, Class desc, Object srcObj)
-            throws Exception {
+    public static <T> T voAndBoTransfer(Object srcObj, Class desc) throws Exception {
         if (srcObj == null) {
             return null;
         }
+        Class src = srcObj.getClass();
         T desc_obj = (T) desc.newInstance();
-        Field[] src_fields = sort(src.getDeclaredFields());
-        Field[] desc_fields = sort(desc.getDeclaredFields());
+        Field[] src_fields = sort(getFields(src));
+        Field[] desc_fields = sort(getFields(desc));
         for (int i = 0; i < desc_fields.length; i++) {
             for (int j = 0; j < src_fields.length; j++) {
                 if (desc_fields[i].getName().equals(src_fields[j].getName())) {
-                    desc_fields[i].setAccessible(true);
-                    src_fields[j].setAccessible(true);
-                    desc_fields[i].set(
-                            desc_obj,
-                            getValue(desc_fields[i].getType(),
-                                    src_fields[j].get(srcObj)));
+                    ReflectUtils.setValue(desc_obj, desc_fields[i], ReflectUtils.getValue(srcObj, src_fields[i]));
                 }
             }
         }
-
         return desc_obj;
     }
 
@@ -88,12 +79,12 @@ public class MyTools {
     /**
      * 类型转换
      *
-     * @param clazz 目的类型（转换后值的类型）
      * @param obj   原始值
+     * @param clazz 目的类型（转换后值的类型）
      * @return 返回转换后的值
      * @throws java.text.ParseException
      */
-    public static Object getValue(Class clazz, Object obj)
+    public static Object getValue(Object obj, Class clazz)
             throws ParseException {
         if (clazz.isInstance(obj)) {
             return obj;
@@ -133,8 +124,6 @@ public class MyTools {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_1);
         if (obj instanceof Date) {
             return sdf.format((Date) obj);
-        } else if (obj instanceof java.util.Date) {
-            return sdf.format((java.util.Date) obj);
         } else if (obj instanceof Timestamp) {
             return sdf.format(new Date(((Timestamp) obj).getTime()));
         } else {
@@ -143,16 +132,14 @@ public class MyTools {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> T getDate(Object obj) {
-        T t;
+    private static Date getDate(Object obj) {
+        Date t;
         if (obj instanceof Timestamp) {
-            t = (T) new Date(((Timestamp) obj).getTime());
+            t = new Date(((Timestamp) obj).getTime());
         } else if (obj instanceof Date) {
-            t = (T) obj;
-        } else if (obj instanceof java.util.Date) {
-            t = (T) new Date(((java.util.Date) obj).getTime());
+            t = new Date(((Date) obj).getTime());
         } else {
-            t = obj == null ? null : (T) Date.valueOf(obj.toString());
+            t = obj == null ? null : java.sql.Date.valueOf(obj.toString());
         }
         return t;
     }
@@ -161,11 +148,8 @@ public class MyTools {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern_1);
         if (obj instanceof Date) {
             return new Timestamp(((Date) obj).getTime());
-        } else if (obj instanceof java.util.Date) {
-            return new Timestamp(((java.util.Date) obj).getTime());
         } else {
-            return obj == null ? null : new Timestamp(sdf.parse(obj.toString())
-                    .getTime());
+            return obj == null ? null : new Timestamp(sdf.parse(obj.toString()).getTime());
         }
     }
 
@@ -232,19 +216,18 @@ public class MyTools {
         return result;
     }
 
-    private static String getKey(String split, Object ol, String... objs) throws Exception {
+    private static String getKey(String split, Object object, String... fields) throws Exception {
         String str = "";
-        for (String o : objs) {
-            Field field = ol.getClass().getDeclaredField(o);
-            field.setAccessible(true);
-            Object obj = field.get(ol);
+        Class clazz = object.getClass();
+        for (String field : fields) {
+            Object obj = ReflectUtils.getValue(object, getField(clazz, field));
             str += (obj == null ? "" : (obj.toString() + split));
         }
         return str.substring(0, str.length() - split.length());
     }
 
     /**
-     * 把一个object对象转换为map（键值对），会把空字符串过滤掉，也就是不会把字段为空和""，"  "等的转换。
+     * 把一个object对象转换为map（键值对），会把空字符串null过滤掉。
      *
      * @param obj 需要转换的对象
      * @return map对象
@@ -254,14 +237,12 @@ public class MyTools {
     public static Map<String, Object> beanToMap(Object obj)
             throws IllegalArgumentException, IllegalAccessException {
         Class clazz = obj.getClass();
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = getFields(clazz);
         Map<String, Object> result = new HashMap<String, Object>();
-
         for (Field f : fields) {
-            f.setAccessible(true);
-            if (f.get(obj) != null
-                    && f.get(obj).toString().trim().length() != 0) {
-                result.put(f.getName(), f.get(obj));
+            Object value = ReflectUtils.getValue(obj, f);
+            if (value != null) {
+                result.put(f.getName(), value);
             }
         }
         return result;
@@ -277,7 +258,7 @@ public class MyTools {
     public static <T> List<Object> beanToList(T bean) throws IllegalAccessException {
         List<Object> result = new ArrayList<>();
         Class clazz = bean.getClass();
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = getFields(clazz);
         for (Field f : fields) {
             result.add(ReflectUtils.getValue(bean, f));
         }
@@ -331,12 +312,11 @@ public class MyTools {
      */
     public static <T> T mapToObject(Map<String, Object> map, Class<T> clazz) {
         T t = null;
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = getFields(clazz);
         try {
             t = clazz.newInstance();
             for (Field field : fields) {
-                field.setAccessible(true);
-                field.set(t, map.get(field.getName()));
+                ReflectUtils.setValue(t, field, map.get(field.getName()));
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -389,6 +369,34 @@ public class MyTools {
             }
         }
         return sb.toString();
+    }
+
+    public static Field[] getFields(Class clazz) {
+        String key = buildFieldsKey(clazz);
+        Field[] fields = (Field[]) cache.getIfPresent(key);
+        if (fields == null) {
+            fields = clazz.getDeclaredFields();
+            cache.put(key, fields);
+        }
+        return fields;
+    }
+
+    public static Field getField(Class clazz, String fieldName) throws NoSuchFieldException {
+        String key = buildFieldKey(clazz, fieldName);
+        Field field = (Field) cache.getIfPresent(key);
+        if (field == null) {
+            field = clazz.getDeclaredField(fieldName);
+            cache.put(key, field);
+        }
+        return field;
+    }
+
+    private static String buildFieldsKey(Class clazz) {
+        return "fields." + clazz.getName();
+    }
+
+    private static String buildFieldKey(Class clazz, String fieldName) {
+        return "field." + clazz.getName() + "." + fieldName;
     }
 
     public static void main(String[] args) {

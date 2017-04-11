@@ -1,7 +1,7 @@
-package liang.mvc.commons.file;
+package liang.common.file;
 
-import liang.mvc.commons.exception.NullValueException;
-import liang.mvc.commons.exception.TypeErrorException;
+import liang.common.exception.NullValueException;
+import liang.common.exception.TypeErrorException;
 
 import java.util.HashMap;
 import java.util.Map;

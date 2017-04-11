@@ -1,7 +1,7 @@
 package liang.mvc.handler.resolver;
 
 import liang.mvc.commons.ErrorField;
-import liang.mvc.commons.Response;
+import liang.mvc.commons.ResponseData;
 import liang.mvc.exception.ServiceException;
 import liang.mvc.exception.ServiceKeyException;
 import org.apache.commons.lang3.StringUtils;
@@ -61,24 +61,24 @@ public class GlobalHandlerExceptionResolver extends DefaultHandlerExceptionResol
      * @param locale
      * @return
      */
-    protected Response bindError(HttpServletResponse httpResponse, ApplicationContext context, Exception e, Locale locale) {
-        Response response = new Response();
+    protected ResponseData bindError(HttpServletResponse httpResponse, ApplicationContext context, Exception e, Locale locale) {
+        ResponseData responseData = new ResponseData();
         Errors errors = getErrors(e);
         if (e instanceof MessageSourceResolvable) {
-            response.setMessage(context.getMessage((MessageSourceResolvable) e, locale));
+            responseData.setMessage(context.getMessage((MessageSourceResolvable) e, locale));
         } else if (e instanceof ServiceException) {
-            response.setMessage(e.getMessage());
+            responseData.setMessage(e.getMessage());
         } else if (e instanceof ServiceKeyException) {
             ServiceKeyException keyException = (ServiceKeyException) e;
-            response.setMessage(context.getMessage(keyException.getMessage(), keyException.getParams(), locale));
+            responseData.setMessage(context.getMessage(keyException.getMessage(), keyException.getParams(), locale));
         } else if (errors == null) {
-            response.setMessage(e.getMessage());
+            responseData.setMessage(e.getMessage());
         }
         httpResponse.setStatus(httpStatus(e, errors).value());
-        response.setErrorId(1);
-        response.setSuccess(false);
-        response.setFields(renderErrors(context, errors, locale));
-        return response;
+        responseData.setErrorId(1);
+        responseData.setSuccess(false);
+        responseData.setFields(renderErrors(context, errors, locale));
+        return responseData;
     }
 
 
