@@ -14,8 +14,13 @@ import java.util.Map;
  */
 public class UrlFlowController extends AbstractController implements BaseFlowController {
     @Override
-    public boolean control(ControlParameter controlParameter) {
-        return control(controlParameter.getCurrentUri(), controlParameter.getUrl(), ControllerType.URL);
+    public boolean flowControl(ControlParameter controlParameter) {
+        return flowControl(controlParameter.getCurrentUri(), controlParameter.getUrl(), ControllerType.URL);
+    }
+
+    @Override
+    public boolean forbitddenControl(ControlParameter controlParameter) {
+        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getUrl(), ControllerType.URL);
     }
 
     @Override

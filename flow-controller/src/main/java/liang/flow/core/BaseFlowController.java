@@ -9,7 +9,9 @@ import liang.flow.config.ControllerType;
  */
 public interface BaseFlowController {
 
-    boolean control(ControlParameter controlParameter);
+    boolean flowControl(ControlParameter controlParameter);
+
+    boolean forbitddenControl(ControlParameter controlParameter);
 
     ControllerType getControllerType();
 

@@ -16,6 +16,8 @@ public abstract class BaseConfig {
 
     private static final Map<String, Map<ControllerType, Map<String, ControllerObject>>> controllerObjectMapMapMap = new ConcurrentHashMap<>();
 
+    private static volatile boolean IS_OPEN = false;
+
     public static void changeListener(ControllerObject controllerObject) {
         addFlowObject(controllerObject);
     }
@@ -88,6 +90,10 @@ public abstract class BaseConfig {
         if (controllerType != ControllerType.URL) {
             return;
         }
+        if (IS_OPEN) {
+            return;
+        }
+        IS_OPEN = true;
         Map<String, ControllerObject> controllerObjectMap = getControllerObjectMap(controllerType, uri);
         for (ControllerObject controllerObject : controllerObjectMap.values()) {
             controllerObject.setOpen(true);
@@ -95,10 +101,10 @@ public abstract class BaseConfig {
     }
 
     public static void clean(String uri) {
-        Map<ControllerType,Map<String,ControllerObject>> controllerTypeMapMap = getControllerObjectMapMap(uri);
+        Map<ControllerType, Map<String, ControllerObject>> controllerTypeMapMap = getControllerObjectMapMap(uri);
         if (MapUtils.isNotEmpty(controllerTypeMapMap)) {
-            for (Map<String,ControllerObject> controllerObjectMap : controllerTypeMapMap.values()){
-                for (ControllerObject controllerObject : controllerObjectMap.values()){
+            for (Map<String, ControllerObject> controllerObjectMap : controllerTypeMapMap.values()) {
+                for (ControllerObject controllerObject : controllerObjectMap.values()) {
 
                 }
             }
