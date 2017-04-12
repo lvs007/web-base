@@ -13,8 +13,8 @@ public class OsFlowController extends AbstractController implements BaseFlowCont
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getOs(), ControllerType.OS);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getOs(), ControllerType.OS);
     }
 
     @Override

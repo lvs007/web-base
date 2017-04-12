@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by liangzhiyan on 2017/4/11.
  */
-public class ForbitddenController extends BaseController {
+public class ForbiddenController extends BaseController {
 
     public static boolean controlRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
-        for (BaseFlowController forbitddenController : ControllerManager.controllerList) {
+        for (BaseFlowController forbiddenController : ControllerManager.controllerList) {
             ControlParameter controlParameter = setControlParameter(request);
-            if (forbitddenController.forbitddenControl(controlParameter)) {
+            if (forbiddenController.forbiddenControl(controlParameter)) {
                 return false;
             }
         }

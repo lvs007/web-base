@@ -27,7 +27,7 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
         if (ConfigService.isControlAllRequest()) {
             return false;
         }
-        continues = ForbitddenController.controlRequest(request);
+        continues = ForbiddenController.controlRequest(request);
         if (!continues) {
             return continues;
         }

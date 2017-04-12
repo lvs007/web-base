@@ -13,8 +13,8 @@ public class CityFlowController extends AbstractController implements BaseFlowCo
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getCity(), ControllerType.CITY);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getCity(), ControllerType.CITY);
     }
 
     @Override

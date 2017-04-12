@@ -13,8 +13,8 @@ public class CountyFlowController extends AbstractController implements BaseFlow
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getCounty(), ControllerType.COUNTY);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getCounty(), ControllerType.COUNTY);
     }
 
     @Override

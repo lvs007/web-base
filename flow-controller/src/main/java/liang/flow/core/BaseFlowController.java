@@ -11,7 +11,7 @@ public interface BaseFlowController {
 
     boolean flowControl(ControlParameter controlParameter);
 
-    boolean forbitddenControl(ControlParameter controlParameter);
+    boolean forbiddenControl(ControlParameter controlParameter);
 
     ControllerType getControllerType();
 

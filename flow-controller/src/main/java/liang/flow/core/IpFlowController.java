@@ -13,8 +13,8 @@ public class IpFlowController extends AbstractController implements BaseFlowCont
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getIp(), ControllerType.IP);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getIp(), ControllerType.IP);
     }
 
     @Override

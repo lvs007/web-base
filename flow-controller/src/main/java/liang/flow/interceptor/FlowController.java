@@ -26,11 +26,19 @@ public class FlowController extends BaseController {
     public static void init() {
         List<ConfigService.InterfaceQps> interfaceQpsList = ConfigService.getInterfaceQps();
         for (ConfigService.InterfaceQps interfaceQps : interfaceQpsList) {
-            RateLimiter rateLimiter = RateLimiter.create(interfaceQps.getQps());
-            Semaphore semaphore = new Semaphore(interfaceQps.getSameTimeQ());
-            rateLimiterMap.put(interfaceQps.getUrl(), rateLimiter);
-            semaphoreMap.put(interfaceQps.getUrl(), semaphore);
+            setMap(interfaceQps);
         }
+    }
+
+    private static void setMap(ConfigService.InterfaceQps interfaceQps) {
+        RateLimiter rateLimiter = RateLimiter.create(interfaceQps.getQps());
+        Semaphore semaphore = new Semaphore(interfaceQps.getSameTimeQ());
+        rateLimiterMap.put(interfaceQps.getUrl(), rateLimiter);
+        semaphoreMap.put(interfaceQps.getUrl(), semaphore);
+    }
+
+    public static void changeListener(ConfigService.InterfaceQps interfaceQps) {
+        setMap(interfaceQps);
     }
 
     public static boolean controlRequest(HttpServletRequest request) {

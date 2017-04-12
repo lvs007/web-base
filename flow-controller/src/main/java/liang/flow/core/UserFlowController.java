@@ -13,8 +13,8 @@ public class UserFlowController extends AbstractController implements BaseFlowCo
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getUser(), ControllerType.USER);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getUser(), ControllerType.USER);
     }
 
     @Override

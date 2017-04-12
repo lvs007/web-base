@@ -13,8 +13,8 @@ public class DeviceFlowController extends AbstractController implements BaseFlow
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getDevice(), ControllerType.DEVICE);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getDevice(), ControllerType.DEVICE);
     }
 
     @Override

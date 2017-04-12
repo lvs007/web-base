@@ -1,7 +1,7 @@
 package liang.flow.config;
 
-import liang.common.MyTools;
 import liang.common.util.PropertiesManager;
+import liang.flow.interceptor.FlowController;
 import liang.mvc.commons.SpringContextHolder;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,14 +29,23 @@ public class ConfigService {
         String[] interfaceQpsArray = StringUtils.split(interfaceQpsStr, SPLIT);
         List<InterfaceQps> interfaceQpsList = new ArrayList<>();
         for (String interfaceQps : interfaceQpsArray) {
-            String[] urlAndQps = StringUtils.split(interfaceQps, URL_QPS_SPLIT);
-            InterfaceQps iq = new InterfaceQps(urlAndQps[0], Long.parseLong(urlAndQps[1]));
-            if (urlAndQps.length > 2) {
-                iq.setSameTimeQ(Integer.parseInt(urlAndQps[2]));
-            }
+            InterfaceQps iq = genInterfaceQps(interfaceQps);
             interfaceQpsList.add(iq);
         }
         return interfaceQpsList;
+    }
+
+    private static InterfaceQps genInterfaceQps(String interfaceQps) {
+        String[] urlAndQps = StringUtils.split(interfaceQps, URL_QPS_SPLIT);
+        InterfaceQps iq = new InterfaceQps(urlAndQps[0], Long.parseLong(urlAndQps[1]));
+        if (urlAndQps.length > 2) {
+            iq.setSameTimeQ(Integer.parseInt(urlAndQps[2]));
+        }
+        return iq;
+    }
+
+    public static void changeListener(String data) {
+        FlowController.changeListener(genInterfaceQps(data));
     }
 
     public static boolean isOpenController() {

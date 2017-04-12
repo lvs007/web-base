@@ -99,15 +99,4 @@ public abstract class BaseConfig {
             controllerObject.setOpen(true);
         }
     }
-
-    public static void clean(String uri) {
-        Map<ControllerType, Map<String, ControllerObject>> controllerTypeMapMap = getControllerObjectMapMap(uri);
-        if (MapUtils.isNotEmpty(controllerTypeMapMap)) {
-            for (Map<String, ControllerObject> controllerObjectMap : controllerTypeMapMap.values()) {
-                for (ControllerObject controllerObject : controllerObjectMap.values()) {
-
-                }
-            }
-        }
-    }
 }

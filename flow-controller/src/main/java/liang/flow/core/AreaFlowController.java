@@ -13,8 +13,8 @@ public class AreaFlowController extends AbstractController implements BaseFlowCo
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getArea(), ControllerType.AREA);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getArea(), ControllerType.AREA);
     }
 
     @Override

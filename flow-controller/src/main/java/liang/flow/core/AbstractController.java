@@ -3,11 +3,8 @@ package liang.flow.core;
 import liang.flow.config.ControllerObject;
 import liang.flow.config.ControllerType;
 import liang.flow.config.FlowConfig;
-import liang.flow.config.ForbitddenConfig;
-import org.apache.commons.collections4.MapUtils;
+import liang.flow.config.ForbiddenConfig;
 import org.apache.commons.lang3.RandomUtils;
-
-import java.util.Map;
 
 /**
  * Created by liangzhiyan on 2017/4/5.
@@ -25,8 +22,8 @@ public abstract class AbstractController implements BaseFlowController {
         }
     }
 
-    public boolean forbitddenControl(String uri, String value, ControllerType controllerType) {
-        ControllerObject controllerObject = ForbitddenConfig.getControllerObject(controllerType, uri, value);
+    public boolean forbiddenControl(String uri, String value, ControllerType controllerType) {
+        ControllerObject controllerObject = ForbiddenConfig.getControllerObject(controllerType, uri, value);
         if (controllerObject == null || !controllerObject.isOpen()) {
             return false;
         } else if (controllerObject.isForeverController()) {
@@ -61,7 +58,7 @@ public abstract class AbstractController implements BaseFlowController {
     }
 
     public void resetControllerBeginTime(String uri, String value, ControllerType controllerType) {
-        ControllerObject controllerObject = ForbitddenConfig.getControllerObject(controllerType, uri, value);
+        ControllerObject controllerObject = ForbiddenConfig.getControllerObject(controllerType, uri, value);
         if (controllerObject != null) {
             controllerObject.setControllerBeginTime(0);
         }

@@ -13,8 +13,8 @@ public class AppTypeFlowController extends AbstractController implements BaseFlo
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getAppType(), ControllerType.APPTYPE);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getAppType(), ControllerType.APPTYPE);
     }
 
     @Override

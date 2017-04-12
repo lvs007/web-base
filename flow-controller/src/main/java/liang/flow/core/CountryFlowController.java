@@ -13,8 +13,8 @@ public class CountryFlowController extends AbstractController implements BaseFlo
     }
 
     @Override
-    public boolean forbitddenControl(ControlParameter controlParameter) {
-        return forbitddenControl(controlParameter.getCurrentUri(), controlParameter.getCountry(), ControllerType.COUNTRY);
+    public boolean forbiddenControl(ControlParameter controlParameter) {
+        return forbiddenControl(controlParameter.getCurrentUri(), controlParameter.getCountry(), ControllerType.COUNTRY);
     }
 
     @Override
