@@ -1,4 +1,4 @@
-package liang.flow.core;
+package liang.flow.config;
 
 import liang.common.MyTools;
 import liang.common.util.PropertiesManager;

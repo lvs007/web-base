@@ -1,6 +1,6 @@
 package liang.flow.interceptor;
 
-import liang.flow.core.ConfigService;
+import liang.flow.config.ConfigService;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.PostConstruct;
@@ -20,11 +20,16 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        boolean continues = true;
         if (!ConfigService.isOpenController()) {
-            return true;
+            return continues;
         }
         if (ConfigService.isControlAllRequest()) {
             return false;
+        }
+        continues = ForbitddenController.controlRequest(request);
+        if (!continues) {
+            return continues;
         }
         return FlowController.controlRequest(request);
     }

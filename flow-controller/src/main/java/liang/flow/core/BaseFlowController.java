@@ -15,5 +15,5 @@ public interface BaseFlowController {
 
     ControllerType getControllerType();
 
-    void resetControllerBeginTime(ControllerObject controllerObject);
+    void resetControllerBeginTime(ControlParameter controlParameter);
 }

@@ -36,7 +36,8 @@ public abstract class AbstractController implements BaseFlowController {
             setControllerBeginTime(controllerObject);
             if (controllerObject.getControllerBeginTime() + controllerObject.getControllerTime() >= System.currentTimeMillis()) {
                 return true;
-            } else {
+            } else {//解除forbitdden
+                resetController(controllerObject);
                 return false;
             }
         }
@@ -52,7 +53,17 @@ public abstract class AbstractController implements BaseFlowController {
         return RandomUtils.nextInt(0, 100) <= controllerObject.getRate();
     }
 
-    public void resetControllerBeginTime(ControllerObject controllerObject) {
-        controllerObject.setControllerBeginTime(0);
+    public void resetController(ControllerObject controllerObject) {
+        if (controllerObject != null) {
+            controllerObject.setOpen(false);
+            controllerObject.setControllerBeginTime(0);
+        }
+    }
+
+    public void resetControllerBeginTime(String uri, String value, ControllerType controllerType) {
+        ControllerObject controllerObject = ForbitddenConfig.getControllerObject(controllerType, uri, value);
+        if (controllerObject != null) {
+            controllerObject.setControllerBeginTime(0);
+        }
     }
 }

@@ -28,4 +28,9 @@ public class UrlFlowController extends AbstractController implements BaseFlowCon
         return ControllerType.URL;
     }
 
+    @Override
+    public void resetControllerBeginTime(ControlParameter controlParameter) {
+        resetControllerBeginTime(controlParameter.getCurrentUri(), controlParameter.getUrl(), ControllerType.URL);
+    }
+
 }

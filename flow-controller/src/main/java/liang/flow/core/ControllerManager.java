@@ -16,14 +16,16 @@ public class ControllerManager {
 
     public static final List<BaseFlowController> controllerList = new ArrayList<>();
 
-    public static void clean(String uri) {
-        Map<ControllerType,Map<String,ControllerObject>> controllerTypeMapMap = FlowConfig.getControllerObjectMapMap(uri);
-        if (MapUtils.isNotEmpty(controllerTypeMapMap)) {
-            for (Map<String,ControllerObject> controllerObjectMap : controllerTypeMapMap.values()){
-                for (ControllerObject controllerObject : controllerObjectMap.values()){
-
-                }
-            }
-        }
+    static {
+        controllerList.add(new CountryFlowController());
+        controllerList.add(new AreaFlowController());
+        controllerList.add(new CityFlowController());
+        controllerList.add(new CountyFlowController());
+        controllerList.add(new OsFlowController());
+        controllerList.add(new AppTypeFlowController());
+        controllerList.add(new IpFlowController());
+        controllerList.add(new DeviceFlowController());
+        controllerList.add(new UserFlowController());
+        controllerList.add(new UrlFlowController());
     }
 }

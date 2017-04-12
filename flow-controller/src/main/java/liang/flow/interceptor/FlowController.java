@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import liang.flow.config.ControlParameter;
 import liang.flow.config.FlowConfig;
 import liang.flow.core.BaseFlowController;
-import liang.flow.core.ConfigService;
+import liang.flow.config.ConfigService;
 import liang.flow.core.ControllerManager;
 
 import javax.servlet.http.HttpServletRequest;
