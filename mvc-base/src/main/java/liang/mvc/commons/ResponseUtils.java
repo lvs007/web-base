@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
+import static liang.mvc.constants.MvcConstants.ResultCode.*;
+
 /**
  * Created by liangzhiyan on 2017/4/11.
  */
@@ -39,25 +41,33 @@ public class ResponseUtils {
 
     public static ResponseData FlowControlErrorResponse() {
         ResponseData responseData = new ResponseData();
-        responseData.setErrorId(40001);
-        responseData.setMessage("访问用户太多，请稍后重试");
+        responseData.setErrorId(USER_ACCESS_ERROR.code);
+        responseData.setMessage(USER_ACCESS_ERROR.msg);
         responseData.setSuccess(false);
         return responseData;
     }
 
     public static ResponseData ErrorResponse() {
         ResponseData responseData = new ResponseData();
-        responseData.setErrorId(40000);
-        responseData.setMessage("访问失败");
+        responseData.setErrorId(ACCESS_ERROR.code);
+        responseData.setMessage(ACCESS_ERROR.msg);
         responseData.setSuccess(false);
         return responseData;
     }
 
     public static ResponseData SuccessResponse() {
         ResponseData responseData = new ResponseData();
-        responseData.setErrorId(200);
-        responseData.setMessage("成功");
+        responseData.setErrorId(SUCCESS.code);
+        responseData.setMessage(SUCCESS.msg);
         responseData.setSuccess(true);
+        return responseData;
+    }
+
+    public static ResponseData NotLoginResponse() {
+        ResponseData responseData = new ResponseData();
+        responseData.setErrorId(NOT_LOGIN_ERROR.code);
+        responseData.setMessage(NOT_LOGIN_ERROR.msg);
+        responseData.setSuccess(false);
         return responseData;
     }
 }

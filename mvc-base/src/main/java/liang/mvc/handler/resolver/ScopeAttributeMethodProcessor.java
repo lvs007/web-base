@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -171,7 +172,9 @@ public class ScopeAttributeMethodProcessor implements HandlerMethodArgumentResol
             }
             responseData.addData(returnValue);
         }
-        returnValue = responseData;
+        if (returnType.getMethodAnnotation(ResponseBody.class) != null) {
+            returnValue = responseData;
+        }
         handler.handleReturnValue(returnValue, returnType, mavContainer, request);
     }
 

@@ -35,9 +35,7 @@
 
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/checkAlive"/>
-            <mvc:exclude-mapping path="/api/monitor/alive"/>
-            <mvc:exclude-mapping path="/favicon.ico"/>
+            <mvc:exclude-mapping path="/login-page"/>
             <mvc:exclude-mapping path="/static/**"/>
 
             <bean class="liang.mvc.interceptor.ControllerInterceptor"/>
@@ -56,5 +54,4 @@
             <value>true</value>
         </property>
     </bean>
-
 </beans>

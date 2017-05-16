@@ -227,28 +227,6 @@ public class MyTools {
     }
 
     /**
-     * 把一个object对象转换为map（键值对），会把空字符串null过滤掉。
-     *
-     * @param obj 需要转换的对象
-     * @return map对象
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     */
-    public static Map<String, Object> beanToMap(Object obj)
-            throws IllegalArgumentException, IllegalAccessException {
-        Class clazz = obj.getClass();
-        Field[] fields = getFields(clazz);
-        Map<String, Object> result = new HashMap<String, Object>();
-        for (Field f : fields) {
-            Object value = ReflectUtils.getValue(obj, f);
-            if (value != null) {
-                result.put(f.getName(), value);
-            }
-        }
-        return result;
-    }
-
-    /**
      * bean转换成一个list，list中的字段顺序跟bean中声明字段的顺序一致
      *
      * @param bean
@@ -397,6 +375,96 @@ public class MyTools {
 
     private static String buildFieldKey(Class clazz, String fieldName) {
         return "field." + clazz.getName() + "." + fieldName;
+    }
+
+    /**
+     * 把一个object对象转换为map（键值对），会把空字符串null过滤掉。
+     *
+     * @param obj 需要转换的对象
+     * @return map对象
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+    public static Map<String, Object> beanToMap(Object obj)
+            throws IllegalArgumentException, IllegalAccessException {
+        Class clazz = obj.getClass();
+        Field[] fields = getFields(clazz);
+        Map<String, Object> result = new HashMap<String, Object>();
+        for (Field f : fields) {
+            Object value = ReflectUtils.getValue(obj, f);
+            if (value != null) {
+                result.put(f.getName(), value);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 把一个object对象转换为map（键值对），会把空字符串过滤掉，也就是不会把字段为空和""，"  "等的转换。
+     *
+     * @param obj        需要转换的对象
+     * @param fieldNames 不需要转换的字段
+     * @return map对象
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+    public static Map<String, Object> beanToMap(Object obj, String... fieldNames)
+            throws IllegalArgumentException, IllegalAccessException {
+        Class clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        Map<String, Object> result = new HashMap<String, Object>();
+        Set<String> fieldSet = arrayToSet(fieldNames);
+        for (Field f : fields) {
+            if (fieldSet.contains(f.getName())) {
+                continue;
+            }
+            Object value = ReflectUtils.getValue(obj, f);
+            if (value != null) {
+                result.put(f.getName(), value);
+            }
+        }
+        return result;
+    }
+
+    public static List<Map<String, Object>> beanToMapList(List<?> list, String... fieldNames) throws Exception {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (Object object : list) {
+            mapList.add(beanToMap(object, fieldNames));
+        }
+        return mapList;
+    }
+
+    public static boolean contains(String str, String separatorChar, String value) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+        String[] array = StringUtils.split(str, separatorChar);
+        return contains(array, value);
+    }
+
+    public static boolean contains(String[] array, String value) {
+        if (array == null) {
+            return false;
+        }
+        for (String s : array) {
+            if (s.equals(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Set<String> splitToSet(String str, String separatorChar) {
+        String[] array = StringUtils.split(str, separatorChar);
+        return arrayToSet(array);
+    }
+
+    public static <T> Set<T> arrayToSet(T[] array) {
+        Set<T> set = new HashSet<>();
+        if (array != null) {
+            set.addAll(Arrays.asList(array));
+        }
+        return set;
     }
 
     public static void main(String[] args) {

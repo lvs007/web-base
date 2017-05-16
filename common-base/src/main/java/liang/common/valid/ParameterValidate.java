@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public class ParameterValidate {
 
-    public static void assertNull(String param) {
+    public static void assertBlank(String param) {
         if (StringUtils.isBlank(param)) {
             throw NullValueException.throwException("字符串为空！");
         }

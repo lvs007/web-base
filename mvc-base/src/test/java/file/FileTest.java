@@ -3,7 +3,7 @@ package file;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import liang.common.MyTools;
-import liang.common.file.BaseFile;
+import liang.common.file.FileHandler;
 import liang.common.file.TxtCsvFile;
 import liang.common.file.XlsFile;
 
@@ -34,7 +34,7 @@ public class FileTest {
     }
 
     private static void testTxt() {
-        BaseFile txtCsvFile = new TxtCsvFile();
+        FileHandler txtCsvFile = new TxtCsvFile();
         File file = new File("D:\\test.csv");
         System.out.println(txtCsvFile.readFile(file, ",", Xxx.class, false));
 
@@ -51,9 +51,9 @@ public class FileTest {
     }
 
     public static void testXls() throws IllegalAccessException {
-        BaseFile baseFile = new XlsFile();
+        FileHandler fileHandler = new XlsFile();
         File file = new File("D:\\员工信息.xls");
-        System.out.println(baseFile.readFile(file, ",", Yyy.class, false));
+        System.out.println(fileHandler.readFile(file, ",", Yyy.class, false));
         file = new File("D:\\testttttt.xls");
         List<List<Object>> listList = new ArrayList<>();
         List<Xxx> xxxList = new ArrayList<>();
@@ -62,7 +62,7 @@ public class FileTest {
             xxxList.add(xxx);
         }
         listList = MyTools.beanListToList(xxxList);
-        baseFile.writeFile(file, listList, ",");
+        fileHandler.writeFile(file, listList, ",");
     }
 
     public static class Xxx {

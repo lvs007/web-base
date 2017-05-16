@@ -105,9 +105,9 @@ public class ExcelUtil {
         return createWorkbook("xxx.xls");
     }
 
-    public static Workbook createWorkbook(BaseFile.FileType fileType) {
+    public static Workbook createWorkbook(FileHandler.FileType fileType) {
         String fileName = "";
-        if (fileType == BaseFile.FileType.XLS) {
+        if (fileType == FileHandler.FileType.XLS) {
             fileName = "xxx.xls";
         } else {
             fileName = "xxx.xlsx";
@@ -116,7 +116,7 @@ public class ExcelUtil {
     }
 
     public static Workbook createWorkbook(String fileName) {
-        ParameterValidate.assertNull(fileName);
+        ParameterValidate.assertBlank(fileName);
         Workbook wb = null;
         try {
             if (fileName.endsWith(".xls")) {

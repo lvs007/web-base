@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Created by mc-050 on 2016/9/14.
@@ -15,57 +18,68 @@ public abstract class BaseConsumer {
 
     protected static final Logger LOG = LoggerFactory.getLogger(BaseConsumer.class);
 
-    private boolean cycle = true;
-    private Thread thread;
+    private volatile boolean cycle = true;
 
-    private String accessId;
-    private String accessKey;
-    private String endPoint;
-    private String queueName;
+    private MnsService mnsService;
+
+    private ExecutorService executorService;
 
     @PostConstruct
     public void init() {
+        ParameterValidate.assertNull(mnsService);
         try {
-            LOG.info("[BaseConsumer.init]消息队列消费线程开始启动。");
-            thread = new Thread(new Runnable() {
+            LOG.info("[BaseConsumer.init]消息队列:{},消费线程开始启动。", mnsService.getTopicName());
+            mnsService.init();
+            executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
+                @Override
+                public Thread newThread(Runnable r) {
+                    return new Thread(r, mnsService.getTopicName() + "_thread");
+                }
+            });
+            executorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     while (cycle) {
                         try {
                             consumerMessage(pop());
                         } catch (Exception e) {
+                            LOG.error("consumer message has error !", e);
                         }
                     }
                 }
             });
-            thread.setName(queueName + "_thread");
-            thread.setDaemon(true);
-            thread.start();
-            LOG.info("[BaseConsumer.init]消息队列消费线程启动结束");
+            LOG.info("[BaseConsumer.init]消息队列:{},消费线程启动结束", mnsService.getTopicName());
         } catch (Exception e) {
+            LOG.error("启动消费线程出错！",e);
         }
     }
 
     private String pop() {
-        //todo:这里实现获取消息队列内容的代码。。。
-
-        return "";
+        return mnsService.pop();
     }
 
     public <T> boolean sendMsg(T entity) {
         ParameterValidate.assertNull(entity);
         try {
             Message message = new Message(JSON.toJSONString(entity), entity.getClass().getName());
-            //todo:这里实现mq传送消息的代码。。。
-
-            return true;
+            return mnsService.sendMsg(message);
         } catch (Exception e) {
             LOG.error("[sendMsg]发送消息时出错！", e);
         }
         return false;
     }
 
-    protected class Message {
+    protected Message parseJsonToMessage(String json) {
+        Message message = null;
+        try {
+            message = JSON.parseObject(json, Message.class);
+        } catch (Exception e) {
+            LOG.error("[parseJsonToMessage]转换消息格式出错！json = " + json, e);
+        }
+        return message;
+    }
+
+    public static class Message {
         public Message() {
         }
 
@@ -95,25 +109,14 @@ public abstract class BaseConsumer {
         }
     }
 
+    public void setMnsService(MnsService mnsService) {
+        this.mnsService = mnsService;
+    }
+
     @PreDestroy
     public void destroy() {
         cycle = false;
-    }
-
-    public void setAccessId(String accessId) {
-        this.accessId = accessId;
-    }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
-    }
-
-    public void setQueueName(String queueName) {
-        this.queueName = queueName;
+        executorService.shutdown();
     }
 
     protected abstract void consumerMessage(String json);

@@ -1,8 +1,10 @@
 package liang.common.file;
 
+import liang.common.MyTools;
 import liang.common.util.ReflectUtils;
 import liang.common.valid.ParameterValidate;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,17 +16,21 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mc-050 on 2017/2/13 11:07.
  * KIVEN will tell you life,send email to xxx@163.com
  */
-public class TxtCsvFile implements BaseFile {
+public class TxtCsvFile implements FileHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(TxtCsvFile.class);
 
     @Override
     public <T> List<T> readFile(File file, String lineSplit, Class clazz, boolean isHaveTitle) {
+        ParameterValidate.assertNull(file);
+        ParameterValidate.assertNull(clazz);
+        ParameterValidate.assertNull(lineSplit);
         List<T> result = new ArrayList<>();
         FileType fileType = FileType.isTxtCsvType(file.getName());
         try {
@@ -63,6 +69,64 @@ public class TxtCsvFile implements BaseFile {
     }
 
     @Override
+    public void readFile(File file, String lineSplit, int consumerLines, boolean exceptionContinue, ConsumerData consumerData) {
+        ParameterValidate.assertNull(file);
+        ParameterValidate.assertNull(consumerData);
+        ParameterValidate.assertNull(lineSplit);
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line = reader.readLine();
+            String[] titleArray;
+            if (StringUtils.isBlank(line)) {
+                return;
+            }
+            titleArray = StringUtils.split(line, lineSplit);
+            consumerData.readTitle(MyTools.arrayToSet(titleArray));
+            line = reader.readLine();
+            List<Map<String, Object>> lineList = new ArrayList<>();
+            int offset = 0;
+            int count = 0;
+            while (line != null) {
+                try {
+                    if (count == consumerLines) {
+                        consumerData.readBody(offset, lineList);
+                        count = 0;
+                        lineList.clear();
+                    }
+                    lineList.add(readBody(line, lineSplit, titleArray));
+                    line = reader.readLine();
+                } catch (Exception e) {
+                    LOG.error("解析到第{}行时出错", (offset + 1), e);
+                    if (!exceptionContinue) {
+                        return;
+                    }
+                }
+                ++count;
+                ++offset;
+            }
+            if (count != 0) {
+                consumerData.readBody(offset, lineList);
+                lineList.clear();
+            }
+        } catch (Exception e) {
+            LOG.error("", e);
+        }
+    }
+
+    private Map<String, Object> readBody(String line, String lineSplit, String[] titleArray) {
+        String[] values = StringUtils.split(line, lineSplit);
+        Map<String, Object> map = new HashedMap();
+        for (int i = 0; i < titleArray.length; i++) {
+            if (i < values.length) {
+                map.put(titleArray[i], values[i]);
+            } else {
+                map.put(titleArray[i], null);
+            }
+        }
+        return map;
+    }
+
+    @Override
     public void writeFile(File file, List<List<Object>> dataList, String lineSplit) {
         writeFile(file, dataList, null, lineSplit);
     }
@@ -70,7 +134,7 @@ public class TxtCsvFile implements BaseFile {
     @Override
     public void writeFile(File file, List<List<Object>> dataList, List<String> headList, String lineSplit) {
         ParameterValidate.assertNull(file);
-        ParameterValidate.assertNull(lineSplit);
+        ParameterValidate.assertBlank(lineSplit);
         ParameterValidate.assertCollectionNull(dataList);
         FileType fileType = FileType.isTxtCsvType(file.getName());
         try {
@@ -84,7 +148,7 @@ public class TxtCsvFile implements BaseFile {
     public void writeToStream(OutputStream outputStream, FileType fileType, List<List<Object>> dataList, List<String> headList, String lineSplit) {
         ParameterValidate.assertNull(outputStream);
         ParameterValidate.assertNull(fileType);
-        ParameterValidate.assertNull(lineSplit);
+        ParameterValidate.assertBlank(lineSplit);
         ParameterValidate.assertCollectionNull(dataList);
         try {
             StringBuffer sb = new StringBuffer();

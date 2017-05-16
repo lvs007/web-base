@@ -27,5 +27,5 @@ public interface MessageListener<T> {
      *
      * @param t
      */
-    void doTransferMNSMessage(T t);
+    void consumerMessage(T t);
 }

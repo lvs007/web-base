@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import liang.mvc.constants.SystemConfig.I18N;
 import liang.mvc.handler.resolver.GlobalHandlerExceptionResolver;
 import liang.mvc.handler.resolver.ScopeAttributeMethodProcessor;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,15 +32,18 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -58,6 +62,8 @@ public class SpringMvcConfiguration extends WebMvcConfigurationSupport {
     private IdealRequestMappingConfiguration idealRequestMappingConfiguration;
     @Resource
     private MessageSource messageSource;
+
+    private ContentNegotiationManager contentNegotiationManager;
 
     @Bean
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
@@ -91,7 +97,6 @@ public class SpringMvcConfiguration extends WebMvcConfigurationSupport {
         //优先调用自定义的ReturnValueHandler
         returnValueHandlers.add(0, new ScopeAttributeMethodProcessor(Collections.unmodifiableList(returnValueHandlers)));
         adapter.setReturnValueHandlers(returnValueHandlers);
-        System.out.println("[requestMappingHandlerAdapter]");
 
         return adapter;
     }

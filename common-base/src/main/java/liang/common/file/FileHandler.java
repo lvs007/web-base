@@ -6,20 +6,25 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by mc-050 on 2017/2/13 11:05.
  * KIVEN will tell you life,send email to xxx@163.com
  */
-public interface BaseFile {
+public interface FileHandler {
+
+    String POINT = ".";
 
     enum FileType {
         TXT, CSV, XLS, XLSX;
 
         public static FileType isTxtCsvType(String name) {
-            if (StringUtils.endsWithIgnoreCase(name, FileType.TXT.toString())) {
+            if (StringUtils.endsWithIgnoreCase(name, TXT_POSTFIX)
+                    || !StringUtils.contains(name, POINT)) {
                 return TXT;
-            } else if (StringUtils.endsWithIgnoreCase(name, FileType.CSV.toString())) {
+            } else if (StringUtils.endsWithIgnoreCase(name, CSV_POSTFIX)) {
                 return CSV;
             } else {
                 throw TypeErrorException.throwException("文件类型错误！");
@@ -45,6 +50,8 @@ public interface BaseFile {
                 return FileType.XLS;
             } else if (StringUtils.endsWithIgnoreCase(fileName, XLSX_POSTFIX)) {
                 return FileType.XLSX;
+            } else if (!StringUtils.contains(fileName, POINT)) {
+                return FileType.TXT;
             } else {
                 throw TypeErrorException.throwException("文件类型不正确");
             }
@@ -70,7 +77,26 @@ public interface BaseFile {
         private static final String XLSX_POSTFIX = ".xlsx";
     }
 
+    public static abstract class ConsumerData {
+
+        public abstract void readTitle(Set<String> title);
+
+        public abstract void readBody(int offset, List<Map<String, Object>> lines);
+
+    }
+
     <T> List<T> readFile(File file, String lineSplit, Class clazz, boolean isHaveTitle);
+
+    /**
+     * 边解析边消费，文件必须包含title，title为字段名
+     *
+     * @param file
+     * @param lineSplit         每一行数据的分隔符
+     * @param consumerLines     每次解析的行数
+     * @param exceptionContinue 当解析过程中发生异常是否继续
+     * @param consumerData      消费数据的消费者
+     */
+    void readFile(File file, String lineSplit, int consumerLines, boolean exceptionContinue, ConsumerData consumerData);
 
     void writeFile(File file, List<List<Object>> dataList, String lineSplit);
 

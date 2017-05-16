@@ -76,6 +76,7 @@ public class FlowController extends BaseController {
             Semaphore semaphore = semaphoreMap.get(uri);
             if (semaphore != null && threadLocal.get()) {
                 semaphore.release();
+                threadLocal.remove();
             }
         } catch (Exception e) {
             LOG.error("", e);

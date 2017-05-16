@@ -33,8 +33,7 @@ import java.util.Map;
  *
  * @author skyfalling
  */
-public class IdealRequestMappingHandlerMapping extends
-        RequestMappingHandlerMapping {
+public class IdealRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 
     /**
      * 匹配包名的正则表达式
@@ -202,17 +201,20 @@ public class IdealRequestMappingHandlerMapping extends
         Package aPackage = handlerType.getPackage();
         String packageName = aPackage != null ? aPackage.getName() : "";
         String baseName = packageName.replaceAll(packagePattern.replaceAll("\\.+$", ""), packageReplacement);
-        String[] values = annotation != null && annotation.value().length != 0 ?
-                annotation.value() :
+        String[] values = annotation != null && annotation.value().length != 0 ? annotation.value() :
                 new String[]{nameResolver.resolveStringValue(handlerType.getSimpleName()
                         .replaceAll(classPattern, classReplacement).replaceAll(classPatternAction, classReplacement))};
         int i = 0;
-        for (String value : values) {
-            if (StringUtils.endsWithIgnoreCase(baseName, "action")
-                    || StringUtils.endsWithIgnoreCase(baseName, "controller")) {
-                values[i++] = (packageReplacement + "/" + value).replaceAll("/+", "/");
-            } else {
-                values[i++] = (baseName + "/" + value).replaceAll("/+", "/");
+        if (annotation == null) {
+            for (String value : values) {
+                if (StringUtils.contains(baseName, "action")
+                        || StringUtils.contains(baseName, "actions")
+                        || StringUtils.contains(baseName, "controller")
+                        || StringUtils.contains(baseName, "controllers")) {
+                    values[i++] = (packageReplacement + "/" + value).replaceAll("/+", "/");
+                } else {
+                    values[i++] = (baseName + "/" + value).replaceAll("/+", "/");
+                }
             }
         }
         config.value(values);

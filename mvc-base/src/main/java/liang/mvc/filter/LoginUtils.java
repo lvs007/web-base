@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by liangzhiyan on 2017/3/20.
@@ -29,6 +30,18 @@ public class LoginUtils {
     private static final LoginHttp loginHttp = new LoginHttp();
 
     private static final ThreadLocal<UserInfo> threadLocal = new ThreadLocal<>();
+
+    public static String getToken(HttpServletRequest request) {
+        String token = request.getParameter(MvcConstants.TOKEN);
+        if (StringUtils.isBlank(token)) {
+            HttpSession session = request.getSession(false);
+            token = session == null ? null : (String) session.getAttribute(MvcConstants.TOKEN);
+        }
+        if (StringUtils.isBlank(token)) {
+            token = request.getHeader(MvcConstants.TOKEN);
+        }
+        return token;
+    }
 
     public static UserInfo getUser(String token) {
         try {
@@ -47,13 +60,7 @@ public class LoginUtils {
     }
 
     public static UserInfo getCurrentUser(HttpServletRequest request) {
-        String token = request.getParameter(MvcConstants.TOKEN);
-        if (StringUtils.isBlank(token)) {
-            token = (String) request.getSession().getAttribute(MvcConstants.TOKEN);
-            if (StringUtils.isBlank(token)) {
-                return null;
-            }
-        }
+        String token = getToken(request);
         return getUser(token);
     }
 

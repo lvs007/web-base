@@ -1,7 +1,7 @@
 package liang.mvc.service;
 
 import liang.common.MyTools;
-import liang.common.file.BaseFile;
+import liang.common.file.FileHandler;
 import liang.common.file.FileFactory;
 import org.springframework.stereotype.Service;
 
@@ -21,26 +21,26 @@ public class BaseDownloadService {
     private static final String CsvSplit = ",";
 
     public <T> void downloadXls(OutputStream outputStream, List<T> dataList, List<String> headList) throws IllegalAccessException {
-        BaseFile.FileType fileType = BaseFile.FileType.XLS;
+        FileHandler.FileType fileType = FileHandler.FileType.XLS;
         download(outputStream, dataList, headList, fileType, null);
     }
 
     public <T> void downloadXlsx(OutputStream outputStream, List<T> dataList, List<String> headList) throws IllegalAccessException {
-        BaseFile.FileType fileType = BaseFile.FileType.XLSX;
+        FileHandler.FileType fileType = FileHandler.FileType.XLSX;
         download(outputStream, dataList, headList, fileType, null);
     }
 
     public <T> void downloadTxt(OutputStream outputStream, List<T> dataList, List<String> headList) throws IllegalAccessException {
-        BaseFile.FileType fileType = BaseFile.FileType.TXT;
+        FileHandler.FileType fileType = FileHandler.FileType.TXT;
         download(outputStream, dataList, headList, fileType, TxtSplit);
     }
 
     public <T> void downloadCsv(OutputStream outputStream, List<T> dataList, List<String> headList) throws IllegalAccessException {
-        BaseFile.FileType fileType = BaseFile.FileType.CSV;
+        FileHandler.FileType fileType = FileHandler.FileType.CSV;
         download(outputStream, dataList, headList, fileType, CsvSplit);
     }
 
-    public <T> void download(OutputStream outputStream, List<T> dataList, List<String> headList, BaseFile.FileType fileType, String lineSplit) throws IllegalAccessException {
+    public <T> void download(OutputStream outputStream, List<T> dataList, List<String> headList, FileHandler.FileType fileType, String lineSplit) throws IllegalAccessException {
         FileFactory.getFileHandler(fileType).writeToStream(outputStream, fileType, MyTools.beanListToList(dataList), headList, lineSplit);
     }
 
@@ -57,9 +57,9 @@ public class BaseDownloadService {
      * @throws IOException
      * @throws IllegalAccessException
      */
-    public <T> void download(HttpServletResponse response, String downloadFileName, List<T> dataList, List<String> headList, BaseFile.FileType fileType, String lineSplit) throws IOException, IllegalAccessException {
+    public <T> void download(HttpServletResponse response, String downloadFileName, List<T> dataList, List<String> headList, FileHandler.FileType fileType, String lineSplit) throws IOException, IllegalAccessException {
         response.setCharacterEncoding("utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(downloadFileName + BaseFile.FileType.getPostfix(fileType), "utf-8"));
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(downloadFileName + FileHandler.FileType.getPostfix(fileType), "utf-8"));
         download(response.getOutputStream(), dataList, headList, fileType, lineSplit);
     }
 }

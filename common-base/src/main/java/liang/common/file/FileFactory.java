@@ -3,6 +3,7 @@ package liang.common.file;
 import liang.common.exception.NullValueException;
 import liang.common.exception.TypeErrorException;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,23 +12,28 @@ import java.util.Map;
  */
 public class FileFactory {
 
-    private static final Map<BaseFile.FileType, BaseFile> fileMap = new HashMap<>();
+    private static final Map<FileHandler.FileType, FileHandler> fileMap = new HashMap<>();
 
     static {
-        fileMap.put(BaseFile.FileType.TXT, new TxtCsvFile());
-        fileMap.put(BaseFile.FileType.CSV, new TxtCsvFile());
-        fileMap.put(BaseFile.FileType.XLS, new XlsFile());
-        fileMap.put(BaseFile.FileType.XLSX, new XlsFile());
+        fileMap.put(FileHandler.FileType.TXT, new TxtCsvFile());
+        fileMap.put(FileHandler.FileType.CSV, new TxtCsvFile());
+        fileMap.put(FileHandler.FileType.XLS, new XlsFile());
+        fileMap.put(FileHandler.FileType.XLSX, new XlsFile());
     }
 
-    public static BaseFile getFileHandler(BaseFile.FileType fileType) {
+    public static FileHandler getFileHandler(FileHandler.FileType fileType) {
         if (fileType == null) {
             throw NullValueException.throwException("fileType为空");
         }
-        BaseFile baseFile = fileMap.get(fileType);
-        if (baseFile == null) {
+        FileHandler fileHandler = fileMap.get(fileType);
+        if (fileHandler == null) {
             throw TypeErrorException.throwException("不支持的文件类型：" + fileType);
         }
-        return baseFile;
+        return fileHandler;
+    }
+
+    public static FileHandler getFileHandler(File file) {
+        FileHandler.FileType fileType = FileHandler.FileType.getFileType(file.getName());
+        return getFileHandler(fileType);
     }
 }

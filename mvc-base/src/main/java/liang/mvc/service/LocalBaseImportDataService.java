@@ -1,11 +1,10 @@
 package liang.mvc.service;
 
 import liang.common.exception.UnExistException;
-import liang.common.file.BaseFile;
+import liang.common.file.FileHandler;
 import liang.common.file.FileFactory;
 import liang.mvc.commons.UploadUtils;
 import liang.mvc.dto.UploadFileInfo;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.List;
@@ -31,7 +30,6 @@ public abstract class LocalBaseImportDataService {
             throw UnExistException.throwException("不存在这个文件");
         }
         File uploadFile = new File(uploadFileInfo.getPath());
-        BaseFile.FileType fileType = BaseFile.FileType.getFileType(uploadFileInfo.getName());
-        return FileFactory.getFileHandler(fileType).readFile(uploadFile, lineSplit, clazz, true);
+        return FileFactory.getFileHandler(uploadFile).readFile(uploadFile, lineSplit, clazz, true);
     }
 }
