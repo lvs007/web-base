@@ -1,4 +1,4 @@
-package liang.mq.consumer;
+package liang.mq.consumer.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.aliyun.mns.client.CloudAccount;
@@ -8,6 +8,8 @@ import com.aliyun.mns.model.Base64TopicMessage;
 import com.aliyun.mns.model.SubscriptionMeta;
 import com.aliyun.mns.model.TopicMessage;
 import com.aliyun.mns.sample.HttpEndpoint;
+import liang.mq.consumer.BaseConsumer;
+import liang.mq.consumer.MnsService;
 
 /**
  * Created by liangzhiyan on 2017/4/27.
@@ -45,7 +47,7 @@ public class BroadcastAliMnsService implements MnsService {
     }
 
     @Override
-    public <T> boolean sendMsg(T entity) {
+    public boolean sendMsg(BaseConsumer.Message entity) {
         TopicMessage message = new Base64TopicMessage();
         message.setMessageBody(JSON.toJSONString(entity));
         cloudTopic.publishMessage(message);
@@ -54,6 +56,11 @@ public class BroadcastAliMnsService implements MnsService {
 
     public String getTopicName() {
         return topicName;
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     public void setAccessId(String accessId) {

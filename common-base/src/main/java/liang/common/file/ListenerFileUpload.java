@@ -9,16 +9,24 @@ import java.util.Set;
  * Created by liangzhiyan on 2017/5/11.
  */
 public abstract class ListenerFileUpload {
+
+    private String lineSplit = ",|\t|    | ";
+    private int consumerLines = 1;
+    private boolean exceptionContinue = true;
+
+    public ListenerFileUpload() {
+    }
+
     public ListenerFileUpload(File file) {
-        execute(file, ",|\t|    | ", 1, true);
+        execute(file, lineSplit, consumerLines, exceptionContinue);
     }
 
     public ListenerFileUpload(File file, String lineSplit) {
-        execute(file, lineSplit, 1, true);
+        execute(file, lineSplit, consumerLines, exceptionContinue);
     }
 
     public ListenerFileUpload(File file, String lineSplit, int consumerLines) {
-        execute(file, lineSplit, consumerLines, true);
+        execute(file, lineSplit, consumerLines, exceptionContinue);
     }
 
     public ListenerFileUpload(File file, String lineSplit, int consumerLines, boolean exceptionContinue) {
@@ -38,6 +46,10 @@ public abstract class ListenerFileUpload {
                         deal(offset, lines);
                     }
                 });
+    }
+
+    public void upload(File file){
+        execute(file, lineSplit, consumerLines, exceptionContinue);
     }
 
     public void title(Set<String> title) {

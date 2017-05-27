@@ -1,5 +1,6 @@
 package liang.mq.consumer;
 
+import com.alibaba.fastjson.JSON;
 import liang.common.valid.ParameterValidate;
 import liang.mq.consumer.listener.MessageListener;
 import org.slf4j.Logger;
@@ -20,10 +21,10 @@ public class MessageService extends BaseConsumer implements ApplicationContextAw
 
     private Map<String, MessageListener> messageListenerMap = new HashMap<>();
 
-    private void register(String type, MessageListener messageListener) {
+    public void register(Class type, MessageListener messageListener) {
         ParameterValidate.assertNull(messageListener);
-        ParameterValidate.assertBlank(type);
-        messageListenerMap.put(type, messageListener);
+        ParameterValidate.assertNull(type);
+        messageListenerMap.put(type.getName(), messageListener);
     }
 
     @Override
@@ -33,7 +34,8 @@ public class MessageService extends BaseConsumer implements ApplicationContextAw
             MessageListener messageListener = messageListenerMap.get(message.getMessageType());
             if (messageListener != null) {
                 try {
-                    messageListener.consumerMessage(messageListener.parseJson(message.getJson()));
+                    Object obj = JSON.parseObject(message.getJson(), messageListener.getType());
+                    messageListener.consumerMessage(obj);
                 } catch (Exception e) {
                     LOG.error("[consumerMessage]消费消息时出错！消息队列返回的数据：" + json, e);
                 }
@@ -49,7 +51,7 @@ public class MessageService extends BaseConsumer implements ApplicationContextAw
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, MessageListener> map = applicationContext.getBeansOfType(MessageListener.class);
         for (MessageListener value : map.values()) {
-            messageListenerMap.put(value.getType(), value);
+            messageListenerMap.put(value.getType().getName(), value);
         }
     }
 }

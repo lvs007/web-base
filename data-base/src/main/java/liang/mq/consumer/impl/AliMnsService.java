@@ -1,10 +1,13 @@
-package liang.mq.consumer;
+package liang.mq.consumer.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
 import com.aliyun.mns.model.Message;
+import liang.common.valid.ParameterValidate;
+import liang.mq.consumer.BaseConsumer;
+import liang.mq.consumer.MnsService;
 
 /**
  * Created by liangzhiyan on 2017/4/27.
@@ -19,11 +22,16 @@ public class AliMnsService implements MnsService {
     private String queueName;
 
     private CloudQueue queue;
+    private MNSClient client;
 
     @Override
     public void init() {
+        ParameterValidate.assertBlank(accessId);
+        ParameterValidate.assertBlank(accessKey);
+        ParameterValidate.assertBlank(endPoint);
+        ParameterValidate.assertBlank(queueName);
         CloudAccount account = new CloudAccount(accessId, accessKey, endPoint);
-        MNSClient client = account.getMNSClient(); // 在程序中，CloudAccount以及MNSClient单例实现即可，多线程安全
+        client = account.getMNSClient(); // 在程序中，CloudAccount以及MNSClient单例实现即可，多线程安全
         queue = client.getQueueRef(queueName);
     }
 
@@ -38,7 +46,7 @@ public class AliMnsService implements MnsService {
     }
 
     @Override
-    public <T> boolean sendMsg(T entity) {
+    public boolean sendMsg(BaseConsumer.Message entity) {
         Message message = new Message();
         message.setMessageBody(JSON.toJSONString(entity));
         queue.putMessage(message);
@@ -47,6 +55,11 @@ public class AliMnsService implements MnsService {
 
     public String getTopicName() {
         return queueName;
+    }
+
+    @Override
+    public void destroy() {
+        client.close();
     }
 
     public void setAccessId(String accessId) {

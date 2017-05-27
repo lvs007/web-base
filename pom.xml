@@ -37,6 +37,7 @@
         <okhttp-version>2.7.5</okhttp-version>
         <aliyun-oss-version>2.5.0</aliyun-oss-version>
         <aliyun-mns-version>1.1.8</aliyun-mns-version>
+        <aliyun-ons-version>1.2.7.Final</aliyun-ons-version>
     </properties>
 
     <dependencyManagement>
@@ -166,6 +167,11 @@
                 <groupId>com.aliyun.mns</groupId>
                 <artifactId>aliyun-sdk-mns</artifactId>
                 <version>${aliyun-mns-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>ons-client</artifactId>
+                <version>${aliyun-ons-version}</version>
             </dependency>
 
             <!-- spring boot-->

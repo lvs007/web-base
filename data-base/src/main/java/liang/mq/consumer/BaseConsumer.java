@@ -50,7 +50,7 @@ public abstract class BaseConsumer {
             });
             LOG.info("[BaseConsumer.init]消息队列:{},消费线程启动结束", mnsService.getTopicName());
         } catch (Exception e) {
-            LOG.error("启动消费线程出错！",e);
+            LOG.error("启动消费线程出错！", e);
         }
     }
 
@@ -107,6 +107,15 @@ public abstract class BaseConsumer {
         public void setMessageType(String messageType) {
             this.messageType = messageType;
         }
+
+        @Override
+        public String toString() {
+            return JSON.toJSONString(this);
+        }
+
+        public byte[] toByteArray() {
+            return JSON.toJSONString(this).getBytes();
+        }
     }
 
     public void setMnsService(MnsService mnsService) {
@@ -116,6 +125,7 @@ public abstract class BaseConsumer {
     @PreDestroy
     public void destroy() {
         cycle = false;
+        mnsService.destroy();
         executorService.shutdown();
     }
 

@@ -1,7 +1,8 @@
 package liang.cache;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,27 +12,32 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by liangzhiyan on 2017/3/17.
  */
-public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
+public abstract class AbstractLocalLoadingCache<K, V> implements BaseCache<K, V> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractLocalCache.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractLocalLoadingCache.class);
 
     private int initialCapacity = 100000;
     private long maximumSize = 1000000;
     private long expireTime = 24 * 60 * 60;
 
-    private Cache<K, V> cache;
+    private LoadingCache<K, V> cache;
 
     @PostConstruct
     private void init() {
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
-                expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build();
+                expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build(new CacheLoader<K, V>() {
+            @Override
+            public V load(K key) throws Exception {
+                return loadData(key);
+            }
+        });
     }
 
     public V get(K userName) {
         try {
-            return cache.getIfPresent(userName);
+            return cache.get(userName);
         } catch (Exception e) {
-            LOG.error("缓存中没有对应的数据,key:{}", userName, e);
+            LOG.error("数据库中没有对应的用户数据,key:{}", userName, e);
             return null;
         }
     }
@@ -73,4 +79,5 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
         this.expireTime = expireTime;
     }
 
+    protected abstract V loadData(K key);
 }

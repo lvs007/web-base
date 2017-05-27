@@ -9,7 +9,9 @@ public interface MnsService {
 
     String pop();
 
-    <T> boolean sendMsg(T entity);
+    boolean sendMsg(BaseConsumer.Message entity);
 
     String getTopicName();
+
+    void destroy();
 }

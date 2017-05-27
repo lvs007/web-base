@@ -12,15 +12,7 @@ public interface MessageListener<T> {
      *
      * @return
      */
-    String getType();
-
-    /**
-     * 对返回的消息进行转换，转换成指定的消息对象。
-     *
-     * @param json
-     * @return
-     */
-    T parseJson(String json);
+    Class getType();
 
     /**
      * 对消息对象进行处理
