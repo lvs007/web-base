@@ -1,6 +1,7 @@
 package liang.cache.impl;
 
 import liang.cache.AbstractLocalCache;
+import liang.common.exception.NotSupportException;
 
 /**
  * Created by liangzhiyan on 2017/5/16.
@@ -32,5 +33,20 @@ public class DefaultCommonLocalCache extends AbstractLocalCache<String, Object> 
     @Override
     public long getExpireTime() {
         return expireTime;
+    }
+
+    @Override
+    public boolean set(String key, Object value, long expire) {
+        throw NotSupportException.throwException("不支持的操作");
+    }
+
+    @Override
+    public boolean setNx(String key, Object value, long expire) {
+        throw NotSupportException.throwException("不支持的操作");
+    }
+
+    @Override
+    public String buildKey(String key) {
+        return key;
     }
 }

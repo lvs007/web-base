@@ -4,9 +4,19 @@ package liang.mvc.filter;
  * Created by liangzhiyan on 2017/3/20.
  */
 public class UserInfo {
+
+    private long id;
     private String userName;
     private String nickName;
     private String token;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

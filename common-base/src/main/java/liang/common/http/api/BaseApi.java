@@ -212,9 +212,9 @@ public abstract class BaseApi {
      * 统一拦截所有的需要登录的请求，并且当服务器返回success为false的时候，自动抛出ApiException
      */
     protected void handleResponse(String url, ApiResponse response, HttpMethod method) throws ApiException {
-        if (response.isSuccess() == false) {
-            throw new ApiException(response);
-        }
+//        if (response.isSuccess() == false) {
+//            throw new ApiException(response);
+//        }
     }
 
     /**

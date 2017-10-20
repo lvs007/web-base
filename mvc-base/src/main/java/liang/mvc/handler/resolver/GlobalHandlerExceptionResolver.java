@@ -4,6 +4,7 @@ import liang.mvc.commons.ErrorField;
 import liang.mvc.commons.ResponseData;
 import liang.mvc.exception.ServiceException;
 import liang.mvc.exception.ServiceKeyException;
+import liang.mvc.monitor.ControllerMonitor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSourceResolvable;
@@ -42,7 +43,6 @@ public class GlobalHandlerExceptionResolver extends DefaultHandlerExceptionResol
     @Override
     public ModelAndView resolveException(HttpServletRequest httpRequest,
                                          HttpServletResponse httpResponse, Object handler, Exception e) {
-        e.printStackTrace();
         Locale locale = RequestContextUtils.getLocaleResolver(httpRequest).resolveLocale(httpRequest);
         WebApplicationContext context = RequestContextUtils.getWebApplicationContext(httpRequest);
 
@@ -78,6 +78,7 @@ public class GlobalHandlerExceptionResolver extends DefaultHandlerExceptionResol
         responseData.setErrorId(1);
         responseData.setSuccess(false);
         responseData.setFields(renderErrors(context, errors, locale));
+        ControllerMonitor.get().setOutParam(responseData);
         return responseData;
     }
 

@@ -99,7 +99,7 @@ public class AliOnsService implements MnsService, MessageListener {
                 String body = new String(message.getBody());
                 if (blockingQueue.size() == 0) {
                     blockingQueue.add(body);
-                }
+                }//todo
             }
             return Action.CommitMessage;
         }

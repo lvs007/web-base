@@ -4,7 +4,8 @@
  */
 package liang.dao.jdbc.common;
 
-import org.apache.commons.collections.CollectionUtils;
+import liang.dao.jdbc.split.SqlConstants;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
@@ -20,9 +21,17 @@ import java.util.List;
  */
 public class Sql {
 
+    private String tablePre;
+    private String realTable;
     private String sql;
     private List<Object> params = new ArrayList<>();
     private List<List<Object>> batchList = new ArrayList<>();
+
+    private SqlConstants.DML dml;
+
+    private boolean bypass = false;
+    private String splitColumn;
+    private int index = -1;
 
     public Sql(String sql) {
         this.sql = sql;
@@ -58,6 +67,10 @@ public class Sql {
         Sql other = new Sql(sql);
         other.params = new ArrayList<>(this.params);
         other.batchList = new ArrayList<>(this.batchList);
+        other.tablePre = this.tablePre;
+//        other.realTable = this.realTable;
+        other.dml = this.dml;
+        other.index = index;
         return other;
     }
 
@@ -167,5 +180,70 @@ public class Sql {
             }
         }
         return pre;
+    }
+
+    public Sql setSql(String sql) {
+        this.sql = sql;
+        return this;
+    }
+
+    public List<Object> getParams() {
+        return params;
+    }
+
+    public List<List<Object>> getBatchList() {
+        return batchList;
+    }
+
+    public String getTablePre() {
+        return tablePre;
+    }
+
+    public void setTablePre(String tablePre) {
+        this.tablePre = tablePre;
+    }
+
+    public String getRealTable() {
+        return realTable;
+    }
+
+    public void setRealTable(String realTable) {
+        this.realTable = realTable;
+    }
+
+    public SqlConstants.DML getDml() {
+        return dml;
+    }
+
+    public void setDml(SqlConstants.DML dml) {
+        this.dml = dml;
+    }
+
+    public boolean isBypass() {
+        return bypass;
+    }
+
+    public void setBypass(boolean bypass) {
+        this.bypass = bypass;
+    }
+
+    public String getSplitColumn() {
+        return splitColumn;
+    }
+
+    public void setSplitColumn(String splitColumn) {
+        this.splitColumn = splitColumn;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public void cleanBatchList() {
+        batchList.clear();
     }
 }

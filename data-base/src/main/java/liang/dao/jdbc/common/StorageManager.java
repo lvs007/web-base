@@ -4,7 +4,7 @@
  */
 package liang.dao.jdbc.common;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +37,13 @@ public class StorageManager {
     private int resetInterval = 60;
     /**
      * 最多出错次数，超过多少次出错以后，数据库就被禁用
-     * 默认600次
+     * 默认6000次
      */
-    private int maxErrorCount = 600;
+    private int maxErrorCount = 6000;
     /**
      * 最多查执行的次数，超过多少次以后，数据库就被禁用
      */
-    private int maxSlowCount = 200;
+    private int maxSlowCount = 1000;
     /**
      * 最小的慢时间，也就是超过多少时间算是慢执行，单位为毫秒
      * 默认是1秒
@@ -77,7 +77,7 @@ public class StorageManager {
     /**
      * 添加一次执行的记录
      *
-     * @param usedTime
+     * @param line
      */
     void addExecuteCount(SqlLine line) {
         resetIfNeed();

@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  *
  * @author
  */
-public class EntityLogEntity implements Serializable{
+public class EntityLogEntity implements Serializable {
 
     @Id(name = "id")
     private Long id;

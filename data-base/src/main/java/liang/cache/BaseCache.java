@@ -8,5 +8,11 @@ public interface BaseCache<K, V> {
 
     boolean set(K key, V value);
 
+    boolean set(K key, V value, long expire);
+
+    boolean setNx(K key, V value, long expire);
+
     boolean remove(K key);
+
+    String buildKey(K key);
 }

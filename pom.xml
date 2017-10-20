@@ -38,6 +38,7 @@
         <aliyun-oss-version>2.5.0</aliyun-oss-version>
         <aliyun-mns-version>1.1.8</aliyun-mns-version>
         <aliyun-ons-version>1.2.7.Final</aliyun-ons-version>
+        <groovy-version>2.4.3</groovy-version>
     </properties>
 
     <dependencyManagement>
@@ -181,6 +182,13 @@
                 <version>1.4.2.RELEASE</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+
+            <!-- groovy-->
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>${groovy-version}</version>
             </dependency>
 
         </dependencies>

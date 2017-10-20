@@ -22,8 +22,8 @@ public abstract class AbstractLocalLoadingCache<K, V> implements BaseCache<K, V>
 
     private LoadingCache<K, V> cache;
 
-    @PostConstruct
-    private void init() {
+    public AbstractLocalLoadingCache() {
+        LOG.info("init AbstractLocalLoadingCache");
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
                 expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build(new CacheLoader<K, V>() {
             @Override
@@ -33,11 +33,11 @@ public abstract class AbstractLocalLoadingCache<K, V> implements BaseCache<K, V>
         });
     }
 
-    public V get(K userName) {
+    public V get(K key) {
         try {
-            return cache.get(userName);
+            return cache.get(key);
         } catch (Exception e) {
-            LOG.error("数据库中没有对应的用户数据,key:{}", userName, e);
+            LOG.error("数据库中没有对应的用户数据,key:{}", key, e);
             return null;
         }
     }

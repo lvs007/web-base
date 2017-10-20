@@ -4,8 +4,6 @@ import liang.dao.common.Page;
 
 import java.util.*;
 
-//import com.baidu.union.audit.commons.BeanUtils;
-
 public class ResponseData {
 
     private Integer errorId;
@@ -95,8 +93,9 @@ public class ResponseData {
             return addMap((Map<String, Object>) obj);
         else if (obj instanceof Page)
             return addPage((Page<?>) obj);
-        else if (obj instanceof String)
-            return addString((String) obj);
+        else if (obj instanceof String || obj instanceof Boolean
+                || obj instanceof Number || obj instanceof Character)
+            return addBaseType(obj);
         else {
             return addBean(obj);
         }
@@ -144,7 +143,7 @@ public class ResponseData {
         return this;
     }
 
-    private ResponseData addString(String obj) {
+    private ResponseData addBaseType(Object obj) {
         data.put("value", obj);
         return this;
     }

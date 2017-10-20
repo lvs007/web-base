@@ -1,5 +1,6 @@
 package liang.mvc.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import liang.common.exception.SignException;
 import liang.common.http.SignUtils;
 import liang.common.util.PropertiesManager;
@@ -8,6 +9,8 @@ import liang.mvc.annotation.PcLogin;
 import liang.mvc.annotation.Sign;
 import liang.mvc.commons.ResponseUtils;
 import liang.mvc.filter.LoginUtils;
+import liang.mvc.filter.UserInfo;
+import liang.mvc.monitor.ControllerMonitor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -30,6 +33,8 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
         boolean result = true;
         if (object instanceof HandlerMethod) {
+            ControllerMonitor.get().setClassAndMethod((HandlerMethod) object)
+                    .setBeginTime(System.currentTimeMillis()).setInParam(httpServletRequest);
             result = validSign(httpServletRequest, httpServletResponse, (HandlerMethod) object)
                     && validLogin(httpServletRequest, httpServletResponse, (HandlerMethod) object);
         }
@@ -80,6 +85,8 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
                 }
 
             }
+            UserInfo userInfo = LoginUtils.getUser(token);
+            ControllerMonitor.get().setUser(userInfo);
             LoginUtils.setToken(response, token);
         }
         return true;

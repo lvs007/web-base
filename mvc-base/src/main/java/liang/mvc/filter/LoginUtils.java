@@ -1,6 +1,8 @@
 package liang.mvc.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import liang.cache.impl.DefaultCommonLocalCache;
+import liang.common.exception.BaseException;
 import liang.common.http.api.ApiResponse;
 import liang.common.http.api.BaseApi;
 import liang.common.http.api.exception.ApiException;
@@ -29,7 +31,7 @@ public class LoginUtils {
 
     private static final LoginHttp loginHttp = new LoginHttp();
 
-    private static final ThreadLocal<UserInfo> threadLocal = new ThreadLocal<>();
+    private static final DefaultCommonLocalCache userInfoCache = DefaultCommonLocalCache.getInstance(30 * 60 * 1000);
 
     public static String getToken(HttpServletRequest request) {
         String token = request.getParameter(MvcConstants.TOKEN);
@@ -40,16 +42,36 @@ public class LoginUtils {
         if (StringUtils.isBlank(token)) {
             token = request.getHeader(MvcConstants.TOKEN);
         }
+        if (StringUtils.isBlank(token)) {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (StringUtils.equals(cookie.getName(), MvcConstants.TOKEN)) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        if (StringUtils.isBlank(token)) {
+            String cookie = request.getHeader(MvcConstants.COOKIE);
+            String[] cookies = StringUtils.split(cookie, MvcConstants.SEMICOLON);
+            for (String str : cookies) {
+                str = StringUtils.trim(str);
+                if (StringUtils.startsWith(str, MvcConstants.TOKEN)) {
+                    token = str.substring(str.indexOf(MvcConstants.EQUAL) + 1);
+                    break;
+                }
+            }
+        }
         return token;
     }
 
     public static UserInfo getUser(String token) {
         try {
-            UserInfo userInfo = threadLocal.get();
+            UserInfo userInfo = (UserInfo) userInfoCache.get(token);
             if (userInfo == null) {
                 userInfo = loginHttp.getUser(token);
                 if (userInfo != null) {
-                    threadLocal.set(userInfo);
+                    userInfoCache.set(token, userInfo);
                 }
             }
             return userInfo;
@@ -73,6 +95,7 @@ public class LoginUtils {
     private static class LoginHttp extends BaseApi {
 
         public UserInfo getUser(String token) throws InternalException, ApiException, HttpException {
+            LOG.info("请求登陆系统通过token获取用户信息，token：{}", token);
             ApiResponse response = httpGet(propertiesManager.getString("account.server.get.user.url", "/v1/login/get-user-info") + "?token=" + token);
             JSONObject jsonObject = response.getJsonObject().getJSONObject("data");
             if (!jsonObject.getBooleanValue("success")) {

@@ -4,9 +4,17 @@
  */
 package liang.dao.jdbc.common;
 
+import com.alibaba.fastjson.JSON;
+import liang.common.exception.NotSupportException;
 import liang.dao.jdbc.EntitySequenceHandler;
 import liang.dao.jdbc.callback.*;
-import org.apache.commons.collections.CollectionUtils;
+import liang.dao.jdbc.split.ParseSql;
+import liang.dao.jdbc.split.common.LogUtil;
+import liang.dao.jdbc.split.common.SqlCommonUtil;
+import liang.dao.jdbc.split.db.DBIndexHelper;
+import liang.dao.jdbc.split.listener.FailListener;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +22,24 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * 一个抽象的存储器，定义了一些常用的方法用于监控
  *
  * @author
  */
-public abstract class AbstractStorage {
+public abstract class AbstractStorage extends ParseSql {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractStorage.class);
     protected StorageManager storageManager;
     private JdbcTemplate jdbcTemplate;
 
     protected AbstractStorage() {
+
     }
 
     protected boolean execute(Sql sql) {
@@ -113,12 +124,15 @@ public abstract class AbstractStorage {
      * @param callback
      * @return
      */
-    protected final <T> T execute(final ConnectionCallback<T> callback) {
+    protected final <T> T execute(final ConnectionCallback<T> callback, Sql sql) {
         long from = System.currentTimeMillis();
         final StorageManager.SqlLine line = new StorageManager.SqlLine();
         boolean hasError = false;
         T t = null;
         try {
+            //在这里设置数据源
+            setDataSourceLookUp(sql);
+            //
             final ConnectionCallback.ExecuteWatcher watcher = new ConnectionCallback.ExecuteWatcher() {
                 @Override
                 public void setSql(String sql) {
@@ -143,8 +157,15 @@ public abstract class AbstractStorage {
             hasError = true;
             throw ex;
         } finally {
+            //清除数据源绑定
+            DBIndexHelper.clean();
+            //
             line.usedTime = (System.currentTimeMillis() - from);
             if (hasError) {
+                FailListener failListener = selectListener(sql);
+                if (failListener != null) {
+                    failListener.doSomething(sql);
+                }
                 storageManager.addErrorCount(line);
             } else {
                 storageManager.addExecuteCount(line);
@@ -152,6 +173,46 @@ public abstract class AbstractStorage {
         }
         return t;
 
+    }
+
+    @Override
+    public long executeQueryForSplitCount(Sql sql) {
+        return executeQuery(sql, new SqlQueryCallback<Long>() {
+            @Override
+            public Long execute(ResultSet rs) throws SQLException {
+                return rs.getLong("count");
+            }
+        });
+    }
+
+    public List<Map<String, Object>> executeQueryForSplit(Sql sql) {
+        return executeQueryForSplit(sql, new ResultSetMapper<Map<String, Object>>() {
+            @Override
+            public Map<String, Object> mapper(ResultSet rs) throws SQLException {
+                Map<String, Object> map = new HashedMap();
+                ResultSetMetaData metaData = rs.getMetaData();
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    String column = metaData.getColumnName(i);
+                    Object value = rs.getObject(column);
+                    map.put(column, value);
+                }
+                return map;
+            }
+        });
+    }
+
+    protected List<Map<String, Object>> executeQueryForSplit(Sql sql, final ResultSetMapper<Map<String, Object>> mapper) {
+        return executeQuery(sql, new SqlQueryCallback<List<Map<String, Object>>>() {
+            @Override
+            public List<Map<String, Object>> execute(ResultSet rs) throws SQLException {
+                List<Map<String, Object>> list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(mapper.mapper(rs));
+                }
+                return list;
+
+            }
+        });
     }
 
     /**
@@ -164,13 +225,94 @@ public abstract class AbstractStorage {
      * @return
      */
     protected final <T> T execute(final Sql sql, final SqlExecuteCallback<T> callback) {
+        T t;
+        long begin = System.currentTimeMillis();
+        if (isSplitTable() && !sql.isBypass()) {
+            List<Sql> sqlList = parseSql(sql);
+            LogUtil.info("分表后的数据表：{},{}", JSON.toJSONString(sqlList), JSON.toJSONString(sql));
+            if (CollectionUtils.isEmpty(sqlList)) {
+                t = executeInner(sql, callback);
+            } else {
+                try {
+                    t = merge(sqlList, callback);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else {
+            t = executeInner(sql, callback);
+        }
+        long end = System.currentTimeMillis();
+        LogUtil.info("execute sql spend time:{} ms", (end - begin));
+        return t;
+    }
+
+    private <T> T merge(List<Sql> sqlList, final SqlExecuteCallback<T> callback) throws ExecutionException, InterruptedException {
+        Collection collection = new ArrayList();
+        Map map = new HashMap();
+        Integer integer = 0;
+        Long l = 0L;
+        Double d = 0.0;
+        Float f = 0F;
+        Object obj = null;
+        List<Future<T>> futureList = new ArrayList<>();
+        for (final Sql sqlTemp : sqlList) {
+            Future<T> future = splitTableExecutor.submit(new Callable<T>() {
+                @Override
+                public T call() throws Exception {
+                    try {
+                        return executeInner(sqlTemp, callback);
+                    } catch (Throwable e) {
+                        if (isSelect(sqlTemp)) {
+                            throw e;
+                        } else {
+                            LOG.error("AbstractStorage.merge insert or update or delete error", e);
+                        }
+                    }
+                    return null;
+                }
+            });
+            futureList.add(future);
+        }
+        for (Future<T> future : futureList) {
+            T tmp = future.get();
+            if (tmp instanceof Collection) {
+                collection.addAll((Collection) tmp);
+                obj = collection;
+            } else if (tmp instanceof Integer) {
+                integer += (Integer) tmp;
+                obj = integer;
+            } else if (tmp instanceof Long) {
+                l += (Long) tmp;
+                obj = l;
+            } else if (tmp instanceof Double) {
+                d += (Double) tmp;
+                obj = d;
+            } else if (tmp instanceof Float) {
+                f += (Float) tmp;
+                obj = f;
+            } else if (tmp instanceof Short || tmp instanceof Byte) {
+                throw NotSupportException.throwException("不支持返回类型是short,byte");
+            } else if (tmp instanceof Map) {
+                map.putAll((Map) tmp);
+                obj = map;
+            } else {
+                if (tmp != null) {
+                    obj = tmp;
+                }
+            }
+        }
+        return (T) obj;
+    }
+
+    private <T> T executeInner(final Sql sql, final SqlExecuteCallback<T> callback) {
         return execute(new ConnectionCallback<T>() {
             @Override
             public T execute(Connection conn, ExecuteWatcher watcher) throws SQLException {
                 watcher.setSql(sql.toString());
                 return callback.execute(conn, sql);
             }
-        });
+        }, sql);
     }
 
     protected void close(Connection conn) {
@@ -264,6 +406,9 @@ public abstract class AbstractStorage {
     }
 
     protected <T> void listBySql(final Sql sql, final EntitySequenceHandler<T> handler, final ResultSetMapper<T> mapper) {
+        if (isSplitTable(SqlCommonUtil.getTable(sql))) {
+            throw NotSupportException.throwException("当前表是拆表，不支持此操作！");
+        }
         execute(new ConnectionCallback<Void>() {
             @Override
             public Void execute(Connection conn, ConnectionCallback.ExecuteWatcher watcher) throws SQLException {
@@ -297,10 +442,14 @@ public abstract class AbstractStorage {
                     }
                 }
             }
-        });
+        }, sql);
     }
 
     protected <T> void listById(final String sqlWithoutId, final Long fromId, final Long toId, final EntitySequenceHandler<T> handler, final ResultSetMapper<T> mapper) {
+        Sql sql = new Sql(sqlWithoutId);
+        if (isSplitTable(SqlCommonUtil.getTable(sql))) {
+            throw NotSupportException.throwException("当前表是拆表，不支持此操作！");
+        }
         execute(new ConnectionCallback<Void>() {
             @Override
             public Void execute(Connection conn, ConnectionCallback.ExecuteWatcher watcher) throws SQLException {
@@ -338,7 +487,7 @@ public abstract class AbstractStorage {
                     }
                 }
             }
-        });
+        }, sql);
     }
 
     /**

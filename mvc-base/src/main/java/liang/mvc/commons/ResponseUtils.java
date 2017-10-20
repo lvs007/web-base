@@ -1,6 +1,7 @@
 package liang.mvc.commons;
 
 import com.alibaba.fastjson.JSON;
+import liang.mvc.monitor.ControllerMonitor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ public class ResponseUtils {
         if (responseData == null) {
             return;
         }
+        ControllerMonitor.get().setOutParam(responseData);
         writeToResponse(response, JSON.toJSONString(responseData));
     }
 

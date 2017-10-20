@@ -54,9 +54,9 @@ public class FlowController extends BaseController {
                 return true;
             } else {
                 if (!rateLimiter.tryAcquire()) {//当获取不到的时候开启流控
+                    ControlParameter controlParameter = setControlParameter(request);
                     for (BaseFlowController flowController : ControllerManager.controllerList) {
                         FlowConfig.openUrlControl(flowController.getControllerType(), uri);
-                        ControlParameter controlParameter = setControlParameter(request);
                         if (flowController.flowControl(controlParameter)) {
                             return false;
                         }

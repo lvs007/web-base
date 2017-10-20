@@ -19,19 +19,20 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
     private long maximumSize = 1000000;
     private long expireTime = 24 * 60 * 60;
 
-    private Cache<K, V> cache;
+    private Cache<String, V> cache;
 
-    @PostConstruct
-    private void init() {
+    public AbstractLocalCache() {
+        LOG.info("init AbstractLocalCache");
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
                 expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build();
     }
 
-    public V get(K userName) {
+    public V get(K key) {
+        String keyStr = buildKey(key);
         try {
-            return cache.getIfPresent(userName);
+            return cache.getIfPresent(keyStr);
         } catch (Exception e) {
-            LOG.error("缓存中没有对应的数据,key:{}", userName, e);
+            LOG.error("缓存中没有对应的数据,key:{}", keyStr, e);
             return null;
         }
     }
@@ -40,12 +41,14 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
         if (value == null) {
             return false;
         }
-        cache.put(key, value);
+        String keyStr = buildKey(key);
+        cache.put(keyStr, value);
         return true;
     }
 
     public boolean remove(K key) {
-        cache.invalidate(key);
+        String keyStr = buildKey(key);
+        cache.invalidate(keyStr);
         return true;
     }
 

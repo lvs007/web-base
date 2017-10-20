@@ -6,6 +6,10 @@ package liang.mvc.constants;
 public class MvcConstants {
 
     public static final String TOKEN = "nb_token";
+    public static final String COOKIE = "Cookie";
+    public static final String COMMA = ",";
+    public static final String SEMICOLON = ";";
+    public static final String EQUAL = "=";
 
     public static enum ResultCode {
         SUCCESS(200, "成功"),

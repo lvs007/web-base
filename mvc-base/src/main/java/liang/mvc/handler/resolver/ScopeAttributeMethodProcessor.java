@@ -2,6 +2,7 @@ package liang.mvc.handler.resolver;
 
 import liang.mvc.commons.ResponseData;
 import liang.mvc.commons.ThreadLocalMap;
+import liang.mvc.monitor.ControllerMonitor;
 import org.springframework.core.Conventions;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
@@ -175,6 +176,7 @@ public class ScopeAttributeMethodProcessor implements HandlerMethodArgumentResol
         if (returnType.getMethodAnnotation(ResponseBody.class) != null) {
             returnValue = responseData;
         }
+        ControllerMonitor.get().setOutParam(returnValue);
         handler.handleReturnValue(returnValue, returnType, mavContainer, request);
     }
 
