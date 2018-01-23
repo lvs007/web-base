@@ -139,44 +139,4 @@ public abstract class ParseSql {
 
     public abstract long executeQueryForSplitCount(Sql sql);
 
-    public static void main(String[] args) {
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("js");
-        //每次生成一个engine实例
-
-        try {
-            long begin = System.currentTimeMillis();
-            for (int i = 0; i < 10; i++) {
-                Bindings binding = engine.createBindings();
-                binding.put("user", "34");
-                Object value = engine.eval("user%10", binding);
-//                Object value = 108%11;
-//                System.out.println(Long.parseLong(value.toString()) % 10);
-            }
-            long end = System.currentTimeMillis();
-            System.out.println("spendTime : " + (end - begin));
-//            System.out.println(value.getClass());
-//            System.out.println("value=" + value);
-            System.out.println(engine.eval("1%10+10"));
-            Properties properties = new Properties();
-            System.out.println("test=" + properties.getProperty("test"));
-            InputStream inputStream = ParseSql.class.getResourceAsStream("/split-rule.properties");
-            if (inputStream == null) {
-                System.out.println("InputStream is null");
-            } else {
-                try {
-                    properties.load(inputStream);
-                    System.out.println("table=" + properties.getProperty("split.table"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            int start = StringUtils.indexOfIgnoreCase("hao into shi", " into ");
-            System.out.println("start=" + start);
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

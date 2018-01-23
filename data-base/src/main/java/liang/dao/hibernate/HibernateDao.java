@@ -7,6 +7,8 @@ import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.jdbc.Work;
 import org.hibernate.metadata.ClassMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +54,9 @@ import java.util.Map.Entry;
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class HibernateDao implements Dao {
 
-    @Resource(name = "sessionFactory")
+    //    @Resource(name = "sessionFactory")
+    @Autowired(required = false)
+    @Qualifier("sessionFactory")
     protected SessionFactory sessionFactory;
 
     public HibernateDao() {
