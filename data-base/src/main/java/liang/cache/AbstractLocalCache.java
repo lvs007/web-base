@@ -5,7 +5,6 @@ import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,7 +21,8 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
     private Cache<String, V> cache;
 
     public AbstractLocalCache() {
-        LOG.info("init AbstractLocalCache");
+        LOG.info("init AbstractLocalCache;initialCapacity:{},maximumSize:{},expireTime:{}",
+                getInitialCapacity(), getMaximumSize(), getExpireTime());
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
                 expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build();
     }

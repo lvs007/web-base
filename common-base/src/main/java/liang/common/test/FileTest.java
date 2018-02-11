@@ -113,17 +113,17 @@ public class FileTest {
         }
     }
 
-//    public static void main(String[] args) {
-//        System.out.println("hello");
-////        Listener listener = new Listener(new File("/Users/liangzhiyan/Downloads/Workbook1.xlsx"),"");
-////        Listener listener = new Listener(new File("/Users/liangzhiyan/Downloads/test.txt"));
-////        test();
-////        test2();
-////        test3();
-////        transfer();
-////        test1();
+    public static void main(String[] args) {
+        System.out.println("hello");
+        Listener listener = new Listener(new File("/Users/liangzhiyan/Downloads/Workbook1.xlsx"));
+//        Listener listener = new Listener(new File("/Users/liangzhiyan/Downloads/test.txt"));
+//        test();
+//        test2();
+//        test3();
+//        transfer();
+//        test1();
 //        test8();
-//    }
+    }
 
     public static class Pppt {
         int name;
@@ -203,13 +203,13 @@ public class FileTest {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(encoderMsg("nixiang"));
-        System.out.println(encoderMsg("%nihao"));
-        System.out.println(encoderMsg("%fasdf%%"));
-        System.out.println(encoderMsg("nixiang%dfa"));
-        System.out.println(encoderMsg("nixiang%"));
-        System.out.println(encoderMsg("nixiang%fan你好fa%"));
-        System.out.println(encoderMsg("你冲哪里来\n,bushi,不是的\n"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(encoderMsg("nixiang"));
+//        System.out.println(encoderMsg("%nihao"));
+//        System.out.println(encoderMsg("%fasdf%%"));
+//        System.out.println(encoderMsg("nixiang%dfa"));
+//        System.out.println(encoderMsg("nixiang%"));
+//        System.out.println(encoderMsg("nixiang%fan你好fa%"));
+//        System.out.println(encoderMsg("你冲哪里来\n,bushi,不是的\n"));
+//    }
 }
