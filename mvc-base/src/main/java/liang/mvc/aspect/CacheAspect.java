@@ -132,7 +132,7 @@ public class CacheAspect {
             synchronized (key) {
                 defaultCommonLocalCache = localCacheMap.get(key);
                 if (defaultCommonLocalCache == null) {
-                    defaultCommonLocalCache = DefaultCommonLocalCache.getInstance(cacheInfo.getExpireTime());
+                    defaultCommonLocalCache = new DefaultCommonLocalCache(cacheInfo.getExpireTime());
                     localCacheMap.put(key, defaultCommonLocalCache);
                 }
             }

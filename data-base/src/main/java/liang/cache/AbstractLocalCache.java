@@ -14,13 +14,28 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractLocalCache.class);
 
-    private int initialCapacity = 100000;
-    private long maximumSize = 1000000;
-    private long expireTime = 24 * 60 * 60 * 1000;
+    private static final int INITIAL_CAPACITY_J = 100000;
+    private static final long MAXIMUM_SIZE_J = 1000000;
+    private static final long EXPIRE_TIME_J = 24 * 60 * 60 * 1000;
+
+    private int initialCapacity;
+    private long maximumSize;
+    private long expireTime;
 
     private Cache<String, V> cache;
 
     public AbstractLocalCache() {
+        this(INITIAL_CAPACITY_J, MAXIMUM_SIZE_J, EXPIRE_TIME_J);
+    }
+
+    public AbstractLocalCache(long expireTime) {
+        this(INITIAL_CAPACITY_J, MAXIMUM_SIZE_J, expireTime);
+    }
+
+    public AbstractLocalCache(int initialCapacity, long maximumSize, long expireTime) {
+        this.initialCapacity = initialCapacity;
+        this.maximumSize = maximumSize;
+        this.expireTime = expireTime;
         LOG.info("init AbstractLocalCache;initialCapacity:{},maximumSize:{},expireTime:{}",
                 getInitialCapacity(), getMaximumSize(), getExpireTime());
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
@@ -56,24 +71,13 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
         return initialCapacity;
     }
 
-    public void setInitialCapacity(int initialCapacity) {
-        this.initialCapacity = initialCapacity;
-    }
 
     public long getMaximumSize() {
         return maximumSize;
     }
 
-    public void setMaximumSize(long maximumSize) {
-        this.maximumSize = maximumSize;
-    }
-
     public long getExpireTime() {
         return expireTime;
-    }
-
-    public void setExpireTime(long expireTime) {
-        this.expireTime = expireTime;
     }
 
 }

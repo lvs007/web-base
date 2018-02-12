@@ -31,7 +31,7 @@ public class LoginUtils {
 
     private static final LoginHttp loginHttp = new LoginHttp();
 
-    private static final DefaultCommonLocalCache userInfoCache = DefaultCommonLocalCache.getInstance(30 * 60 * 1000);
+    private static final DefaultCommonLocalCache userInfoCache = new DefaultCommonLocalCache(30 * 60 * 1000);
 
     public static String getToken(HttpServletRequest request) {
         String token = request.getParameter(MvcConstants.TOKEN);
