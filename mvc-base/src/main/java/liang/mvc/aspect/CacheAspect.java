@@ -142,7 +142,7 @@ public class CacheAspect {
 
     private class CacheInfo {
         private String pre;
-        private int expireTime;
+        private long expireTime;
 
         public String getPre() {
             return pre;
@@ -152,11 +152,11 @@ public class CacheAspect {
             this.pre = pre;
         }
 
-        public int getExpireTime() {
+        public long getExpireTime() {
             return expireTime;
         }
 
-        public void setExpireTime(int expireTime) {
+        public void setExpireTime(long expireTime) {
             this.expireTime = expireTime;
         }
     }

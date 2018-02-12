@@ -16,12 +16,12 @@ public @interface RedisCacheAnnotation {
      *
      * @return
      */
-    String pre() default "tair-";
+    String pre() default "redis-";
 
     /**
      * 缓存的过期时间
      *
      * @return
      */
-    int expireTime() default 60;
+    int expireTime() default 60000;
 }

@@ -23,5 +23,5 @@ public @interface LocalCacheAnnotation {
      *
      * @return
      */
-    int expireTime() default 60;
+    long expireTime() default 60000;
 }

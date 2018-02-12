@@ -24,6 +24,6 @@ public @interface TairCacheAnnotation {
      *
      * @return
      */
-    int expireTime() default 60;
+    int expireTime() default 60000;
 
 }

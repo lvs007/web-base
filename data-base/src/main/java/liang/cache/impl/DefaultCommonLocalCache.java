@@ -9,7 +9,7 @@ import liang.common.exception.NotSupportException;
 public class DefaultCommonLocalCache extends AbstractLocalCache<String, Object> {
 
     private static DefaultCommonLocalCache defaultCommonLocalCache;
-    private static long expireTime = 24 * 60 * 60;
+    private static long expireTime = 60 * 60 * 1000;
 
     private DefaultCommonLocalCache() {
     }

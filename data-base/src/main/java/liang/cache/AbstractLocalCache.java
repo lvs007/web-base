@@ -16,7 +16,7 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
 
     private int initialCapacity = 100000;
     private long maximumSize = 1000000;
-    private long expireTime = 24 * 60 * 60;
+    private long expireTime = 24 * 60 * 60 * 1000;
 
     private Cache<String, V> cache;
 
@@ -24,7 +24,7 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
         LOG.info("init AbstractLocalCache;initialCapacity:{},maximumSize:{},expireTime:{}",
                 getInitialCapacity(), getMaximumSize(), getExpireTime());
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
-                expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build();
+                expireAfterAccess(getExpireTime(), TimeUnit.MILLISECONDS).build();
     }
 
     public V get(K key) {
