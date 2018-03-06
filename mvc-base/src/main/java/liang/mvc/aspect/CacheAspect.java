@@ -79,7 +79,7 @@ public class CacheAspect {
     private String buildKey(ProceedingJoinPoint pjp, String pre) {
         Object[] params = pjp.getArgs();
         if (params == null || params.length == 0) {
-            return pre + pjp.getSignature().getName();
+            return pre + pjp.getClass().getName() + pjp.getSignature().getName();
         }
         StringBuffer keyB = new StringBuffer();
         keyB.append(pre);

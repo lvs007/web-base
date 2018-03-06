@@ -87,6 +87,8 @@ public class ResponseData {
     public ResponseData addData(Object obj) {
         if (obj == null)
             return this;
+        else if (obj.getClass().isArray())
+            return addList(Arrays.asList(obj));
         else if (obj instanceof Collection)
             return addList((Collection<?>) obj);
         else if (obj instanceof Map)

@@ -194,6 +194,7 @@ public class SqlCommonUtil {
         } else {
             realTableSql = sqlStr.replace(" " + table, " " + table + tableIndex);
         }
+        sql.setGroupBy(isGroupBy(sqlStr));
         sql.setIndex(tableIndex);
         sql.setRealTable(table + tableIndex);
         sql.setSql(realTableSql);
@@ -243,6 +244,10 @@ public class SqlCommonUtil {
      */
     public static boolean isHaveWhereCondition(String sql) {
         return StringUtils.containsIgnoreCase(sql, " where ");
+    }
+
+    public static boolean isGroupBy(String sql) {
+        return StringUtils.containsIgnoreCase(sql, " group by ");
     }
 
     public static void main(String[] args) {
