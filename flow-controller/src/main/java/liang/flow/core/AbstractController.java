@@ -30,7 +30,6 @@ public abstract class AbstractController implements BaseFlowController {
 
     public boolean forbiddenControl(String uri, String value, ControllerType controllerType) {
         ControllerObject controllerObject = ForbiddenConfig.getControllerObject(controllerType, uri, value);
-        LOG.info("forbiddenControl！uri:{},value:{},type:{},controllerObject:{}", uri, value, controllerType, controllerObject);
         if (controllerObject == null || !controllerObject.isOpen()) {
             return false;
         } else if (controllerObject.isForeverController()) {

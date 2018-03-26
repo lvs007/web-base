@@ -59,6 +59,7 @@ public class FlowController extends BaseController {
                     for (BaseFlowController flowController : ControllerManager.controllerList) {
                         FlowConfig.openUrlControl(flowController.getControllerType(), uri);
                         if (flowController.flowControl(controlParameter)) {
+                            semaphore.release();//这么做的目的是为了防止返回false不执行afterCompletion
                             return false;
                         }
                     }
@@ -77,9 +78,9 @@ public class FlowController extends BaseController {
         try {
             Semaphore semaphore = semaphoreMap.get(uri);
             Boolean bool = threadLocal.get();
+            threadLocal.remove();
             if (semaphore != null && bool != null && bool) {
                 semaphore.release();
-                threadLocal.remove();
             }
         } catch (Exception e) {
             LOG.error("", e);
