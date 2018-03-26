@@ -11,7 +11,7 @@
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <context:component-scan base-package="liang.mvc.handler,liang.mvc.action"/>
+    <context:component-scan base-package="liang.mvc"/>
 
     <bean id="idealRequestMappingConfiguration"
           class="liang.mvc.handler.mapping.IdealRequestMappingConfiguration">
@@ -20,7 +20,7 @@
         <property name="requestMethodPatterns">
             <map>
                 <entry key="get.*" value="GET"/>
-                <entry key="update.*" value="POST"/>
+                <!--<entry key="update.*" value="POST"/>-->
             </map>
         </property>
     </bean>

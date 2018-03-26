@@ -1,6 +1,7 @@
 package liang.flow.config;
 
 import liang.common.exception.ParameterException;
+import liang.flow.config.data.entity.Forbidden;
 import liang.flow.constants.CommonConstants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -153,5 +154,32 @@ public class ControllerObject {
         controllerObject.setOpen(Boolean.parseBoolean(paramArray[4]));
         controllerObject.setForeverController(Boolean.parseBoolean(paramArray[5]));
         return controllerObject;
+    }
+
+    public static ControllerObject buildControllerObject(Forbidden forbidden) {
+        ControllerObject controllerObject = new ControllerObject();
+        controllerObject.setControllerType(ControllerType.getControllerType(forbidden.getControllerType()));
+        controllerObject.setControllerBeginTime(forbidden.getControllerBeginTime());
+        controllerObject.setControllerTime(forbidden.getControllerTime());
+        controllerObject.setValue(forbidden.getValue());
+        controllerObject.setUri(forbidden.getUri());
+        controllerObject.setRate(forbidden.getRate());
+        controllerObject.setOpen(forbidden.isOpen());
+        controllerObject.setForeverController(forbidden.isForeverController());
+        return controllerObject;
+    }
+
+    @Override
+    public String toString() {
+        return "ControllerObject{" +
+                "controllerType=" + controllerType +
+                ", controllerBeginTime=" + controllerBeginTime +
+                ", controllerTime=" + controllerTime +
+                ", value='" + value + '\'' +
+                ", uri='" + uri + '\'' +
+                ", rate=" + rate +
+                ", isOpen=" + isOpen +
+                ", isForeverController=" + isForeverController +
+                '}';
     }
 }

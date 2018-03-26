@@ -13,8 +13,9 @@ public class ForbiddenController extends BaseController {
 
     public static boolean controlRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
+        ControlParameter controlParameter = setControlParameter(request);
+        System.out.println(controlParameter);
         for (BaseFlowController forbiddenController : ControllerManager.controllerList) {
-            ControlParameter controlParameter = setControlParameter(request);
             if (forbiddenController.forbiddenControl(controlParameter)) {
                 return false;
             }

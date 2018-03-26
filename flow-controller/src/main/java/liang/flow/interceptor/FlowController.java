@@ -1,10 +1,10 @@
 package liang.flow.interceptor;
 
 import com.google.common.util.concurrent.RateLimiter;
+import liang.flow.config.ConfigService;
 import liang.flow.config.ControlParameter;
 import liang.flow.config.FlowConfig;
 import liang.flow.core.BaseFlowController;
-import liang.flow.config.ConfigService;
 import liang.flow.core.ControllerManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +54,7 @@ public class FlowController extends BaseController {
                 return true;
             } else {
                 if (!rateLimiter.tryAcquire()) {//当获取不到的时候开启流控
+                    System.out.println("rateLimiter 开启流控");
                     ControlParameter controlParameter = setControlParameter(request);
                     for (BaseFlowController flowController : ControllerManager.controllerList) {
                         FlowConfig.openUrlControl(flowController.getControllerType(), uri);
@@ -64,6 +65,7 @@ public class FlowController extends BaseController {
                 }
             }
         } else {
+            System.out.println("semaphore controlRequest并行流控开启");
             threadLocal.set(false);
             return false;
         }
@@ -74,7 +76,8 @@ public class FlowController extends BaseController {
         String uri = request.getRequestURI();
         try {
             Semaphore semaphore = semaphoreMap.get(uri);
-            if (semaphore != null && threadLocal.get()) {
+            Boolean bool = threadLocal.get();
+            if (semaphore != null && bool != null && bool) {
                 semaphore.release();
                 threadLocal.remove();
             }

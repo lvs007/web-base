@@ -1,40 +1,50 @@
 package liang.flow.core;
 
+import liang.common.LogUtils;
 import liang.flow.config.ControllerObject;
 import liang.flow.config.ControllerType;
 import liang.flow.config.FlowConfig;
 import liang.flow.config.ForbiddenConfig;
 import org.apache.commons.lang3.RandomUtils;
+import org.slf4j.Logger;
 
 /**
  * Created by liangzhiyan on 2017/4/5.
  */
 public abstract class AbstractController implements BaseFlowController {
 
+    private final Logger LOG = LogUtils.getInstance(getClass());
+
     public boolean flowControl(String uri, String value, ControllerType controllerType) {
         ControllerObject controllerObject = FlowConfig.getControllerObject(controllerType, uri, value);
         if (controllerObject == null || !controllerObject.isOpen()) {
             return false;
         } else if (controllerObject.isForeverController()) {
+            LOG.info("flowControl开启永久性流控！uri:{},value:{},type:{}", uri, value, controllerType);
             return true;
         } else {
+            LOG.info("flowControl开启部分流控！uri:{},value:{},type:{}", uri, value, controllerType);
             return controlRate(controllerObject);
         }
     }
 
     public boolean forbiddenControl(String uri, String value, ControllerType controllerType) {
         ControllerObject controllerObject = ForbiddenConfig.getControllerObject(controllerType, uri, value);
+        LOG.info("forbiddenControl！uri:{},value:{},type:{},controllerObject:{}", uri, value, controllerType, controllerObject);
         if (controllerObject == null || !controllerObject.isOpen()) {
             return false;
         } else if (controllerObject.isForeverController()) {
+            LOG.info("forbiddenControl开启永久性流控！uri:{},value:{},type:{}", uri, value, controllerType);
             setControllerBeginTime(controllerObject);
             return true;
         } else {
             setControllerBeginTime(controllerObject);
-            if (controllerObject.getControllerBeginTime() + controllerObject.getControllerTime() >= System.currentTimeMillis()) {
+            if (controllerObject.getControllerBeginTime() < System.currentTimeMillis()
+                    && controllerObject.getControllerBeginTime() + controllerObject.getControllerTime() >= System.currentTimeMillis()) {
+                LOG.info("forbiddenControl开启流控！uri:{},value:{},type:{}", uri, value, controllerType);
                 return true;
             } else {//解除forbitdden
-                resetController(controllerObject);
+//                resetController(controllerObject);
                 return false;
             }
         }

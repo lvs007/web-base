@@ -64,7 +64,8 @@ public abstract class BaseConfig {
         } else {
             Map<String, ControllerObject> controllerObjectMap = controllerObjectMapMapMap.get(uri).get(controllerType);
             if (MapUtils.isEmpty(controllerObjectMap)) {
-                controllerObjectMap = controllerObjectMapMapMap.get(ALL).get(controllerType);
+                Map<ControllerType, Map<String, ControllerObject>> controllerTypeMapMap = controllerObjectMapMapMap.get(ALL);
+                controllerObjectMap = controllerTypeMapMap == null ? controllerObjectMap : controllerTypeMapMap.get(controllerType);
             }
             return controllerObjectMap;
         }
@@ -76,9 +77,10 @@ public abstract class BaseConfig {
         } else {
             Map<String, ControllerObject> controllerObjectMap = controllerObjectMapMapMap.get(uri).get(controllerType);
             if (MapUtils.isEmpty(controllerObjectMap)) {
-                controllerObjectMap = controllerObjectMapMapMap.get(ALL).get(controllerType);
+                Map<ControllerType, Map<String, ControllerObject>> controllerTypeMapMap = controllerObjectMapMapMap.get(ALL);
+                controllerObjectMap = controllerTypeMapMap == null ? controllerObjectMap : controllerTypeMapMap.get(controllerType);
             }
-            if (MapUtils.isEmpty(controllerObjectMap)) {
+            if (MapUtils.isNotEmpty(controllerObjectMap)) {
                 return controllerObjectMap.get(value);
             } else {
                 return null;
@@ -95,6 +97,9 @@ public abstract class BaseConfig {
         }
         IS_OPEN = true;
         Map<String, ControllerObject> controllerObjectMap = getControllerObjectMap(controllerType, uri);
+        if (controllerObjectMap == null) {
+            return;
+        }
         for (ControllerObject controllerObject : controllerObjectMap.values()) {
             controllerObject.setOpen(true);
         }
