@@ -4,6 +4,7 @@ import liang.common.MyTools;
 import liang.common.file.FileFactory;
 import liang.common.file.ListenerFileUpload;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -116,7 +117,22 @@ public class FileTest {
 //        test2();
 //        test3();
 //        transfer();
-        test1();
+//        test1();
+        Map<String,Object> map = new HashedMap();
+        map.put(null,null);
+        System.out.println(map);
+        Map<String,Object> tmap = new Hashtable<>();
+        tmap.put("s","");
+        System.out.println(tmap);
+        try {
+            FileTest fileTest = (FileTest) Class.forName("liang.common.test.FileTest").newInstance();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class Pppt{
