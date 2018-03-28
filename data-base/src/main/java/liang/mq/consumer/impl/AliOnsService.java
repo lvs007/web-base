@@ -97,9 +97,12 @@ public class AliOnsService implements MnsService, MessageListener {
             if (StringUtils.equals(message.getTopic(), topicName)
                     && StringUtils.equals(message.getTag(), tag)) {
                 String body = new String(message.getBody());
-                if (blockingQueue.size() == 0) {
-                    blockingQueue.add(body);
-                }//todo
+                while (true) {
+                    if (blockingQueue.size() == 0) {
+                        blockingQueue.add(body);
+                        break;
+                    }
+                }
             }
             return Action.CommitMessage;
         }

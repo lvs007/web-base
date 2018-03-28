@@ -20,7 +20,7 @@ public abstract class BaseController {
         ControlParameter controlParameter = new ControlParameter();
         controlParameter.setCurrentUri(request.getRequestURI());
         controlParameter.setUrl(request.getRequestURI());
-        UserInfo userInfo = LoginUtils.getCurrentUser(request);
+        UserInfo userInfo = LoginUtils.getCurrentUser(request);//todo：循环调用bug
         if (userInfo != null) {
             controlParameter.setUser(userInfo.getUserName());
         }

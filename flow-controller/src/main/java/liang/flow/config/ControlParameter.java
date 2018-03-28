@@ -105,4 +105,21 @@ public class ControlParameter {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public String toString() {
+        return "ControlParameter{" +
+                "currentUri='" + currentUri + '\'' +
+                ", url='" + url + '\'' +
+                ", user='" + user + '\'' +
+                ", device='" + device + '\'' +
+                ", ip='" + ip + '\'' +
+                ", appType='" + appType + '\'' +
+                ", os='" + os + '\'' +
+                ", county='" + county + '\'' +
+                ", city='" + city + '\'' +
+                ", area='" + area + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }

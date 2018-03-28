@@ -18,7 +18,7 @@ public class DefaultCommonLocalLoadingCache extends AbstractLocalLoadingCache<St
 
     @Override
     public boolean set(String key, Object value, long expire) {
-        throw NotSupportException.throwException("不支持的操作");
+        return set(key, value);
     }
 
     @Override

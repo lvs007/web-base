@@ -6,6 +6,9 @@ package liang.mvc.event;
 public abstract class BaseEvent {
     private long id;
 
+    public BaseEvent() {
+    }
+
     public BaseEvent(long id) {
         this.id = id;
     }

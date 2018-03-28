@@ -8,36 +8,20 @@ import liang.common.exception.NotSupportException;
  */
 public class DefaultCommonLocalCache extends AbstractLocalCache<String, Object> {
 
-    private static DefaultCommonLocalCache defaultCommonLocalCache;
-    private static long expireTime = 24 * 60 * 60;
-
-    private DefaultCommonLocalCache() {
+    public DefaultCommonLocalCache() {
     }
 
-    public static DefaultCommonLocalCache getInstance() {
-        return getInstance(expireTime);
+    public DefaultCommonLocalCache(long expireTime) {
+        super(expireTime);
     }
 
-    public static DefaultCommonLocalCache getInstance(long expire) {
-        expireTime = expire;
-        if (defaultCommonLocalCache == null) {
-            synchronized (DefaultCommonLocalCache.class) {
-                if (defaultCommonLocalCache == null) {
-                    defaultCommonLocalCache = new DefaultCommonLocalCache();
-                }
-            }
-        }
-        return defaultCommonLocalCache;
-    }
-
-    @Override
-    public long getExpireTime() {
-        return expireTime;
+    public DefaultCommonLocalCache(long expireTime, int initialCapacity, long maximumSize) {
+        super(initialCapacity, maximumSize, expireTime);
     }
 
     @Override
     public boolean set(String key, Object value, long expire) {
-        throw NotSupportException.throwException("不支持的操作");
+        return set(key, value);
     }
 
     @Override

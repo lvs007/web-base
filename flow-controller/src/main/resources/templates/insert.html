@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>learn Resources</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/static/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/static/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div style="text-align: center;margin:0 auto;width: 1000px; ">
+    <h1>添加</h1>
+    <form action="/v1/forbidden/insert">
+        <table width="100%" border="1" cellspacing="1" cellpadding="0">
+            <tr>
+                <td>需要控制的uri地址：</td>
+                <td><input type="text" value="" name="uri"/></td>
+            </tr>
+            <tr>
+                <td>qps：</td>
+                <td><input type="text" value="" name="qps"/></td>
+            </tr>
+            <tr>
+                <td>并发访问量：</td>
+                <td><input type="text" value="" name="sameTimeQ"/></td>
+            </tr>
+            <tr>
+                <td>流控类型：</td>
+                <td><input type="text" value="" name="controllerType" placeholder="数字"/></td>
+            </tr>
+            <tr>
+                <td>需要流控的对象：</td>
+                <td><input type="text" value="" name="value"/></td>
+            </tr>
+            <tr>
+                <td>流控开始时间：</td>
+                <td><input type="text" value="" name="controllerBeginTime"/></td>
+            </tr>
+            <tr>
+                <td>流控时间：</td>
+                <td><input type="text" value="" name="controllerTime"/></td>
+            </tr>
+            <tr>
+                <td>控制比率：</td>
+                <td><input type="text" value="" name="rate"/></td>
+            </tr>
+            <tr>
+                <td>是否打开：</td>
+                <td><input type="text" value="" name="open"/></td>
+            </tr>
+            <tr>
+                <td>是否永久开启流控：</td>
+                <td><input type="text" value="" name="foreverController"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="添加"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

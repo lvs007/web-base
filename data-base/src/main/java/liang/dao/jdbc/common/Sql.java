@@ -32,6 +32,7 @@ public class Sql {
     private boolean bypass = false;
     private String splitColumn;
     private int index = -1;
+    private boolean groupBy;
 
     public Sql(String sql) {
         this.sql = sql;
@@ -71,6 +72,7 @@ public class Sql {
 //        other.realTable = this.realTable;
         other.dml = this.dml;
         other.index = index;
+        other.groupBy = groupBy;
         return other;
     }
 
@@ -245,5 +247,13 @@ public class Sql {
 
     public void cleanBatchList() {
         batchList.clear();
+    }
+
+    public boolean isGroupBy() {
+        return groupBy;
+    }
+
+    public void setGroupBy(boolean groupBy) {
+        this.groupBy = groupBy;
     }
 }

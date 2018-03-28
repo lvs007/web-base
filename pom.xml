@@ -13,6 +13,7 @@
         <module>mvc-base</module>
         <module>common-base</module>
         <module>flow-controller</module>
+        <module>spider</module>
     </modules>
 
     <properties>
@@ -39,6 +40,7 @@
         <aliyun-mns-version>1.1.8</aliyun-mns-version>
         <aliyun-ons-version>1.2.7.Final</aliyun-ons-version>
         <groovy-version>2.4.3</groovy-version>
+        <aspectj-version>1.8.13</aspectj-version>
     </properties>
 
     <dependencyManagement>
@@ -189,6 +191,14 @@
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy</artifactId>
                 <version>${groovy-version}</version>
+            </dependency>
+
+            <!-- aspect-->
+            <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj-version}</version>
             </dependency>
 
         </dependencies>

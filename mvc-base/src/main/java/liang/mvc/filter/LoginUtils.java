@@ -2,7 +2,6 @@ package liang.mvc.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import liang.cache.impl.DefaultCommonLocalCache;
-import liang.common.exception.BaseException;
 import liang.common.http.api.ApiResponse;
 import liang.common.http.api.BaseApi;
 import liang.common.http.api.exception.ApiException;
@@ -31,34 +30,38 @@ public class LoginUtils {
 
     private static final LoginHttp loginHttp = new LoginHttp();
 
-    private static final DefaultCommonLocalCache userInfoCache = DefaultCommonLocalCache.getInstance(30 * 60 * 1000);
+    private static final DefaultCommonLocalCache userInfoCache = new DefaultCommonLocalCache(30 * 60 * 1000);
 
     public static String getToken(HttpServletRequest request) {
-        String token = request.getParameter(MvcConstants.TOKEN);
+        HttpSession session = request.getSession(false);
+        String token = session == null ? null : (String) session.getAttribute(MvcConstants.TOKEN);
         if (StringUtils.isBlank(token)) {
-            HttpSession session = request.getSession(false);
-            token = session == null ? null : (String) session.getAttribute(MvcConstants.TOKEN);
+            token = request.getParameter(MvcConstants.TOKEN);
         }
         if (StringUtils.isBlank(token)) {
             token = request.getHeader(MvcConstants.TOKEN);
         }
         if (StringUtils.isBlank(token)) {
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if (StringUtils.equals(cookie.getName(), MvcConstants.TOKEN)) {
-                    token = cookie.getValue();
-                    break;
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (StringUtils.equals(cookie.getName(), MvcConstants.TOKEN)) {
+                        token = cookie.getValue();
+                        break;
+                    }
                 }
             }
         }
         if (StringUtils.isBlank(token)) {
             String cookie = request.getHeader(MvcConstants.COOKIE);
             String[] cookies = StringUtils.split(cookie, MvcConstants.SEMICOLON);
-            for (String str : cookies) {
-                str = StringUtils.trim(str);
-                if (StringUtils.startsWith(str, MvcConstants.TOKEN)) {
-                    token = str.substring(str.indexOf(MvcConstants.EQUAL) + 1);
-                    break;
+            if (cookies != null) {
+                for (String str : cookies) {
+                    str = StringUtils.trim(str);
+                    if (StringUtils.startsWith(str, MvcConstants.TOKEN)) {
+                        token = str.substring(str.indexOf(MvcConstants.EQUAL) + 1);
+                        break;
+                    }
                 }
             }
         }

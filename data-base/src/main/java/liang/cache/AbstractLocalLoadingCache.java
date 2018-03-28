@@ -18,14 +18,14 @@ public abstract class AbstractLocalLoadingCache<K, V> implements BaseCache<K, V>
 
     private int initialCapacity = 100000;
     private long maximumSize = 1000000;
-    private long expireTime = 24 * 60 * 60;
+    private long expireTime = 24 * 60 * 60 * 1000;
 
     private LoadingCache<K, V> cache;
 
     public AbstractLocalLoadingCache() {
         LOG.info("init AbstractLocalLoadingCache");
         cache = CacheBuilder.newBuilder().initialCapacity(getInitialCapacity()).maximumSize(getMaximumSize()).
-                expireAfterAccess(getExpireTime(), TimeUnit.SECONDS).build(new CacheLoader<K, V>() {
+                expireAfterAccess(getExpireTime(), TimeUnit.MILLISECONDS).build(new CacheLoader<K, V>() {
             @Override
             public V load(K key) throws Exception {
                 return loadData(key);

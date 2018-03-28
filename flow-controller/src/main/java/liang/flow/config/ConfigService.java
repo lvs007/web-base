@@ -1,6 +1,7 @@
 package liang.flow.config;
 
 import liang.common.util.PropertiesManager;
+import liang.flow.config.data.entity.Forbidden;
 import liang.flow.interceptor.FlowController;
 import liang.mvc.commons.SpringContextHolder;
 import org.apache.commons.lang3.StringUtils;
@@ -44,8 +45,8 @@ public class ConfigService {
         return iq;
     }
 
-    public static void changeListener(String data) {
-        FlowController.changeListener(genInterfaceQps(data));
+    public static void changeListener(InterfaceQps interfaceQps) {
+        FlowController.changeListener(interfaceQps);
     }
 
     public static boolean isOpenController() {
@@ -64,6 +65,17 @@ public class ConfigService {
         public InterfaceQps(String url, long qps) {
             this.url = url;
             this.qps = qps;
+        }
+
+        public InterfaceQps(String url, long qps, int sameTimeQ) {
+            this.url = url;
+            this.qps = qps;
+            this.sameTimeQ = sameTimeQ;
+        }
+
+        public static InterfaceQps buildInterfaceQps(Forbidden forbidden) {
+            InterfaceQps interfaceQps = new InterfaceQps(forbidden.getUri(), forbidden.getQps(), forbidden.getSameTimeQ());
+            return interfaceQps;
         }
 
         public String getUrl() {

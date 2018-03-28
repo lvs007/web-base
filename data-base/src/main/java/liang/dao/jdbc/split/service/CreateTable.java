@@ -60,4 +60,24 @@ public class CreateTable {
         LOG.info("end create sql_exe_fail table");
     }
 
+    public void createForbiddenTable() {
+        LOG.info("begin create forbiden table");
+        String createSql = "CREATE TABLE IF NOT EXISTS `forbidden` (\n" +
+                "  `id` bigint(20) NOT NULL AUTO_INCREMENT,\n" +
+                "  `controller_type` int(11) NOT NULL COMMENT '流控类型',\n" +
+                "  `controller_begin_time` bigint(20) NOT NULL COMMENT '流控开始时间',\n" +
+                "  `controller_time` bigint(20) NOT NULL COMMENT '流控时间',\n" +
+                "  `value` varchar(128) NOT NULL COMMENT '需要流控的对象',\n" +
+                "  `uri` varchar(128) NOT NULL COMMENT '需要控制的uri地址',\n" +
+                "  `rate` int(11) NOT NULL DEFAULT '100' COMMENT '控制比率',\n" +
+                "  `open` bit(1) NOT NULL DEFAULT b'1' COMMENT '是否打开',\n" +
+                "  `forever_controller` bit(1) NOT NULL DEFAULT b'1' COMMENT '是否永久开启流控',\n" +
+                "  `qps` bigint(20) NOT NULL COMMENT 'qps',\n" +
+                "  `same_time_q` int(11) NOT NULL COMMENT '并发访问量',\n" +
+                "  PRIMARY KEY (`id`)\n" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
+        jdbcTemplate.execute(createSql);
+        LOG.info("end create forbiden table");
+    }
+
 }

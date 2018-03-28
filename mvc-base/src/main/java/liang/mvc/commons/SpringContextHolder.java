@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,17 +34,22 @@ public class SpringContextHolder implements ApplicationContextAware {
     @Autowired
     private ServletContext context;
 
+    @Autowired
+    private HttpSession httpSession;
+
     private static final Map<String, Object> threadLocalMap = new HashMap<>();
 
     private static final String REQUEST_KEY = "request";
     private static final String RESPONSE_KEY = "response";
     private static final String CONTEXT_KEY = "context";
+    private static final String SESSION_KEY = "session";
 
     @PostConstruct
     private void init() {
         threadLocalMap.put(REQUEST_KEY, request);
         threadLocalMap.put(RESPONSE_KEY, response);
         threadLocalMap.put(CONTEXT_KEY, context);
+        threadLocalMap.put(SESSION_KEY, httpSession);
     }
 
     //实现ApplicationContextAware接口的context注入函数, 将其存入静态变量.
@@ -108,5 +114,13 @@ public class SpringContextHolder implements ApplicationContextAware {
             throw new IllegalStateException("ServletContext没有注入成功");
         }
         return context;
+    }
+
+    public static HttpSession getHttpSession() {
+        HttpSession httpSession = (HttpSession) threadLocalMap.get(SESSION_KEY);
+        if (httpSession == null) {
+            throw new IllegalStateException("ServletContext没有注入成功");
+        }
+        return httpSession;
     }
 }

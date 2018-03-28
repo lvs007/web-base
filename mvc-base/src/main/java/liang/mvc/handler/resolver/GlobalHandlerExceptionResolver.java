@@ -6,6 +6,8 @@ import liang.mvc.exception.ServiceException;
 import liang.mvc.exception.ServiceKeyException;
 import liang.mvc.monitor.ControllerMonitor;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,8 @@ import java.util.Locale;
  */
 public class GlobalHandlerExceptionResolver extends DefaultHandlerExceptionResolver {
 
+    private static final Logger LOG = LoggerFactory.getLogger(GlobalHandlerExceptionResolver.class);
+
     public GlobalHandlerExceptionResolver() {
         setOrder(0);
     }
@@ -49,6 +53,7 @@ public class GlobalHandlerExceptionResolver extends DefaultHandlerExceptionResol
         MappingJackson2JsonView view = new MappingJackson2JsonView();
         view.setExtractValueFromSingleKeyModel(true);
         view.addStaticAttribute("view", bindError(httpResponse, context, e, locale));
+        LOG.error("",e);
         return new ModelAndView(view);
     }
 

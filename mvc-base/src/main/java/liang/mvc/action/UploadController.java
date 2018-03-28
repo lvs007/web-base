@@ -7,16 +7,13 @@ package liang.mvc.action;
 
 import liang.cache.BaseCache;
 import liang.cache.impl.DefaultCommonLocalCache;
-import liang.common.LogUtils;
 import liang.mvc.annotation.Login;
 import liang.mvc.commons.SpringContextHolder;
 import liang.mvc.commons.UploadUtils;
 import liang.mvc.dto.UploadFileInfo;
 import liang.mvc.filter.LoginUtils;
 import liang.mvc.filter.UserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +26,7 @@ import java.util.Map;
 @Controller
 public class UploadController {
 
-    private BaseCache<String, Object> baseCache = DefaultCommonLocalCache.getInstance(10 * 60);
+    private BaseCache<String, Object> baseCache = new DefaultCommonLocalCache(10 * 60);
 
     /**
      * 上传文件

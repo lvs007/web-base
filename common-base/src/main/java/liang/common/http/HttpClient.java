@@ -1,6 +1,7 @@
 package liang.common.http;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.*;
 import com.squareup.okhttp.internal.http.StatusLine;
 import org.apache.commons.collections.CollectionUtils;
@@ -14,7 +15,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import java.io.*;
-import java.net.URL;
+import java.net.*;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,20 @@ public class HttpClient {
 
     private OkHttpClient httpClient;
     private String userAgent;
+
+    public HttpClient setCookie(String uri, String key, String value) throws URISyntaxException, IOException {
+        Map<String, List<String>> cookie = new HashMap<>();
+        cookie.put(key, Lists.newArrayList(value));
+        URI u = new URI(uri);
+        if (httpClient.getCookieHandler() == null) {
+            CookieManager cookieManager = new CookieManager();
+            httpClient.setCookieHandler(cookieManager);
+        } else {
+            httpClient.getCookieHandler().put(u, cookie);
+        }
+
+        return this;
+    }
 
     public static class Builder {
         private long connectTimeoutInMs = 10_000;
