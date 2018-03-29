@@ -87,6 +87,32 @@ public class FindElement {
         return null;
     }
 
+    public static WebElement findByNode(WebElement webElement, FindValue.Node node) {
+        if (webElement == null) {
+            return null;
+        }
+        switch (node.getNodeType()) {
+            case ByClassName:
+                return findByClassName(webElement, node.getValue());
+            case ByCssSelector:
+                return findByCssSelector(webElement, node.getValue());
+            case ById:
+                return findById(webElement, node.getValue());
+            case ByLinkText:
+                return findByLinkText(webElement, node.getValue());
+            case ByName:
+                return findByName(webElement, node.getValue());
+            case ByPartialLinkText:
+                return findByPartialLinkText(webElement, node.getValue());
+            case ByTagName:
+                return findByTagName(webElement, node.getValue());
+            case ByXPath:
+                return findByXpath(webElement, node.getValue());
+            default:
+                return null;
+        }
+    }
+
     public static List<WebElement> findByTagNames(WebElement webElement, String tagName) {
         try {
             return webElement.findElements(By.tagName(tagName));

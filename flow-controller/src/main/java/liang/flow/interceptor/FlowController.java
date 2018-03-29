@@ -1,6 +1,9 @@
 package liang.flow.interceptor;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.util.concurrent.RateLimiter;
+import liang.common.LogUtils;
 import liang.flow.config.ConfigService;
 import liang.flow.config.ControlParameter;
 import liang.flow.config.FlowConfig;
@@ -12,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by liangzhiyan on 2017/4/11.
@@ -20,8 +25,13 @@ public class FlowController extends BaseController {
 
     private static final Map<String, RateLimiter> rateLimiterMap = new HashMap<>();
     private static final Map<String, Semaphore> semaphoreMap = new HashMap<>();
+    private static final Map<String, AtomicLong> qpsCount = new HashMap<>();
+    private static final Map<String, AtomicLong> semaphoreCount = new HashMap<>();
+    private static final Cache<String, AtomicLong> qpsCountCache = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.SECONDS).initialCapacity(5).maximumSize(5).build();
 
     private static final ThreadLocal<Boolean> threadLocal = new ThreadLocal<>();
+
+    private static Object qpsLock = new Object();
 
     public static void init() {
         List<ConfigService.InterfaceQps> interfaceQpsList = ConfigService.getInterfaceQps();
@@ -35,6 +45,9 @@ public class FlowController extends BaseController {
         Semaphore semaphore = new Semaphore(interfaceQps.getSameTimeQ());
         rateLimiterMap.put(interfaceQps.getUrl(), rateLimiter);
         semaphoreMap.put(interfaceQps.getUrl(), semaphore);
+        int sed = (int) (System.currentTimeMillis() / 1000);
+        qpsCount.put(interfaceQps.getUrl() + sed, new AtomicLong(0));
+        semaphoreCount.put(interfaceQps.getUrl() + sed, new AtomicLong(0));
     }
 
     public static void changeListener(ConfigService.InterfaceQps interfaceQps) {
@@ -54,7 +67,7 @@ public class FlowController extends BaseController {
                 return true;
             } else {
                 if (!rateLimiter.tryAcquire()) {//当获取不到的时候开启流控
-                    System.out.println("rateLimiter 开启流控");
+                    LogUtils.getInstance(FlowController.class).info("rateLimiter 开启流控");
                     ControlParameter controlParameter = setControlParameter(request);
                     for (BaseFlowController flowController : ControllerManager.controllerList) {
                         FlowConfig.openUrlControl(flowController.getControllerType(), uri);
@@ -66,11 +79,28 @@ public class FlowController extends BaseController {
                 }
             }
         } else {
-            System.out.println("semaphore controlRequest并行流控开启");
+            LogUtils.getInstance(FlowController.class).info("semaphore controlRequest并行流控开启");
             threadLocal.set(false);
             return false;
         }
         return true;
+    }
+
+    private void countQps(String uri) {
+        int sed = (int) (System.currentTimeMillis() / 1000);
+        AtomicLong atomicLong = qpsCount.get(uri + sed);
+        if (atomicLong == null) {
+            synchronized (qpsLock) {
+                atomicLong = qpsCount.get(uri + sed);
+                if (atomicLong == null) {
+                    qpsCount.put(uri + sed, new AtomicLong(1));
+                } else {
+                    countQps(uri);
+                }
+            }
+        } else {
+            atomicLong.addAndGet(1);
+        }
     }
 
     public static void afterCompletion(HttpServletRequest request) {
