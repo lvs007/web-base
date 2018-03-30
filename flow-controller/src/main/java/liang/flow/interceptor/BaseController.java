@@ -20,7 +20,7 @@ public abstract class BaseController {
         ControlParameter controlParameter = new ControlParameter();
         controlParameter.setCurrentUri(request.getRequestURI());
         controlParameter.setUrl(request.getRequestURI());
-        UserInfo userInfo = LoginUtils.getCurrentUser(request);//todo：循环调用bug
+        UserInfo userInfo = LoginUtils.getCurrentUser(request);//todo：循环调用bug,所以设置拦截器的时候需要把获取用户信息的uri去掉
         if (userInfo != null) {
             controlParameter.setUser(userInfo.getUserName());
         }
