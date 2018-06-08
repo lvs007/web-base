@@ -53,6 +53,7 @@ public class PlayPoker {
       return false;
     }
     if (peopleInfo.getId() == table.getCurrentOutPikerPeople().getId()) {//第一个出牌的人
+      //如果是第一个出牌的人，校验出牌是否正确（统一花色，摔牌）
       return true;
     }
     if (pokerList.size() != table.getCurrentOutPikerPeople().getHumanPoker()
