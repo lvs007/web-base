@@ -1,5 +1,6 @@
 package liang.spider.findelement;
 
+import liang.common.util.ThreadUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.WebElement;
 
@@ -55,7 +56,7 @@ public class FindValue {
         WebElement now = webElement;
         if (node != null && now != null) {
             if (CollectionUtils.isNotEmpty(node.getNextList())) {//说明当前节点不是获取值
-                now = FindElement.findByNode(now, node);
+                now = FindElement.findByNode(webElement, node);
                 if (now != null) {
                     for (Node n : node.getNextList()) {
                         search(n, now, resultMap, count);
@@ -156,12 +157,19 @@ public class FindValue {
     public static class Node {
         private NodeType nodeType;
         private String value;
+        private int order;
 
         private List<Node> nextList;
 
         public Node(NodeType nodeType, String value) {
             this.nodeType = nodeType;
             this.value = value;
+        }
+
+        public Node(NodeType nodeType, String value, int order) {
+            this.nodeType = nodeType;
+            this.value = value;
+            this.order = order;
         }
 
         public NodeType getNodeType() {
@@ -180,6 +188,14 @@ public class FindValue {
         public Node setValue(String value) {
             this.value = value;
             return this;
+        }
+
+        public int getOrder() {
+            return order;
+        }
+
+        public void setOrder(int order) {
+            this.order = order;
         }
 
         public List<Node> getNextList() {

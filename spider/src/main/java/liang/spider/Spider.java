@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static liang.spider.findelement.FindValue.NodeType.*;
 
@@ -50,6 +51,11 @@ public class Spider {
             webElementList = webElement.findElements(By.tagName("div"));
             List<Article> articleList = new ArrayList<>();
             for (WebElement we : webElementList) {
+                Node node = new Node(ByTagName, "h2")
+                        .addNext(new Node(ByClassName, "s-title-yahei")
+                                .addNext(new Node(Text, null))
+                                .addNext(new Node(Attribute, "href")));
+                Map<Integer,String> valueMap = FindValue.getFindValue(we).findMux(node);
                 String title = FindValue.getFindValue(we).find(new Node(ByTagName, "h2")).find(new Node(ByClassName, "s-title-yahei")).find(new Node(Text, null)).build();
                 String aurl = FindValue.getFindValue(we).find(new Node(ByTagName, "h2")).find(new Node(ByClassName, "s-title-yahei")).find(new Node(Attribute, "href")).build();
                 String time = FindValue.getFindValue(we).find(new Node(ByClassName, "from")).find(new Node(ByClassName, "src-time")).find(new Node(Text, null)).build();
