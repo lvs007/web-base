@@ -1,10 +1,14 @@
 package liang.bo;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import liang.bo.HumanPoker.OutPokerType;
 import liang.bo.PeopleInfo.PeopleStatus;
+import liang.bo.PokersBo.Poker;
 import liang.bo.PokersBo.PokerType;
+import liang.core.RuleImpl;
 
 public class Table {
 
@@ -18,7 +22,9 @@ public class Table {
 
   private Zhu zhu;
 
-  private PeopleInfo currentOutPikerPeople;//一轮的首个当前出牌人
+  private PeopleInfo currentFirstOneOutPikerPeople;//一轮的首个当前出牌人
+
+  private int playNumber = 3;//默认打3
 
   private Object object = new Object();
   private Object startLock = new Object();
@@ -57,12 +63,42 @@ public class Table {
   public class Zhu {
 
     private PokerType pokerType;
-    private int number;
-    private int playNumber;//打几
+    private int number;//一共几张2
+    private int playNumber = 3;//打几
 
     public Zhu(PokerType pokerType, int number) {
       this.pokerType = pokerType;
       this.number = number;
+    }
+
+    /**
+     * 验证牌是否是主,主包括大小王，2，打几，和叫的花色
+     */
+    public boolean validPokerIsZhu(Poker poker) {
+      if (poker.getPokerType() == pokerType || poker.getValue() == playNumber
+          || poker.getValue() == 2 || poker.getPokerType() == PokerType.GUI) {
+        return true;
+      }
+      return false;
+    }
+
+    public boolean validPokersIsZhu(List<Poker> pokerList) {
+      for (Poker poker : pokerList) {
+        if (!validPokerIsZhu(poker)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    public int haveZhuNumber(List<Poker> pokerList) {
+      int count = 0;
+      for (Poker poker : pokerList) {
+        if (validPokerIsZhu(poker)) {
+          ++count;
+        }
+      }
+      return count;
     }
 
     public PokerType getPokerType() {
@@ -91,6 +127,11 @@ public class Table {
       this.playNumber = playNumber;
       return this;
     }
+
+    public void clean() {
+      pokerType = null;
+      number = 0;
+    }
   }
 
   public Table() {
@@ -101,7 +142,7 @@ public class Table {
 
   public void join(PeopleInfo peopleInfo, int site) {
     synchronized (object) {
-      if (isCanJoin(peopleInfo,site)) {
+      if (isCanJoin(peopleInfo, site)) {
         playPeople.put(Site.getSite(site), peopleInfo);
         peopleInfo.setTable(this);
         if (playPeople.size() >= peopleNumber) {
@@ -153,9 +194,81 @@ public class Table {
     }
   }
 
+  /**
+   * 摔牌，必须大于所有人的牌，或者这个牌所有人都没有了
+   */
+  public boolean validFirstOutPokerHH(List<Poker> pokerList, PeopleInfo peopleInfo) {
+    return RuleImpl.getInstance().validHHOutPoker(this, pokerList, peopleInfo);
+  }
+
+  public boolean validOutPoker(List<Poker> pokerList, PeopleInfo peopleInfo) {
+    List<Poker> firstPeopleoutPokerList = currentFirstOneOutPikerPeople.getHumanPoker()
+        .getCurrentOutPoker();
+    if (firstPeopleoutPokerList.size() != playPeople
+        .size()) {
+      return false;
+    }
+    OutPokerType outPokerType = currentFirstOneOutPikerPeople.getHumanPoker().getOutPokerType();
+    OutPokerType nowOutPokerType = peopleInfo.getHumanPoker().getOutPokerType();
+    if (outPokerType == nowOutPokerType) {//出牌的类型一样，还得判断颜色，todo
+      switch (outPokerType) {
+        case ONE:
+        case TWO:
+        case THREE:
+        case FOUR:
+        case TLJ: {
+          Poker firstPoker = firstPeopleoutPokerList.get(0);
+          Poker nowPoker = pokerList.get(0);
+          if (firstPoker.getPokerType() == nowPoker.getPokerType()) {//颜色相同
+            return true;
+          } else if (zhu.validPokerIsZhu(firstPoker) && zhu.validPokerIsZhu(nowPoker)) {//都是主
+            return true;
+          } else {//颜色不同，并且不都是主
+            if (peopleInfo.getHumanPoker().getExitNumber(firstPoker) > 0) {
+              return false;
+            }
+            return true;
+          }
+        }
+        case HH: {
+          return RuleImpl.getInstance().compareHHTwoPeopleOutPoker(firstPeopleoutPokerList,
+              pokerList, peopleInfo, this);
+        }
+        case UNKNOWN:
+          return false;
+        default:
+          return false;
+      }
+    }
+    //出牌的类型不一样,说明他没有这个类型的牌，所以得判断他是否有这个类型的牌，如果没有在看出的是否是同一花色的，如果不是看他手上有没有
+    return RuleImpl.getInstance()
+        .validOutPokerTypeUnSame(outPokerType, firstPeopleoutPokerList, pokerList, peopleInfo);
+  }
+
+  public void statisticsData() {
+    if (currentOutPokerIsFinish()) {
+
+      //谁的牌大，设置他为当前出牌人
+
+    }
+  }
+
+  /**
+   * 当前一圈出牌是否结束
+   */
+  private boolean currentOutPokerIsFinish() {
+    for (PeopleInfo peopleInfo : playPeople.values()) {
+      if (!peopleInfo.isOutPoker()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   private void clean() {
     status = TableStatus.INIT;
-    zhu = null;
+    zhu.clean();
+    currentFirstOneOutPikerPeople = null;
   }
 
   private boolean isCanStart() {
@@ -186,11 +299,27 @@ public class Table {
     this.zhu = zhu;
   }
 
-  public PeopleInfo getCurrentOutPikerPeople() {
-    return currentOutPikerPeople;
+  public Map<Site, PeopleInfo> getPlayPeople() {
+    return playPeople;
   }
 
-  public void setCurrentOutPikerPeople(PeopleInfo currentOutPikerPeople) {
-    this.currentOutPikerPeople = currentOutPikerPeople;
+  public PeopleInfo getCurrentFirstOneOutPikerPeople() {
+    return currentFirstOneOutPikerPeople;
   }
+
+  public void setCurrentFirstOneOutPikerPeople(PeopleInfo currentFirstOneOutPikerPeople) {
+    this.currentFirstOneOutPikerPeople = currentFirstOneOutPikerPeople;
+    currentFirstOneOutPikerPeople.setFirstOneOutPoker(true);
+  }
+
+  public int getPlayNumber() {
+    return playNumber;
+  }
+
+  public Table setPlayNumber(int playNumber) {
+    this.playNumber = playNumber;
+    zhu.setPlayNumber(playNumber);
+    return this;
+  }
+
 }

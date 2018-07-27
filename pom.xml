@@ -15,6 +15,7 @@
         <module>flow-controller</module>
         <module>spider</module>
       <module>tljgame</module>
+      <module>dezhou</module>
     </modules>
 
     <properties>

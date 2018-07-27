@@ -1,6 +1,7 @@
 package liang.bo;
 
 import java.util.List;
+import liang.bo.HumanPoker.OutPokerType;
 import liang.bo.PokersBo.Poker;
 import liang.bo.PokersBo.PokerType;
 import liang.bo.Table.Site;
@@ -18,6 +19,9 @@ public class PeopleInfo implements Action {
   private boolean isOutPoker;//是否已经出牌
   private Table table;
   private PlayPoker playPoker;
+  private boolean isFirstOneOutPoker;//是否当前出牌者
+  private boolean big;//当前出牌大小,默认是小的
+  private int playNumber = 3;//当前自己打几,默认都是从3开始
 
   public enum PeopleStatus {
     INIT,//初始化
@@ -28,7 +32,7 @@ public class PeopleInfo implements Action {
 
   public PeopleInfo() {
     status = PeopleStatus.INIT;
-    humanPoker = new HumanPoker();
+    humanPoker = new HumanPoker(this);
     playPoker = new PlayPoker(this, table);
   }
 
@@ -89,6 +93,20 @@ public class PeopleInfo implements Action {
   @Override
   public boolean play(List<Poker> pokerList) {
     return playPoker.play(pokerList);
+  }
+
+  public boolean validOutPoker(List<Poker> pokerList) {
+    //解析出牌类型
+    humanPoker.parseOutPoker(pokerList);
+    if (isFirstOneOutPoker) {//是否是第一个出牌者
+      if (humanPoker.getOutPokerType() == OutPokerType.HH && table
+          .validFirstOutPokerHH(pokerList, this)) {//混合牌型（摔牌），必须验证最小的是否是四个里面最大的
+        return true;
+      }
+      return humanPoker.validFirstOneOutPoker();
+    } else {//不是第一个出牌，比较是否符合第一个出牌的牌型
+      return table.validOutPoker(pokerList, this);
+    }
   }
 
   private void clean() {
@@ -155,5 +173,31 @@ public class PeopleInfo implements Action {
 
   public void setJiao(boolean jiao) {
     this.jiao = jiao;
+  }
+
+  public boolean isFirstOneOutPoker() {
+    return isFirstOneOutPoker;
+  }
+
+  public void setFirstOneOutPoker(boolean firstOneOutPoker) {
+    isFirstOneOutPoker = firstOneOutPoker;
+  }
+
+  public boolean isBig() {
+    return big;
+  }
+
+  public void setBig(boolean big) {
+    this.big = big;
+  }
+
+  public int getPlayNumber() {
+    return playNumber;
+  }
+
+  public PeopleInfo setPlayNumber(int playNumber) {
+    this.playNumber = playNumber;
+    table.setPlayNumber(playNumber);
+    return this;
   }
 }
