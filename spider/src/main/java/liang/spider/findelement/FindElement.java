@@ -1,5 +1,7 @@
 package liang.spider.findelement;
 
+import liang.common.util.ThreadUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ public class FindElement {
         try {
             return webElement.findElement(By.tagName(tagName));
         } catch (Exception e) {
-            LOG.error("", e);
+            LOG.error("tagName:{}", tagName, e);
         }
         return null;
     }
@@ -91,25 +93,62 @@ public class FindElement {
         if (webElement == null) {
             return null;
         }
+        int tryTimes = 0;
+        while (!webElement.isEnabled() && tryTimes < 10) {
+            ThreadUtils.sleep(100);
+            ++tryTimes;
+        }
         switch (node.getNodeType()) {
             case ByClassName:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByClassNames(webElement, node.getValue()), node);
+                }
                 return findByClassName(webElement, node.getValue());
             case ByCssSelector:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByCssSelectors(webElement, node.getValue()), node);
+                }
                 return findByCssSelector(webElement, node.getValue());
             case ById:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByIds(webElement, node.getValue()), node);
+                }
                 return findById(webElement, node.getValue());
             case ByLinkText:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByLinkTexts(webElement, node.getValue()), node);
+                }
                 return findByLinkText(webElement, node.getValue());
             case ByName:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByNames(webElement, node.getValue()), node);
+                }
                 return findByName(webElement, node.getValue());
             case ByPartialLinkText:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByPartialLinkTexts(webElement, node.getValue()), node);
+                }
                 return findByPartialLinkText(webElement, node.getValue());
             case ByTagName:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByTagNames(webElement, node.getValue()), node);
+                }
                 return findByTagName(webElement, node.getValue());
             case ByXPath:
+                if (node.getOrder() > 0) {
+                    return selectOne(findByXpaths(webElement, node.getValue()), node);
+                }
                 return findByXpath(webElement, node.getValue());
             default:
                 return null;
+        }
+    }
+
+    private static WebElement selectOne(List<WebElement> webElementList, FindValue.Node node) {
+        if (CollectionUtils.isEmpty(webElementList) || webElementList.size() < node.getOrder()) {
+            return null;
+        } else {
+            return webElementList.get(node.getOrder() - 1);
         }
     }
 
