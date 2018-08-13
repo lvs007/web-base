@@ -451,6 +451,22 @@ public class HumanPoker {
 
   }
 
+  private boolean valid(List<Poker> meHavePokerList, List<Poker> meOutPokerList,
+      TljType firstTljType) {
+    List<TljType> meHaveTljTypeList = parseAllTlj(meHavePokerList);
+    List<TljType> meOutTljTypeList = parseAllTlj(meOutPokerList);
+    switch (firstTljType.getCount()) {
+      case 2:
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      default:
+        break;
+    }
+  }
+
   private List<TljType> parseAllTlj(List<Poker> pokerList) {
     int count = 1;
     int step = 1;
@@ -469,6 +485,8 @@ public class HumanPoker {
       numberMap.put(tmp.getValue(), count);
     }
     Entry<Integer, Integer> tmpEntry = null;
+    boolean find = false;
+    List<TljType> result = new ArrayList<>();
     for (Entry<Integer, Integer> entry : numberMap.entrySet()) {
       if (tmpEntry == null) {
         tmpEntry = entry;
@@ -477,16 +495,21 @@ public class HumanPoker {
       } else if (tmpEntry.getValue() == count && entry.getValue() == count && (
           tmpEntry.getKey() + 1 == entry.getKey() || tmpEntry.getKey() == 13)) {
         ++step;
+        find = true;
       } else {
+        if (find) {
+          result.add(new TljType(step, count));
+        }
+        find = false;
         tmpEntry = entry;
         step = 1;
         count = tmpEntry.getValue();
       }
-      if (step > 1) {
-
-      }
     }
-
+    if (find) {
+      result.add(new TljType(step, count));
+    }
+    return result;
   }
 
   private boolean isHaveTlj(List<Poker> pokerList, TljType tljType) {
@@ -511,8 +534,8 @@ public class HumanPoker {
       if (tmpEntry == null) {
         tmpEntry = entry;
         step = 1;
-      } else if (tmpEntry.getValue() == tljType.getCount()
-          && entry.getValue() == tljType.getCount() && (tmpEntry.getKey() + 1 == entry.getKey()
+      } else if (tmpEntry.getValue() >= tljType.getCount()
+          && entry.getValue() >= tljType.getCount() && (tmpEntry.getKey() + 1 == entry.getKey()
           || tmpEntry.getKey() == 13)) {
         ++step;
       } else {
@@ -526,7 +549,7 @@ public class HumanPoker {
     return false;
   }
 
-  public static class TljType {
+  public static class TljType implements Comparable<TljType> {
 
     private int step;//步长（一共几拖）
     private int count;//对，三条，四条
@@ -572,6 +595,16 @@ public class HumanPoker {
       }
       int step = pokerList.size() / count;
       return new TljType(step, count);
+    }
+
+    @Override
+    public int compareTo(TljType o) {
+      if (count > o.getCount()) {
+        return 1;
+      } else if (count < o.getCount()) {
+        return -1;
+      }
+      return 0;
     }
   }
 
