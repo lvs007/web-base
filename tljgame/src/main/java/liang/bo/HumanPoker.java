@@ -441,17 +441,17 @@ public class HumanPoker {
     return true;
   }
 
-  public boolean isHaveTlj(List<Poker> firstOutPokerList, List<Poker> meOutPokerList) {
+  public boolean validOutPokerTlj(List<Poker> firstOutPokerList, List<Poker> meOutPokerList) {
     List<Poker> haveList = getPokersByPokerType(firstOutPokerList.get(0));
     TljType tljType = TljType.parse(firstOutPokerList);
     PokersBo.sortTlj(haveList);
     if (isHaveTlj(haveList, tljType)) {
       return false;
     }
-
+    return validTljOutPoker(haveList, meOutPokerList, tljType);
   }
 
-  private boolean valid(List<Poker> meHavePokerList, List<Poker> meOutPokerList,
+  private boolean validTljOutPoker(List<Poker> meHavePokerList, List<Poker> meOutPokerList,
       TljType firstTljType) {
     List<TljType> meHaveTljTypeList = parseAllTlj(meHavePokerList);
     List<TljType> meOutTljTypeList = parseAllTlj(meOutPokerList);

@@ -164,23 +164,17 @@ public class RuleImpl {
         return otherPeople.getHumanPoker().validOutPokerNumber(firstOutPoker,
             otherPeoplePokers, outPokerType.value);
       }
-      break;
       case TLJ: {
-        if (otherPeople.getHumanPoker().isHaveTlj(firstPeoplePokers)) {
-          return false;
-        } else {
-
-        }
+        return otherPeople.getHumanPoker().validOutPokerTlj(firstPeoplePokers, otherPeoplePokers);
       }
-      break;
-      case HH:
-        break;
+      case HH: {//todo
+        return false;
+      }
       case UNKNOWN:
         return false;
       default:
         return false;
     }
-
   }
 
 }
