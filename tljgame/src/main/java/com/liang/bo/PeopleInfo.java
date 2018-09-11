@@ -1,12 +1,12 @@
-package liang.bo;
+package com.liang.bo;
 
+import com.liang.bo.HumanPoker.OutPokerType;
+import com.liang.bo.PokersBo.Poker;
+import com.liang.bo.PokersBo.PokerType;
+import com.liang.bo.Table.Site;
+import com.liang.core.Action;
+import com.liang.core.PlayPoker;
 import java.util.List;
-import liang.bo.HumanPoker.OutPokerType;
-import liang.bo.PokersBo.Poker;
-import liang.bo.PokersBo.PokerType;
-import liang.bo.Table.Site;
-import liang.core.Action;
-import liang.core.PlayPoker;
 
 public class PeopleInfo implements Action {
 
@@ -22,6 +22,7 @@ public class PeopleInfo implements Action {
   private boolean isFirstOneOutPoker;//是否当前出牌者
   private boolean big;//当前出牌大小,默认是小的
   private int playNumber = 3;//当前自己打几,默认都是从3开始
+  private int score;
 
   public enum PeopleStatus {
     INIT,//初始化
@@ -113,6 +114,7 @@ public class PeopleInfo implements Action {
     status = PeopleStatus.INIT;
     jiao = false;
     reset();
+    resetCycle();
   }
 
   public HumanPoker getHumanPoker() {
@@ -199,5 +201,10 @@ public class PeopleInfo implements Action {
     this.playNumber = playNumber;
     table.setPlayNumber(playNumber);
     return this;
+  }
+
+  public void resetCycle() {
+    isOutPoker = false;
+    isFirstOneOutPoker = false;
   }
 }

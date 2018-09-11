@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>learn Resources</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div style="text-align: center;margin:0 auto;width: 1000px; ">
+  <form action="/v1/forbidden/list">
+    <table width="100%" border="1" cellspacing="1" cellpadding="0">
+      <tr>
+        <th>需要控制的uri地址</th>
+        <th>qps</th>
+        <th>并发访问量</th>
+        <th>流控类型</th>
+        <th>需要流控的对象</th>
+        <th>流控开始时间</th>
+        <th>流控时间</th>
+        <th>控制比率</th>
+        <th>是否打开</th>
+        <th>是否永久开启流控</th>
+        <th>操作</th>
+      </tr>
+      <tr th:each="forbidden:${result}">
+        <td th:text="${forbidden.uri}"></td>
+        <td th:text="${forbidden.qps}"></td>
+        <td th:text="${forbidden.sameTimeQ}"></td>
+        <td th:text="${forbidden.controllerType}"></td>
+        <td th:text="${forbidden.value}"></td>
+        <td th:text="${forbidden.controllerBeginTime}"></td>
+        <td th:text="${forbidden.controllerTime}"></td>
+        <td th:text="${forbidden.rate}"></td>
+        <td th:text="${forbidden.open}"></td>
+        <td th:text="${forbidden.foreverController}"></td>
+        <td>
+          <a th:href="@{/v1/forbidden/update-page(id=${forbidden.id})}" name="modify">修改</a>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

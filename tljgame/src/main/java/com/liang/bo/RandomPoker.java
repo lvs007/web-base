@@ -1,9 +1,9 @@
-package liang.bo;
+package com.liang.bo;
 
+import com.liang.bo.PokersBo.Poker;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import liang.bo.PokersBo.Poker;
 
 public abstract class RandomPoker {
 

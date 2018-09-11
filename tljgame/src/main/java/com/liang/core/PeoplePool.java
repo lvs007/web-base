@@ -1,4 +1,4 @@
-package liang.core;
+package com.liang.core;
 
 public class PeoplePool {
 

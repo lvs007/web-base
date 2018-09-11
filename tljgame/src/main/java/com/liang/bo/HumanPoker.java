@@ -1,15 +1,16 @@
-package liang.bo;
+package com.liang.bo;
 
+import com.liang.bo.PokersBo.Poker;
+import com.liang.bo.PokersBo.PokerType;
+import com.liang.bo.Table.Zhu;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import liang.bo.PokersBo.Poker;
-import liang.bo.PokersBo.PokerType;
-import liang.bo.Table.Zhu;
 import org.apache.commons.collections.CollectionUtils;
 
 public class HumanPoker {
@@ -19,6 +20,7 @@ public class HumanPoker {
   private List<List<Poker>> alreadyOutPokers = new ArrayList<>();
   private OutPokerType outPokerType;//出牌的类型
   private PokerClassify pokerClassify = new PokerClassify();//牌型的分类，分为主，四个花色排序
+  private List<Poker> dipai = new ArrayList<>();
 
   private PeopleInfo peopleInfo;
 
@@ -36,7 +38,7 @@ public class HumanPoker {
   }
 
   /**
-   * 找出相同牌数量是number的所有牌
+   * 找出相同牌数量是number的所有牌,已经排序过
    */
   public List<Poker> getPokers(List<Poker> pokerList, int number) {
     switch (number) {
@@ -220,6 +222,20 @@ public class HumanPoker {
     }
 
     public int value;
+  }
+
+  /**
+   * 设置底牌
+   */
+  public void setDipai(List<Poker> dipai) {
+    this.dipai.addAll(dipai);
+    for (Poker poker : dipai) {
+      add(poker);
+    }
+  }
+
+  public List<Poker> getDipai() {
+    return dipai;
   }
 
   /**
@@ -451,20 +467,110 @@ public class HumanPoker {
     return validTljOutPoker(haveList, meOutPokerList, tljType);
   }
 
-  private boolean validTljOutPoker(List<Poker> meHavePokerList, List<Poker> meOutPokerList,
+  private boolean validTljOutPoker(List<Poker> meHavePokerListP, List<Poker> meOutPokerListP,
       TljType firstTljType) {
-    List<TljType> meHaveTljTypeList = parseAllTlj(meHavePokerList);
-    List<TljType> meOutTljTypeList = parseAllTlj(meOutPokerList);
+    boolean result = false;
+    List<Poker> meHavePokerList = new ArrayList<>(meHavePokerListP);
+    List<Poker> meOutPokerList = new ArrayList<>(meOutPokerListP);
     switch (firstTljType.getCount()) {
       case 2:
+        result = tlj2(meHavePokerList, meOutPokerList, firstTljType.step);
         break;
       case 3:
+        result = tlj3(meHavePokerList, meOutPokerList, firstTljType.step);
         break;
       case 4:
+        result = tlj4(meHavePokerList, meOutPokerList, firstTljType.step);
         break;
       default:
         break;
     }
+    return result;
+  }
+
+  private boolean tlj2(List<Poker> meHavePokerList, List<Poker> meOutPokerList, int length) {
+    int me_pokerList_2 = getPokers(meHavePokerList, 2).size();
+    int out_pokerList_2 = getPokers(meOutPokerList, 2).size();
+    List<Integer> me_tlj_2 = allTlj(meHavePokerList, 2);
+    List<Integer> out_tlj_2 = allTlj(meOutPokerList, 2);
+    Collections.sort(me_tlj_2, Collections.reverseOrder());
+    Collections.sort(out_tlj_2, Collections.reverseOrder());
+    int tmp = length;
+    List<Integer> resultTljLengths = new ArrayList<>();
+    for (int i = 0; i < me_tlj_2.size(); i++) {
+      if (length - me_tlj_2.get(i) <= 0) {
+        return false;
+      } else {
+        if (tmp - me_tlj_2.get(i) > 0) {
+          resultTljLengths.add(me_tlj_2.get(i));
+        } else {
+          resultTljLengths.add(tmp);
+        }
+        tmp = tmp - me_tlj_2.get(i);
+      }
+    }
+    if (out_tlj_2.size() != resultTljLengths.size()) {
+      return false;
+    }
+    for (int i = 0; i < resultTljLengths.size(); i++) {
+      if (resultTljLengths.get(i) != out_tlj_2.get(i)) {
+        return false;
+      }
+    }
+    if (me_pokerList_2 > length) {
+      if (out_pokerList_2 != length) {
+        return false;
+      }
+    } else if (me_pokerList_2 != out_pokerList_2) {
+      return false;
+    }
+    return true;
+  }
+
+  private boolean tlj3(List<Poker> meHavePokerList, List<Poker> meOutPokerList, int length) {
+    List<Poker> me_pokerList_3 = getPokers(meHavePokerList, 3);
+    List<Poker> out_pokerList_3 = getPokers(meOutPokerList, 3);
+    if (me_pokerList_3.size() >= length) {
+      if (length != out_pokerList_3.size()) {
+        return false;
+      }
+    } else {
+      if (me_pokerList_3.size() != out_pokerList_3.size()) {
+        return false;
+      }
+      remove(me_pokerList_3, meHavePokerList);
+      remove(out_pokerList_3, meOutPokerList);
+      return tlj2(meHavePokerList, meOutPokerList, length - out_pokerList_3.size());
+    }
+    return true;
+  }
+
+  private void remove(List<Poker> me_pokerList_3, List<Poker> meHavePokerList) {
+    for (Poker poker : me_pokerList_3) {
+      for (Iterator<Poker> p = meHavePokerList.iterator(); p.hasNext(); ) {
+        if (p.next().getValue() == poker.getValue()) {
+          p.remove();
+        }
+      }
+    }
+  }
+
+  private boolean tlj4(List<Poker> meHavePokerList, List<Poker> meOutPokerList, int length) {
+    List<Poker> me_pokerList_4 = getPokers(meHavePokerList, 4);
+    List<Poker> out_pokerList_4 = getPokers(meOutPokerList, 4);
+    if (me_pokerList_4.size() >= length) {
+      if (length != out_pokerList_4.size()) {
+        return false;
+      }
+    } else {
+      if (me_pokerList_4.size() != out_pokerList_4.size()) {
+        return false;
+      }
+      remove(me_pokerList_4, meHavePokerList);
+      remove(out_pokerList_4, meOutPokerList);
+      return tlj3(meHavePokerList, meOutPokerList, length - out_pokerList_4.size());
+    }
+    return true;
   }
 
   private List<TljType> parseAllTlj(List<Poker> pokerList) {
@@ -547,6 +653,47 @@ public class HumanPoker {
       }
     }
     return false;
+  }
+
+  private List<Integer> allTlj(List<Poker> pokerList, int counts) {
+    int count = 1;
+    int step = 1;
+    Poker tmp = pokerList.get(0);
+    Map<Integer, Integer> numberMap = new LinkedHashMap<>();
+    for (int i = 1; i < pokerList.size(); i++) {
+      if (tmp.eq(pokerList.get(i))) {
+        ++count;
+      } else {
+        numberMap.put(tmp.getValue(), count);
+        tmp = pokerList.get(i);
+        count = 1;
+      }
+    }
+    if (count > 1) {
+      numberMap.put(tmp.getValue(), count);
+    }
+    Entry<Integer, Integer> tmpEntry = null;
+    List<Integer> resultList = new ArrayList<>();
+    for (Entry<Integer, Integer> entry : numberMap.entrySet()) {
+      if (tmpEntry == null) {
+        tmpEntry = entry;
+        step = 1;
+      } else if (tmpEntry.getValue() >= counts
+          && entry.getValue() >= counts && (tmpEntry.getKey() + 1 == entry.getKey()
+          || tmpEntry.getKey() == 13)) {
+        ++step;
+      } else {
+        if (step > 1) {
+          resultList.add(step);
+        }
+        tmpEntry = entry;
+        step = 1;
+      }
+    }
+    if (step > 1) {
+      resultList.add(step);
+    }
+    return resultList;
   }
 
   public static class TljType implements Comparable<TljType> {

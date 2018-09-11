@@ -1,10 +1,10 @@
-package liang.core;
+package com.liang.core;
 
+import com.liang.bo.PeopleInfo;
+import com.liang.bo.PokersBo.Poker;
+import com.liang.bo.PokersBo.PokerType;
+import com.liang.bo.Table;
 import java.util.List;
-import liang.bo.PeopleInfo;
-import liang.bo.PokersBo.Poker;
-import liang.bo.PokersBo.PokerType;
-import liang.bo.Table;
 import org.apache.commons.collections.CollectionUtils;
 
 public class PlayPoker {

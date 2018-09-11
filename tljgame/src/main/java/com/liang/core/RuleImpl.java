@@ -1,17 +1,17 @@
-package liang.core;
+package com.liang.core;
 
+import com.liang.bo.HumanPoker.OutPokerType;
+import com.liang.bo.PeopleInfo;
+import com.liang.bo.PokersBo;
+import com.liang.bo.PokersBo.Poker;
+import com.liang.bo.Table;
+import com.liang.bo.Table.Zhu;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import liang.bo.HumanPoker.OutPokerType;
-import liang.bo.PeopleInfo;
-import liang.bo.PokersBo;
-import liang.bo.PokersBo.Poker;
-import liang.bo.Table;
-import liang.bo.Table.Zhu;
 import org.apache.commons.collections.CollectionUtils;
 
-public class RuleImpl {
+public class RuleImpl extends Rule {
 
   private static final RuleImpl ruleImpl = new RuleImpl();
 
@@ -168,7 +168,8 @@ public class RuleImpl {
         return otherPeople.getHumanPoker().validOutPokerTlj(firstPeoplePokers, otherPeoplePokers);
       }
       case HH: {//todo
-        return false;
+        return compareHHTwoPeopleOutPoker(firstPeoplePokers, otherPeoplePokers, otherPeople,
+            otherPeople.getTable());
       }
       case UNKNOWN:
         return false;

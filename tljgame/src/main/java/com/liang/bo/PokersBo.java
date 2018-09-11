@@ -1,9 +1,9 @@
-package liang.bo;
+package com.liang.bo;
 
+import com.liang.bo.Table.Zhu;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import liang.bo.Table.Zhu;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
@@ -151,6 +151,21 @@ public class PokersBo {
       max = compareTwoReturnMax(max, poker, zhu);
     }
     return max;
+  }
+
+  /**
+   * 相等返回0，source 大于 target返回1，小于返回-1
+   */
+  public static int compareTwo(Poker source, Poker target, Zhu zhu) {
+    if (source.eq(target)) {
+      return 0;
+    }
+    Poker poker = compareTwoReturnMin(source, target, zhu);
+    if (poker == source) {
+      return -1;
+    } else {
+      return 1;
+    }
   }
 
   public static Poker compareTwoReturnMin(Poker source, Poker target, Zhu zhu) {

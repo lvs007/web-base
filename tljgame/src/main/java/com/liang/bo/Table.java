@@ -1,14 +1,16 @@
-package liang.bo;
+package com.liang.bo;
 
+import com.liang.bo.HumanPoker.OutPokerType;
+import com.liang.bo.PeopleInfo.PeopleStatus;
+import com.liang.bo.PokersBo.Poker;
+import com.liang.bo.PokersBo.PokerType;
+import com.liang.core.FourDistributeImpl;
+import com.liang.core.RuleImpl;
+import com.liang.core.TablePool;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import liang.bo.HumanPoker.OutPokerType;
-import liang.bo.PeopleInfo.PeopleStatus;
-import liang.bo.PokersBo.Poker;
-import liang.bo.PokersBo.PokerType;
-import liang.core.RuleImpl;
 
 public class Table {
 
@@ -23,11 +25,20 @@ public class Table {
   private Zhu zhu;
 
   private PeopleInfo currentFirstOneOutPikerPeople;//一轮的首个当前出牌人
+  private PeopleInfo oneOutPikerPeople;//一局的首个当前出牌人
 
   private int playNumber = 3;//默认打3
 
   private Object object = new Object();
   private Object startLock = new Object();
+
+  private StatisticsData statisticsData;
+  private FourDistributeImpl fourDistribute;
+
+  private List<Poker> sendDiPai = new ArrayList<>();
+  private List<Poker> peopleDiPai = new ArrayList<>();
+  private boolean sendPokerFinish;
+  private TablePool tablePool;
 
   private enum TableStatus {
     INIT,//初始化
@@ -56,6 +67,21 @@ public class Table {
       return null;
     }
 
+    public static Site nextSite(Site currentSite) {
+      if (currentSite == D) {
+        return N;
+      }
+      if (currentSite == N) {
+        return X;
+      }
+      if (currentSite == X) {
+        return B;
+      }
+      if (currentSite == B) {
+        return D;
+      }
+      throw new RuntimeException("没有这样的Site：" + currentSite);
+    }
 
     public int value;
   }
@@ -134,13 +160,14 @@ public class Table {
     }
   }
 
-  public Table() {
+  public Table(String tableId, TablePool tablePool) {
     playPeople = new HashMap<>(peopleNumber);
     status = TableStatus.INIT;
-    tableId = UUID.randomUUID().toString();
+    this.tableId = tableId;
+    this.tablePool = tablePool;
   }
 
-  public void join(PeopleInfo peopleInfo, int site) {
+  public boolean join(PeopleInfo peopleInfo, int site) {
     synchronized (object) {
       if (isCanJoin(peopleInfo, site)) {
         playPeople.put(Site.getSite(site), peopleInfo);
@@ -148,6 +175,9 @@ public class Table {
         if (playPeople.size() >= peopleNumber) {
           status = TableStatus.JOIN_FINISH;
         }
+        return true;
+      } else {
+        return false;
       }
     }
   }
@@ -170,6 +200,10 @@ public class Table {
         for (PeopleInfo people : playPeople.values()) {
           people.setStatus(PeopleStatus.DO_ING);
         }
+        statisticsData = new StatisticsData();
+        fourDistribute = new FourDistributeImpl(playPeople, sendDiPai);
+        fourDistribute.distribute();
+        sendPokerFinish = true;
         return true;
       }
       return false;
@@ -245,12 +279,17 @@ public class Table {
         .validOutPokerTypeUnSame(outPokerType, firstPeopleoutPokerList, pokerList, peopleInfo);
   }
 
-  public void statisticsData() {
+  public boolean statisticsData() {
     if (currentOutPokerIsFinish()) {
-
-      //谁的牌大，设置他为当前出牌人
-
+      PeopleInfo maxPeopleInfo = RuleImpl.getInstance()
+          .compare(playPeople, currentFirstOneOutPikerPeople);
+      //统计分数，重置出牌
+      statisticsData.statisticsScore(currentFirstOneOutPikerPeople, playPeople);
+      //谁的牌大，设置他为当前出牌人,
+      setCurrentFirstOneOutPikerPeople(maxPeopleInfo);
+      return true;
     }
+    return false;
   }
 
   /**
@@ -268,7 +307,11 @@ public class Table {
   private void clean() {
     status = TableStatus.INIT;
     zhu.clean();
+    statisticsData.clean();
     currentFirstOneOutPikerPeople = null;
+    sendPokerFinish = false;
+    sendDiPai.clear();
+    peopleDiPai.clear();
   }
 
   private boolean isCanStart() {
