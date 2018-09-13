@@ -10,32 +10,25 @@
   <form action="/v1/tlj/add">
     <section class="hero" id="hero">
 
-      <table title="all">
-
-        <tr th:each="map,stateR:${listMap}">
-          <td th:each="table,stateD:${map}">
-            <table title="${table.key}">
-              <tr>
-                <td></td>
-                <td>
-                  <a th:href="@{/v1/tlj/add(tableId=${table.key},site=1)}" name="add">
-                  <img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
-                  </a>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
-                <td></td>
-                <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
-                <td></td>
-              </tr>
-            </table>
+      <table title="${table.key}">
+        <tr>
+          <td></td>
+          <td>
+            <a th:href="@{/v1/tlj/add(tableId=${table.key},site=1)}" name="add">
+            <img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
+            </a>
           </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
+          <td></td>
+          <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
+          <td></td>
         </tr>
       </table>
 

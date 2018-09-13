@@ -31,7 +31,9 @@ public class PeopleInfo implements Action {
     LEAVE//掉线
   }
 
-  public PeopleInfo() {
+  public PeopleInfo(long id, String name) {
+    this.id = id;
+    this.name = name;
     status = PeopleStatus.INIT;
     humanPoker = new HumanPoker(this);
     playPoker = new PlayPoker(this, table);
