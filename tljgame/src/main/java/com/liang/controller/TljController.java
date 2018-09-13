@@ -3,6 +3,7 @@ package com.liang.controller;
 import com.liang.bo.Table;
 import com.liang.common.TransferTo;
 import com.liang.core.TablePool;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,10 +42,16 @@ public class TljController {
   }
 
   @PcLogin
-  public String add(String tableId, int site, ModelMap modelMap) {
+  public String add(String tableId, int site, ModelMap modelMap) throws IOException {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
     boolean result = tablePool.add(tableId, site, TransferTo.transferTo(userInfo));
-    return "";
+    modelMap.put("success",result);
+    if (result) {
+      return "table";
+    } else {
+      SpringContextHolder.getResponse().sendRedirect("/v1/tlj/add");
+      return "";
+    }
   }
 
 }
