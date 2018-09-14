@@ -70,7 +70,7 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
             String token = LoginUtils.getToken(request);
             if (StringUtils.isBlank(token) || LoginUtils.getUser(token) == null) {//重定向到登陆页
                 if (pcLogin != null) {
-                    String loginUrl = propertiesManager.getString("account.login.url", "http://127.0.0.1:9091/v1/login/login-page");
+                    String loginUrl = propertiesManager.getString("account.login.url", "http://127.0.0.1:9091/v1/pc-login/login-page");
                     loginUrl += "?callBackUrl=" + request.getRequestURL() + "?" + request.getQueryString();
                     response.sendRedirect(loginUrl);
                     return false;
