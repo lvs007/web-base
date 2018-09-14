@@ -47,7 +47,7 @@ public abstract class AbstractLocalCache<K, V> implements BaseCache<K, V> {
         try {
             return cache.getIfPresent(keyStr);
         } catch (Exception e) {
-            LOG.error("缓存中没有对应的数据,key:{}", keyStr, e);
+            LOG.error("缓存中没有对应的数据,key:{}", keyStr);
             return null;
         }
     }
