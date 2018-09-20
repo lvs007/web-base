@@ -47,10 +47,10 @@ public class TljController {
     boolean result = tablePool.add(tableId, site, TransferTo.transferTo(userInfo));
     modelMap.put("success",result);
     if (result) {
+      modelMap.put("","");
       return "table";
     } else {
-      SpringContextHolder.getResponse().sendRedirect("/v1/tlj/add");
-      return "";
+      return "redirect:/v1/tlj/list-tables";
     }
 
   }

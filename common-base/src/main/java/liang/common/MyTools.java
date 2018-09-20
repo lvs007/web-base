@@ -86,34 +86,33 @@ public class MyTools {
      */
     public static Object getValue(Object obj, Class clazz)
             throws ParseException {
-        if (clazz.isInstance(obj)) {
+        if (obj == null || clazz.isInstance(obj)) {
             return obj;
         } else {
-            if (clazz.getName().equals("java.lang.String")) {
+            if (clazz.isAssignableFrom(String.class)) {
                 return getString(obj);
-            } else if (clazz.getName().equals("java.sql.Date")) {
+            } else if (clazz.isAssignableFrom(java.sql.Date.class)) {
                 Date d = getDate(obj);
                 return d;
-            } else if (clazz.getName().equals("java.util.Date")) {
+            } else if (clazz.isAssignableFrom(Date.class)) {
                 java.util.Date d = getDate(obj);
                 return d;
-            } else if (clazz.getName().equals("java.sql.Timestamp")) {
+            } else if (clazz.isAssignableFrom(Timestamp.class)) {
                 return getTimestamp(obj);
-            } else if (clazz.getName().equals("java.math.BigDecimal")) {
-                return obj == null ? null : new BigDecimal(obj.toString());
-            } else if (clazz.getName().equals("java.lang.Integer")) {
-                return obj == null ? null : Integer.valueOf(obj.toString());
-            } else if (clazz.getName().equals("java.lang.Long")) {
-                return obj == null ? null : Long.valueOf(obj.toString());
-            } else if (clazz.getName().equals("java.lang.Double")) {
-                return obj == null ? null : Double.valueOf(obj.toString());
-            } else if (clazz.getName().equals("java.lang.Float")) {
-                return obj == null ? null : Float.valueOf(obj.toString());
-            } else if (clazz.getName().equals("java.lang.Byte")) {
-                return obj == null ? null : Byte.valueOf(obj.toString());
-            } else if (clazz.getName().equals("java.lang.Character")) {
-                return obj == null ? null : Character.valueOf(obj.toString()
-                        .charAt(0));
+            } else if (clazz.isAssignableFrom(BigDecimal.class)) {
+                return new BigDecimal(obj.toString());
+            } else if (clazz.isAssignableFrom(Integer.class)) {
+                return Integer.valueOf(obj.toString());
+            } else if (clazz.isAssignableFrom(Long.class)) {
+                return Long.valueOf(obj.toString());
+            } else if (clazz.isAssignableFrom(Double.class)) {
+                return Double.valueOf(obj.toString());
+            } else if (clazz.isAssignableFrom(Float.class)) {
+                return Float.valueOf(obj.toString());
+            } else if (clazz.isAssignableFrom(Byte.class)) {
+                return Byte.valueOf(obj.toString());
+            } else if (clazz.isAssignableFrom(Character.class)) {
+                return Character.valueOf(obj.toString().charAt(0));
             } else {
                 return obj;
             }

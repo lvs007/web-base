@@ -143,7 +143,7 @@ public class SqlPath {
      * @return this
      */
     public SqlPath page(int pageNumber, int pageSize) {
-        limit((pageNumber - 1) * pageSize, pageSize);
+        limit( (pageNumber - 1L) * pageSize, pageSize);
         return this;
     }
 

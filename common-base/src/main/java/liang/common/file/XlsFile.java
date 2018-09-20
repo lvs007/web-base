@@ -71,8 +71,7 @@ public class XlsFile implements FileHandler {
     public void readFile(File file, String lineSplit, int consumerLines, boolean exceptionContinue, ConsumerData consumerData) {
         ParameterValidate.assertNull(file);
         ParameterValidate.assertNull(consumerData);
-        try {
-            Workbook workbook = ExcelUtil.getWorkbook(file);
+        try (Workbook workbook = ExcelUtil.getWorkbook(file)) {
             Sheet sheet = ExcelUtil.getFirstSheet(workbook);
             List<Map<String, Object>> lineList = new ArrayList<>();
             List<String> titleList = new ArrayList<>();
@@ -158,8 +157,7 @@ public class XlsFile implements FileHandler {
     public void writeToStream(OutputStream outputStream, FileType fileType, List<List<Object>> dataList, List<String> headList, String lineSplit) {
         ParameterValidate.assertNull(outputStream);
         ParameterValidate.assertCollectionNull(dataList);
-        Workbook workbook = ExcelUtil.createWorkbook(fileType);
-        try {
+        try (Workbook workbook = ExcelUtil.createWorkbook(fileType)) {
             Sheet sheet = workbook.createSheet();
             int i = 0;
             if (CollectionUtils.isNotEmpty(headList)) {

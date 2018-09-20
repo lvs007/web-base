@@ -25,9 +25,6 @@ public abstract class AbstractFailListener<T> extends AbstractDao<T> implements 
     private static final String UPDATE_TIME = "updateTime";
     private static final String ID = "id";
 
-    @Autowired
-    private SplitConfig splitConfig;
-
     public List<T> listExist(Sql sql) {
         String sqlStr = "select * from " + sql.getRealTable() + " where ";
         Sql sqlSelect = new Sql(sqlStr);
@@ -75,7 +72,8 @@ public abstract class AbstractFailListener<T> extends AbstractDao<T> implements 
             if (CollectionUtils.isEmpty(existList)) {
                 this.executeUpdate(sql);
             } else {
-                Object oldUpdateTime = findMaxOldUpdateTime(existList, t);
+                t = findMaxOldUpdateTime(existList);
+                Object oldUpdateTime = ReflectUtils.getValue(t, UPDATE_TIME);
                 executeInsertFail(sql, t, oldUpdateTime);
             }
         } else {//存在老表数据
@@ -113,9 +111,10 @@ public abstract class AbstractFailListener<T> extends AbstractDao<T> implements 
         }
     }
 
-    private Object findMaxOldUpdateTime(List<T> existList, T t) throws NoSuchFieldException, IllegalAccessException {
+    private T findMaxOldUpdateTime(List<T> existList) throws NoSuchFieldException, IllegalAccessException {
         Object oldUpdateTime = null;
         int i = 1;
+        T t = null;
         for (T et : existList) {
             if (i == 1) {
                 oldUpdateTime = ReflectUtils.getValue(et, UPDATE_TIME);
@@ -145,8 +144,9 @@ public abstract class AbstractFailListener<T> extends AbstractDao<T> implements 
                     }
                 }
             }
+            ++i;
         }
-        return oldUpdateTime;
+        return t;
     }
 
     private void executeInsertOld(Sql sql, T t) {

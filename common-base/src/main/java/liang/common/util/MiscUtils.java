@@ -8,6 +8,8 @@ package liang.common.util;
  * and open the template in the editor.
  */
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +60,16 @@ public class MiscUtils {
 
     private static CountDownLatch latch = new CountDownLatch(1);
 
+    private static Random rnd;
+
+    static {
+        try {
+            rnd = SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private MiscUtils() {
     }
@@ -71,6 +83,7 @@ public class MiscUtils {
             latch.await();
         } catch (InterruptedException e) {
             LOG.error(null, e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -533,7 +546,6 @@ public class MiscUtils {
      * @author 陈刚
      */
     public static List randomSubList(List mainList, int count) {
-        Random random = new Random();
         if (mainList == null || mainList.isEmpty() || count < 1) {
             return Collections.emptyList();
         }
@@ -547,7 +559,7 @@ public class MiscUtils {
 
         List resultList = new ArrayList(count);
         for (int i = 0; i < count; i++) {
-            int index = random.nextInt(length--); //参数为6，则得到0~5之间的随机数
+            int index = rnd.nextInt(length--); //参数为6，则得到0~5之间的随机数
             Object o = cloneList.remove(index);
             resultList.add(o);
         }
@@ -662,7 +674,6 @@ public class MiscUtils {
         final int NEW_WEIGHT = 10000;
         final int COUNT_WEIGHT = -100;
         List<WeightData> list = new LinkedList<>();
-        Random rnd = new Random();
         for (Object id : randomSortList) {
             WeightData data = new WeightData(Integer.parseInt(id.toString()), rnd.nextInt(NEW_WEIGHT) + NEW_WEIGHT);
             list.add(data);

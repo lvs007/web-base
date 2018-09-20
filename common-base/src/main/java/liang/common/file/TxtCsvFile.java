@@ -73,8 +73,7 @@ public class TxtCsvFile implements FileHandler {
         ParameterValidate.assertNull(file);
         ParameterValidate.assertNull(consumerData);
         ParameterValidate.assertNull(lineSplit);
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))){
             String line = reader.readLine();
             String[] titleArray;
             if (StringUtils.isBlank(line)) {

@@ -210,11 +210,12 @@ public class HibernateDao implements Dao {
         getSession().doWork(new Work() {
             @Override
             public void execute(Connection connection) throws SQLException {
-                Statement stmt = connection.createStatement();
-                for (String sql : sqlList) {
-                    stmt.addBatch(sql);
+                try (Statement stmt = connection.createStatement()) {
+                    for (String sql : sqlList) {
+                        stmt.addBatch(sql);
+                    }
+                    stmt.executeBatch();
                 }
-                stmt.executeBatch();
             }
         });
     }
@@ -224,15 +225,16 @@ public class HibernateDao implements Dao {
         getSession().doWork(new Work() {
             @Override
             public void execute(Connection connection) throws SQLException {
-                PreparedStatement stmt = connection.prepareStatement(sql);
-                for (Object[] arr : parameters) {
+                try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                  for (Object[] arr : parameters) {
                     int i = 1;
                     for (Object p : arr) {
-                        stmt.setObject(i++, p);
+                      stmt.setObject(i++, p);
                     }
                     stmt.addBatch();
+                  }
+                  stmt.executeBatch();
                 }
-                stmt.executeBatch();
             }
         });
     }

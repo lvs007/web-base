@@ -5,6 +5,7 @@
 package liang.dao.jdbc.common;
 
 import com.alibaba.fastjson.JSON;
+import liang.common.exception.Exceptions;
 import liang.common.exception.NotSupportException;
 import liang.dao.jdbc.EntitySequenceHandler;
 import liang.dao.jdbc.callback.*;
@@ -46,8 +47,9 @@ public abstract class AbstractStorage extends ParseSql {
         return execute(sql, new SqlExecuteCallback<Boolean>() {
             @Override
             public Boolean execute(Connection conn, Sql sql) throws SQLException {
-                PreparedStatement pre = sql.createPreparedStatement(conn);
-                return pre.execute();
+                try (PreparedStatement pre = sql.createPreparedStatement(conn)) {
+                    return pre.execute();
+                }
             }
         });
     }
@@ -155,7 +157,7 @@ public abstract class AbstractStorage extends ParseSql {
             LOG.error(line.sql, ex);
             line.errorInfo = ex.getMessage();
             hasError = true;
-            throw ex;
+            throw Exceptions.unchecked(ex);
         } finally {
             //清除数据源绑定
             DBIndexHelper.clean();
@@ -488,18 +490,6 @@ public abstract class AbstractStorage extends ParseSql {
                 }
             }
         }, sql);
-    }
-
-    /**
-     * 返回当前数据源相关的连接，使用完以后，必须手动关闭
-     *
-     * @return
-     * @throws SQLException
-     */
-    protected Connection getConnection() throws SQLException {
-        Connection conn = jdbcTemplate.getDataSource().getConnection();
-        LOG.debug("获取数据库连接:" + conn.getMetaData().getURL());
-        return conn;
     }
 
     @Autowired

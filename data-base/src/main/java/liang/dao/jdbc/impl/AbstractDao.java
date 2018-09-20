@@ -558,28 +558,4 @@ public class AbstractDao<T> extends AbstractStorage implements BaseDao<T> {
     protected T from(ResultSet rs) throws SQLException {
         return getBuilder().from(rs);
     }
-
-    private void createEntityLogTable() throws Exception {
-        Connection conn = getConnection();
-        if (conn == null) {
-            throw new IllegalArgumentException("获取到的数据库连接为null");
-        }
-        try {
-//            TableUpdater.tryUpdate("t_entity_log", conn);
-        } finally {
-            conn.close();
-        }
-    }
-
-    @PostConstruct
-    void initInnerTable() {
-        if (initTable == false) {
-            initTable = true;
-            try {
-                createEntityLogTable();
-            } catch (Exception ex) {
-                LOG.error(null, ex);
-            }
-        }
-    }
 }

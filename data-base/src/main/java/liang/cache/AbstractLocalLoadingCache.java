@@ -17,8 +17,8 @@ public abstract class AbstractLocalLoadingCache<K, V> implements BaseCache<K, V>
     private static final Logger LOG = LoggerFactory.getLogger(AbstractLocalLoadingCache.class);
 
     private int initialCapacity = 100000;
-    private long maximumSize = 1000000;
-    private long expireTime = 24 * 60 * 60 * 1000;
+    private long maximumSize = 1000000L;
+    private long expireTime = 24 * 60 * 60 * 1000L;
 
     private LoadingCache<K, V> cache;
 
