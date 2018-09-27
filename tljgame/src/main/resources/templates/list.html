@@ -38,27 +38,7 @@
           </td>
         </tr>
       </table>
-
-      <h2 class="hero_header">HERO <span class="light">LIGHT</span></h2>
-      <p class="tagline">Light is a simple one page website</p>
     </section>
-    <table width="100%" border="1" cellspacing="1" cellpadding="0">
-      <tr th:each="forbidden:${result}">
-        <td th:text="${forbidden.uri}"></td>
-        <td th:text="${forbidden.qps}"></td>
-        <td th:text="${forbidden.sameTimeQ}"></td>
-        <td th:text="${forbidden.controllerType}"></td>
-        <td th:text="${forbidden.value}"></td>
-        <td th:text="${forbidden.controllerBeginTime}"></td>
-        <td th:text="${forbidden.controllerTime}"></td>
-        <td th:text="${forbidden.rate}"></td>
-        <td th:text="${forbidden.open}"></td>
-        <td th:text="${forbidden.foreverController}"></td>
-        <td>
-          <a th:href="@{/v1/forbidden/update-page(id=${forbidden.id})}" name="modify">修改</a>
-        </td>
-      </tr>
-    </table>
   </form>
 </div>
 </body>

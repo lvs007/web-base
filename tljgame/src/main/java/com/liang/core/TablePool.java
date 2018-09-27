@@ -52,4 +52,9 @@ public class TablePool {
   public Map<String, Table> getTableList() {
     return tableList;
   }
+
+  public Table getTable(String tableId) {
+    return tableList.get(tableId);
+  }
+
 }

@@ -8,48 +8,41 @@
 
 <div style="text-align: center;margin:0 auto;width: 1000px; ">
   <form action="/v1/tlj/add">
-    <section class="hero" id="hero">
-
-      <table title="">
-        <tr>
-          <td></td>
-          <td>
-            <a href="#" th:href="@{/v1/tlj/add?site=1(tableId=${table.key})}" name="add">
-            <img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
-            </a>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
-          <td></td>
-          <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><button type="button"><img src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/></button></td>
-          <td></td>
-        </tr>
-      </table>
-
-      <h2 class="hero_header">HERO <span class="light">LIGHT</span></h2>
-      <p class="tagline">Light is a simple one page website</p>
-    </section>
-    <table width="100%" border="1" cellspacing="1" cellpadding="0">
-      <tr th:each="forbidden:${result}">
-        <td th:text="${forbidden.uri}"></td>
-        <td th:text="${forbidden.qps}"></td>
-        <td th:text="${forbidden.sameTimeQ}"></td>
-        <td th:text="${forbidden.controllerType}"></td>
-        <td th:text="${forbidden.value}"></td>
-        <td th:text="${forbidden.controllerBeginTime}"></td>
-        <td th:text="${forbidden.controllerTime}"></td>
-        <td th:text="${forbidden.rate}"></td>
-        <td th:text="${forbidden.open}"></td>
-        <td th:text="${forbidden.foreverController}"></td>
-        <td>
-          <a th:href="@{/v1/forbidden/update-page(id=${forbidden.id})}" name="modify">修改</a>
+    &nbsp;&nbsp;&nbsp;
+    <table width="1003" th:title="${table.tableId}">
+      <tr>
+        <td width="94" height="77"></td>
+        <td width="814" align="center">
+          <img th:if="${table.site3 != null and table.site3.headImgSrc != null}" th:src="${table.site3.headImgSrc}" width="52" height="52"/>
+          <img th:if="${table.site3 == null or table.site3.headImgSrc == null}" src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
         </td>
+        <td width="79"></td>
+      </tr>
+      <tr>
+        <td rowspan="2">
+          <img th:if="${table.site2 != null and table.site2.headImgSrc != null}" th:src="${table.site2.headImgSrc}" width="52" height="52"/>
+          <img th:if="${table.site2 == null or table.site2.headImgSrc == null}" src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
+        </td>
+        <td height="460"></td>
+        <td rowspan="2">
+          <img th:if="${table.site1 != null and table.site1.headImgSrc != null}" th:src="${table.site1.headImgSrc}" width="52" height="52"/>
+          <img th:if="${table.site1 == null or table.site1.headImgSrc == null}" src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
+        </td>
+      </tr>
+      <tr>
+        <td height="160">
+
+        </td>
+      </tr>
+      <tr>
+        <td height="90"></td>
+        <td align="center">
+          <img th:if="${table.me != null and table.me.headImgSrc != null}" th:src="${table.me.headImgSrc}" width="52" height="52"/>
+          <img th:if="${table.me == null or table.me.headImgSrc == null}" src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
+          <a th:if="${table.me != null and !table.me.ready}" th:href="@{/v1/tlj/confirm(tableId=${table.tableId})}">准备</a>
+          <a th:if="${table.me != null and table.me.ready}" th:href="@{/v1/tlj/un-confirm(tableId=${table.tableId})}">取消准备</a>
+        </td>
+        <td></td>
       </tr>
     </table>
   </form>

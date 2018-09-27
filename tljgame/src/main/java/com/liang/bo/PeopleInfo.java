@@ -82,8 +82,10 @@ public class PeopleInfo implements Action {
   @Override
   public boolean gameOver() {
     if (getHumanPoker().isFinish()) {
-      clean();
-      return table.gameOver();
+      if (table.gameOver()) {
+        clean();
+        return true;
+      }
     }
     return false;
   }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Table {
 
@@ -170,8 +171,10 @@ public class Table {
   public boolean join(PeopleInfo peopleInfo, int site) {
     synchronized (object) {
       if (isCanJoin(peopleInfo, site)) {
-        playPeople.put(Site.getSite(site), peopleInfo);
+        Site s = Site.getSite(site);
+        playPeople.put(s, peopleInfo);
         peopleInfo.setTable(this);
+        peopleInfo.setSite(s);
         if (playPeople.size() >= peopleNumber) {
           status = TableStatus.JOIN_FINISH;
         }
@@ -211,10 +214,8 @@ public class Table {
   }
 
   public boolean gameOver() {
-    for (PeopleInfo peopleInfo : playPeople.values()) {
-      if (!peopleInfo.getHumanPoker().isFinish()) {
-        return false;
-      }
+    if (!isFinish()) {
+      return false;
     }
     clean();
     return true;
@@ -315,6 +316,9 @@ public class Table {
   }
 
   private boolean isCanStart() {
+    if (playPeople.size() != 4){
+      return false;
+    }
     for (PeopleInfo people : playPeople.values()) {
       if (people.getStatus() != PeopleStatus.CONFIRM) {
         return false;
@@ -363,6 +367,28 @@ public class Table {
     this.playNumber = playNumber;
     zhu.setPlayNumber(playNumber);
     return this;
+  }
+
+  public boolean isStart() {
+    return status == TableStatus.DO_ING;
+  }
+
+  public boolean isFinish() {
+    for (PeopleInfo peopleInfo : playPeople.values()) {
+      if (!peopleInfo.getHumanPoker().isFinish()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public PeopleInfo getPeopleInfo(long userId) {
+    for (Entry<Site, PeopleInfo> entry : playPeople.entrySet()) {
+      if (entry.getValue().getId() == userId) {
+        return entry.getValue();
+      }
+    }
+    return null;
   }
 
 }

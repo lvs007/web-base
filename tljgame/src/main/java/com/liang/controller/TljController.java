@@ -1,8 +1,12 @@
 package com.liang.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.liang.TljService;
+import com.liang.bo.PeopleInfo;
 import com.liang.bo.Table;
 import com.liang.common.TransferTo;
 import com.liang.core.TablePool;
+import com.liang.vo.TableVo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +27,9 @@ public class TljController {
   @Autowired
   private TablePool tablePool;
 
+  @Autowired
+  private TljService tljService;
+
   public String listTables(ModelMap modelMap) {
     Map<String, Table> tableMap = tablePool.getTableList();
     int i = 0;
@@ -42,17 +49,46 @@ public class TljController {
   }
 
   @PcLogin
-  public String add(String tableId, int site, ModelMap modelMap) throws IOException {
+  public String add(String tableId, int site) throws IOException {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    boolean result = tablePool.add(tableId, site, TransferTo.transferTo(userInfo));
-    modelMap.put("success",result);
+        PeopleInfo peopleInfo = TransferTo.transferTo(userInfo);
+    boolean result = tablePool.add(tableId, site, peopleInfo);
     if (result) {
-      modelMap.put("","");
-      return "table";
+      return "redirect:/v1/tlj/table?tableId=" + tableId;
     } else {
       return "redirect:/v1/tlj/list-tables";
     }
+  }
 
+  @PcLogin
+  public String confirm(String tableId) {
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    tljService.confirm(tableId, userInfo);
+    return "redirect:/v1/tlj/table?tableId=" + tableId;
+  }
+
+  @PcLogin
+  public String unConfirm(String tableId) {
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    tljService.unConfirm(tableId, userInfo);
+    return "redirect:/v1/tlj/table?tableId=" + tableId;
+  }
+
+  @PcLogin
+  public String table(String tableId, ModelMap modelMap) {
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    TableVo tableVo = tljService.getTableVo(tableId, userInfo);
+    modelMap.put("table", tableVo);
+    System.out.println(JSON.toJSONString(tableVo));
+    return "table";
+  }
+
+  private UserInfo getUser(long id){
+    UserInfo userInfo = new UserInfo();
+    userInfo.setId(id);
+    userInfo.setUserName("user-"+id);
+    userInfo.setNickName("userN-"+id);
+    return userInfo;
   }
 
 }
