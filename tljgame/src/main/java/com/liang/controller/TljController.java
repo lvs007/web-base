@@ -52,9 +52,9 @@ public class TljController {
   public String add(String tableId, int site) throws IOException {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
         PeopleInfo peopleInfo = TransferTo.transferTo(userInfo);
-    boolean result = tablePool.add(tableId, site, peopleInfo);
-    if (result) {
-      return "redirect:/v1/tlj/table?tableId=" + tableId;
+    Table result = tljService.add(tableId, site, peopleInfo);
+    if (result != null) {
+      return "redirect:/v1/tlj/table?tableId=" + result.getTableId();
     } else {
       return "redirect:/v1/tlj/list-tables";
     }

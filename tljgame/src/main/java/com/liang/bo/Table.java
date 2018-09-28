@@ -391,4 +391,7 @@ public class Table {
     return null;
   }
 
+  public String getTableId() {
+    return tableId;
+  }
 }

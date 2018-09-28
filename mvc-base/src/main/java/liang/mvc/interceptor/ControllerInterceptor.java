@@ -1,8 +1,12 @@
 package liang.mvc.interceptor;
 
 import com.alibaba.fastjson.JSON;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
 import liang.common.exception.SignException;
 import liang.common.http.SignUtils;
+import liang.common.util.Encodes;
 import liang.common.util.PropertiesManager;
 import liang.mvc.annotation.Login;
 import liang.mvc.annotation.PcLogin;
@@ -12,6 +16,7 @@ import liang.mvc.filter.LoginUtils;
 import liang.mvc.filter.UserInfo;
 import liang.mvc.monitor.ControllerMonitor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -71,7 +76,7 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
             if (StringUtils.isBlank(token) || LoginUtils.getUser(token) == null) {//重定向到登陆页
                 if (pcLogin != null) {
                     String loginUrl = propertiesManager.getString("account.login.url", "http://127.0.0.1:9091/v1/pc-login/login-page");
-                    loginUrl += "?callBackUrl=" + request.getRequestURL() + "?" + request.getQueryString();
+                    loginUrl += "?callBackUrl=" + Encodes.urlEncode(request.getRequestURL() + "?" + getQueryString(request));
                     response.sendRedirect(loginUrl);
                     return false;
                 } else {
@@ -85,5 +90,21 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
             LoginUtils.setToken(response, token);
         }
         return true;
+    }
+
+    private String getQueryString(HttpServletRequest request) {
+        Map<String, String[]> params = request.getParameterMap();
+        String queryString = "";
+        for (String key : params.keySet()) {
+            String[] values = params.get(key);
+            for (int i = 0; i < values.length; i++) {
+                String value = values[i];
+                queryString += key + "=" + value + "&";
+            }
+        }
+        // 去掉最后一个空格
+        queryString = queryString.substring(0, queryString.length() - 1);
+        System.out.println("queryString: "+queryString);
+        return queryString;
     }
 }

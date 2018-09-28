@@ -1,6 +1,8 @@
 package com.liang.vo;
 
+import com.liang.bo.PokersBo.Poker;
 import com.liang.bo.Table.Site;
+import java.util.List;
 
 public class PeopleVo {
 
@@ -9,6 +11,7 @@ public class PeopleVo {
   private String headImgSrc;
   private boolean ready;
   private boolean isNowPlay;//
+  private List<Poker> pokerList;
 
   public long getPeopleId() {
     return peopleId;
@@ -52,6 +55,15 @@ public class PeopleVo {
 
   public PeopleVo setNowPlay(boolean nowPlay) {
     isNowPlay = nowPlay;
+    return this;
+  }
+
+  public List<Poker> getPokerList() {
+    return pokerList;
+  }
+
+  public PeopleVo setPokerList(List<Poker> pokerList) {
+    this.pokerList = pokerList;
     return this;
   }
 }

@@ -196,10 +196,13 @@ public class HumanPoker {
         switch (poker.getPokerType()) {
           case FANGP:
             fangPian.remove(poker);
+            break;
           case MEIH:
             meiHuan.remove(poker);
+            break;
           case HONGT:
             hongTao.remove(poker);
+            break;
           case HEIT:
             heiTao.remove(poker);
         }
@@ -787,5 +790,9 @@ public class HumanPoker {
     all.clear();
     allPokerMap.clear();
     alreadyOutPokers.clear();
+  }
+
+  public List<Poker> getAll() {
+    return all;
   }
 }

@@ -69,6 +69,9 @@ public class LoginUtils {
     }
 
     public static UserInfo getUser(String token) {
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
         try {
             UserInfo userInfo = (UserInfo) userInfoCache.get(token);
             if (userInfo == null) {

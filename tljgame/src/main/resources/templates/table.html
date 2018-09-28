@@ -6,6 +6,40 @@
 </head>
 <body>
 
+<script type="text/javascript">
+  var stompClient = null;
+    function setConnected(connected) {
+        document.getElementById("connect").disabled = connected;
+        document.getElementById("disconnect").disabled = !connected;
+        document.getElementById("conversationDiv").style.visibility = connected ? 'visible' : 'hidden';
+        $("#response").html();
+    }
+    function connect() {
+        var socket = new SockJS('/endpointSang');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected:' + frame);
+            stompClient.subscribe('/topic/getResponse', function (response) {
+                showResponse(JSON.parse(response.body).responseMessage);
+            })
+        });
+    }
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+    }
+    function sendName() {
+        var name = $('#name').val();
+        console.log('name:' + name);
+        stompClient.send("/welcome", {}, JSON.stringify({'name': name}));
+    }
+    function showResponse(message) {
+        $("#response").html(message);
+    }
+</script>
+
 <div style="text-align: center;margin:0 auto;width: 1000px; ">
   <form action="/v1/tlj/add">
     &nbsp;&nbsp;&nbsp;
@@ -30,8 +64,8 @@
         </td>
       </tr>
       <tr>
-        <td height="160">
-
+        <td height="160" id="poker">
+          <img th:if="${table.me != null and table.me.pokerList != null and table.me.pokerList.size() > 0}" th:etch="poker,status:${table.me.pokerList}" th:style="${'position: absolute;left:'+(10+3*status.count)+';top:200'}" th:src="/images/poker/${poker.pokerType=='GUI' ? poker.value/100 : (poker.pokerType=='HEIT' ? 100+poker.value : (poker.pokerType=='HONGT' ? 200+poker.value : (poker.pokerType=='MEIH' ? 300+poker.value : 400+poker.value)))}.jps"/>
         </td>
       </tr>
       <tr>

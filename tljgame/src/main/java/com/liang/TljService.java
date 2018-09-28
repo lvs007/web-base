@@ -35,7 +35,12 @@ public class TljService {
         break;
       }
     }
-    tableVo.setMe(buildPeopleVo(me, table));
+    if (me == null) {
+      return tableVo;
+    }
+    PeopleVo meVo = buildPeopleVo(me, table);
+    setValue(meVo, me);
+    tableVo.setMe(meVo);
     Site site = Site.nextSite(me.getSite());
     tableVo.setSite1(buildPeopleVo(table.getPlayPeople().get(site), table));
     site = Site.nextSite(site);
@@ -43,6 +48,10 @@ public class TljService {
     site = Site.nextSite(site);
     tableVo.setSite3(buildPeopleVo(table.getPlayPeople().get(site), table));
     return tableVo;
+  }
+
+  private void setValue(PeopleVo meVo, PeopleInfo me) {
+    meVo.setPokerList(me.getHumanPoker().getAll());
   }
 
   private PeopleVo buildPeopleVo(PeopleInfo me, Table table) {
@@ -82,5 +91,20 @@ public class TljService {
       return null;
     }
     return table.getPeopleInfo(userInfo.getId());
+  }
+
+  public Table add(String tableId, int site, PeopleInfo peopleInfo) {
+    for (Table table : tablePool.getTableList().values()) {
+      for (PeopleInfo people : table.getPlayPeople().values()) {
+        if (people.getId() == peopleInfo.getId()) {
+          return table;
+        }
+      }
+    }
+    Table table = tablePool.getTable(tableId);
+    if (table.join(peopleInfo, site)) {
+      return table;
+    }
+    return null;
   }
 }
