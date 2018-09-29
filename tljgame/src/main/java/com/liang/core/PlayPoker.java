@@ -4,6 +4,7 @@ import com.liang.bo.PeopleInfo;
 import com.liang.bo.PokersBo.Poker;
 import com.liang.bo.PokersBo.PokerType;
 import com.liang.bo.Table;
+import com.liang.bo.Table.Zhu;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -25,7 +26,7 @@ public class PlayPoker {
       return false;
     }
     if (table.getZhu() == null) {
-      table.setZhu(table.new Zhu(pokerType, number));
+      table.setZhu(new Zhu(pokerType, number));
       peopleInfo.setJiao(true);
       table.setCurrentFirstOneOutPikerPeople(peopleInfo);
       return true;

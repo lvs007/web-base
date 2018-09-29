@@ -87,7 +87,7 @@ public class Table {
     public int value;
   }
 
-  public class Zhu {
+  public static class Zhu {
 
     private PokerType pokerType;
     private int number;//一共几张2

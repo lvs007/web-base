@@ -795,4 +795,8 @@ public class HumanPoker {
   public List<Poker> getAll() {
     return all;
   }
+
+  public PokerClassify getPokerClassify() {
+    return pokerClassify;
+  }
 }

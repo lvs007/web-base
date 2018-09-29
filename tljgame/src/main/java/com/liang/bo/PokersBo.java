@@ -3,6 +3,7 @@ package com.liang.bo;
 import com.liang.bo.Table.Zhu;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -137,6 +138,15 @@ public class PokersBo {
     return pokerList;
   }
 
+  public static void sortFormMaxToMin(List<Poker> pokerList, Zhu zhu) {
+    Collections.sort(pokerList, new Comparator<Poker>() {
+      @Override
+      public int compare(Poker o1, Poker o2) {
+        return -compareTwo(o1, o2, zhu);
+      }
+    });
+  }
+
   public static Poker findMinPoker(List<Poker> pokerList, Zhu zhu) {
     Poker min = pokerList.get(0);
     for (Poker value : pokerList) {
@@ -170,7 +180,7 @@ public class PokersBo {
 
   public static Poker compareTwoReturnMin(Poker source, Poker target, Zhu zhu) {
     if (source.eq(target)) {
-      return source;
+      return target;
     }
     int playNumber = zhu.getPlayNumber();
     if (source.value == 2) {
@@ -181,17 +191,29 @@ public class PokersBo {
         return target;
       }
     }
-    if (source.value == playNumber || source.value == 100 || source.value == 200) {
+    if (source.value == playNumber) {
       if (target.value == 100 || target.value == 200) {
-        return source.value > target.value ? target : source;
+        return source;
       }
-      if (target.value == playNumber && target.pokerType == zhu.getPokerType()) {
+      if (target.value == playNumber && target.pokerType == zhu.getPokerType()
+          && source.pokerType != zhu.getPokerType()) {
         return source;
       }
       return target;
     }
+    if (source.value == 100 || source.value == 200) {
+      return source.value >= target.value ? target : source;
+    }
     if (target.value == 2 || target.value == playNumber || target.value == 100
         || target.value == 200) {
+      return source;
+    }
+    //
+    boolean s = zhu.validPokerIsZhu(source);
+    boolean t = zhu.validPokerIsZhu(target);
+    if (s && !t) {
+      return target;
+    } else if (!s && t) {
       return source;
     }
     //都不是明主
@@ -201,7 +223,7 @@ public class PokersBo {
     if (target.value == 1) {
       return source;
     }
-    return source.value > target.value ? target : source;
+    return source.value >= target.value ? target : source;
   }
 
   public static Poker compareTwoReturnMax(Poker source, Poker target, Zhu zhu) {
@@ -217,17 +239,29 @@ public class PokersBo {
         return source;
       }
     }
-    if (source.value == playNumber || source.value == 100 || source.value == 200) {
+    if (source.value == playNumber) {
       if (target.value == 100 || target.value == 200) {
-        return source.value > target.value ? source : target;
+        return target;
       }
-      if (target.value == playNumber && target.pokerType == zhu.getPokerType()) {
+      if (target.value == playNumber && target.pokerType == zhu.getPokerType()
+          && source.pokerType != zhu.getPokerType()) {
         return target;
       }
       return source;
     }
+    if (source.value == 100 || source.value == 200) {
+      return source.value >= target.value ? source : target;
+    }
     if (target.value == 2 || target.value == playNumber || target.value == 100
         || target.value == 200) {
+      return target;
+    }
+    //
+    boolean s = zhu.validPokerIsZhu(source);
+    boolean t = zhu.validPokerIsZhu(target);
+    if (s && !t) {
+      return source;
+    } else if (!s && t) {
       return target;
     }
     //都不是明主
@@ -237,7 +271,7 @@ public class PokersBo {
     if (target.value == 1) {
       return target;
     }
-    return source.value > target.value ? source : target;
+    return source.value >= target.value ? source : target;
   }
 
   public static boolean eq(Poker source, Poker target, Zhu zhu) {

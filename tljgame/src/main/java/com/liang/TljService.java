@@ -1,12 +1,20 @@
 package com.liang;
 
+import com.liang.bo.HumanPoker.PokerClassify;
 import com.liang.bo.PeopleInfo;
 import com.liang.bo.PeopleInfo.PeopleStatus;
+import com.liang.bo.PokersBo;
+import com.liang.bo.PokersBo.Poker;
+import com.liang.bo.PokersBo.PokerType;
 import com.liang.bo.Table;
 import com.liang.bo.Table.Site;
+import com.liang.bo.Table.Zhu;
 import com.liang.core.TablePool;
 import com.liang.vo.PeopleVo;
+import com.liang.vo.PokerVo;
 import com.liang.vo.TableVo;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import liang.mvc.filter.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +59,32 @@ public class TljService {
   }
 
   private void setValue(PeopleVo meVo, PeopleInfo me) {
-    meVo.setPokerList(me.getHumanPoker().getAll());
+    List<PokerVo> pokerVoList = new ArrayList<>();
+    List<Poker> pokerAllList = new ArrayList<>();
+    PokerClassify pokerClassify = me.getHumanPoker().getPokerClassify();
+    List<Poker> pokerList = pokerClassify.getZhu();
+    Zhu zhu = me.getTable().getZhu();
+    if (zhu == null) {
+      zhu = new Zhu(PokerType.HEIT, me.getTable().getPlayNumber());
+    }
+    PokersBo.sortFormMaxToMin(pokerList, zhu);
+    pokerAllList.addAll(pokerList);
+    pokerList = pokerClassify.getHeiTao();
+    PokersBo.sortFormMaxToMin(pokerList, zhu);
+    pokerAllList.addAll(pokerList);
+    pokerList = pokerClassify.getHongTao();
+    PokersBo.sortFormMaxToMin(pokerList, zhu);
+    pokerAllList.addAll(pokerList);
+    pokerList = pokerClassify.getMeiHuan();
+    PokersBo.sortFormMaxToMin(pokerList, zhu);
+    pokerAllList.addAll(pokerList);
+    pokerList = pokerClassify.getFangPian();
+    PokersBo.sortFormMaxToMin(pokerList, zhu);
+    pokerAllList.addAll(pokerList);
+    for (Poker poker : pokerAllList) {
+      pokerVoList.add(PokerVo.build(poker));
+    }
+    meVo.setPokerList(pokerVoList);
   }
 
   private PeopleVo buildPeopleVo(PeopleInfo me, Table table) {

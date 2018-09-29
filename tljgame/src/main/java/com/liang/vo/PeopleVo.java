@@ -11,7 +11,7 @@ public class PeopleVo {
   private String headImgSrc;
   private boolean ready;
   private boolean isNowPlay;//
-  private List<Poker> pokerList;
+  private List<PokerVo> pokerList;
 
   public long getPeopleId() {
     return peopleId;
@@ -58,11 +58,11 @@ public class PeopleVo {
     return this;
   }
 
-  public List<Poker> getPokerList() {
+  public List<PokerVo> getPokerList() {
     return pokerList;
   }
 
-  public PeopleVo setPokerList(List<Poker> pokerList) {
+  public PeopleVo setPokerList(List<PokerVo> pokerList) {
     this.pokerList = pokerList;
     return this;
   }
