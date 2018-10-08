@@ -61,8 +61,8 @@ img {display:block;}
         <td align="center">
           <img th:if="${table.me != null and table.me.headImgSrc != null}" th:src="${table.me.headImgSrc}" width="52" height="52"/>
           <img th:if="${table.me == null or table.me.headImgSrc == null}" src="http://img.wxcha.com/file/201711/09/3b16c06598.jpg" width="52" height="52"/>
-          <a th:if="${table.me != null and !table.me.ready}" th:href="@{/v1/tlj/confirm(tableId=${table.tableId})}">准备</a>
-          <a th:if="${table.me != null and table.me.ready}" th:href="@{/v1/tlj/un-confirm(tableId=${table.tableId})}">取消准备</a>
+          <a th:if="${table.me != null and !table.me.ready and !table.start}" th:href="@{/v1/tlj/confirm(tableId=${table.tableId})}">准备</a>
+          <a th:if="${table.me != null and table.me.ready and !table.start}" th:href="@{/v1/tlj/un-confirm(tableId=${table.tableId})}">取消准备</a>
         </td>
         <td></td>
       </tr>
