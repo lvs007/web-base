@@ -1,7 +1,6 @@
 package com.liang.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.liang.TljService;
+import com.liang.service.TljService;
 import com.liang.bo.PeopleInfo;
 import com.liang.bo.Table;
 import com.liang.common.TransferTo;
@@ -79,16 +78,7 @@ public class TljController {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
     TableVo tableVo = tljService.getTableVo(tableId, userInfo);
     modelMap.put("table", tableVo);
-    System.out.println(JSON.toJSONString(tableVo));
     return "table";
-  }
-
-  private UserInfo getUser(long id){
-    UserInfo userInfo = new UserInfo();
-    userInfo.setId(id);
-    userInfo.setUserName("user-"+id);
-    userInfo.setNickName("userN-"+id);
-    return userInfo;
   }
 
 }

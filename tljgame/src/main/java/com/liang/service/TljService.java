@@ -1,4 +1,4 @@
-package com.liang;
+package com.liang.service;
 
 import com.liang.bo.HumanPoker.PokerClassify;
 import com.liang.bo.PeopleInfo;
