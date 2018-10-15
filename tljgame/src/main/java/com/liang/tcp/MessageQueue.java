@@ -1,6 +1,10 @@
 package com.liang.tcp;
 
 import com.liang.tcp.message.Message;
+import com.liang.tcp.message.MessageFactory;
+import com.liang.tcp.message.entity.PingMessage;
+import com.liang.tcp.message.entity.PongMessage;
+import com.liang.tcp.peer.PeerChannel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.concurrent.BlockingQueue;
@@ -17,26 +21,46 @@ public class MessageQueue {
 
   private static final Logger logger = LoggerFactory.getLogger(MessageQueue.class);
 
-  private volatile boolean sendMsgFlag = true;
-  
+  private volatile boolean continueFlag = true;
+
   private ChannelHandlerContext ctx = null;
 
-  private BlockingQueue<Message> msgQueue = new LinkedBlockingQueue<>();
-  private BlockingQueue<Message> pingPongMsgQueue = new LinkedBlockingQueue<>();
+  private BlockingQueue<Message> msgSendQueue = new LinkedBlockingQueue<>();
+  private BlockingQueue<Message> pingPongMsgSendQueue = new LinkedBlockingQueue<>();
+
+  private BlockingQueue<Message> receiveMsgQueue = new LinkedBlockingQueue<>();
+
+  private PeerChannel peerChannel;
 
   @Autowired
   private ThreadPool threadPool;
 
-  public void activate(ChannelHandlerContext ctx) {
+  @Autowired
+  private MessageFactory messageFactory;
+
+
+  public void activate(ChannelHandlerContext ctx, PeerChannel peerChannel) {
     this.ctx = ctx;
-    threadPool.executeSendMessage(() -> {
-      while (sendMsgFlag) {
-        send(msgQueue);
+    this.peerChannel = peerChannel;
+    threadPool.executeMessage(() -> {
+      while (continueFlag) {
+        send(msgSendQueue);
       }
     });
-    threadPool.executeSendMessage(() -> {
-      while (sendMsgFlag) {
-        send(pingPongMsgQueue);
+    threadPool.executeMessage(() -> {
+      while (continueFlag) {
+        send(pingPongMsgSendQueue);
+      }
+    });
+    threadPool.executeMessage(() -> {
+      while (continueFlag) {
+        try {
+          Message msg = receiveMsgQueue.take();
+          messageFactory.action(peerChannel, msg);
+        } catch (InterruptedException e) {
+          logger.error("receive message have a error!", e);
+          Thread.currentThread().interrupt();
+        }
       }
     });
   }
@@ -58,20 +82,25 @@ public class MessageQueue {
 
   public boolean sendMessage(Message msg) {
     logger.info("Send to {}, {} ", ctx.channel().remoteAddress(), msg);
-    return msgQueue.offer(msg);
+    return msgSendQueue.offer(msg);
   }
 
   public boolean sendPingPongMessage(Message msg) {
     logger.info("Send to {}, {} ", ctx.channel().remoteAddress(), msg);
-    return pingPongMsgQueue.offer(msg);
+    return pingPongMsgSendQueue.offer(msg);
   }
 
   public void receivedMessage(Message msg) {
     logger.info("Receive from {}, {}", ctx.channel().remoteAddress(), msg);
+    if (msg instanceof PingMessage || msg instanceof PongMessage) {
+      messageFactory.action(peerChannel, msg);
+    } else {
+      receiveMsgQueue.offer(msg);
+    }
   }
 
   public void close() {
-    sendMsgFlag = false;
+    continueFlag = false;
   }
 
 }

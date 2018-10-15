@@ -1,6 +1,6 @@
 package com.liang.tcp.message.action;
 
-import com.liang.tcp.message.AddGroupMessage;
+import com.liang.tcp.message.entity.AddGroupMessage;
 import com.liang.tcp.message.MessageTypeEnum;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.tcp.peer.PeerChannelPool;
@@ -25,7 +25,6 @@ public class AddGroupMessageAction extends AbstractMessageAction<AddGroupMessage
 
   @Override
   public <T> T action(PeerChannel peerChannel, AddGroupMessage message) {
-    peerChannel.setGroupId(message.getGroupId());
     peerChannelPool.addGroup(message.getGroupId(), peerChannel);
     return null;
   }

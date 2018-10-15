@@ -1,7 +1,7 @@
 package com.liang.tcp.message.action;
 
 import com.liang.tcp.message.MessageTypeEnum;
-import com.liang.tcp.message.PongMessage;
+import com.liang.tcp.message.entity.PongMessage;
 import com.liang.tcp.peer.PeerChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,6 @@ public class PongMessageAction extends AbstractMessageAction<PongMessage> {
 
   @Override
   public <T> T action(PeerChannel peerChannel, PongMessage message) {
-    logger.info("Receive pong message {}", message);
     peerChannel.setHasPong(true);
     return null;
   }

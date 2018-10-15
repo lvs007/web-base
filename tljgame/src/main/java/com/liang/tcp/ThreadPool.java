@@ -18,12 +18,12 @@ public class ThreadPool {
   private static final Logger logger = LoggerFactory.getLogger(ThreadPool.class);
 
   private ExecutorService sendMessageService = Executors.newFixedThreadPool(100,
-      new ThreadFactoryBuilder().setNameFormat("Send-Message-Pool-%d").build());
+      new ThreadFactoryBuilder().setNameFormat("Send-Msg-Pool-%d").build());
 
   private ScheduledExecutorService logService = Executors.newSingleThreadScheduledExecutor(
       new ThreadFactoryBuilder().setNameFormat("Log-Peer-Pool").build());
 
-  public void executeSendMessage(Runnable runnable) {
+  public void executeMessage(Runnable runnable) {
     sendMessageService.execute(runnable);
   }
 

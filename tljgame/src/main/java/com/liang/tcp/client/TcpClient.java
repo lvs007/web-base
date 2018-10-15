@@ -1,6 +1,8 @@
 package com.liang.tcp.client;
 
 import com.liang.tcp.handler.TcpChannelInitializer;
+import com.liang.tcp.peer.PeerChannel;
+import com.liang.tcp.peer.PeerChannelPool;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -9,8 +11,10 @@ import io.netty.channel.DefaultMessageSizeEstimator;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+import liang.common.util.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class TcpClient {
 
   @Autowired
   private ApplicationContext ctx;
+
+  @Autowired
+  private PeerChannelPool peerChannelPool;
 
   public TcpClient() {
     workerGroup = new NioEventLoopGroup(0, new ThreadFactory() {
@@ -75,6 +82,29 @@ public class TcpClient {
 
     // Start the client.
     return b.connect();
+  }
+
+  public boolean isConnectFinish(ChannelFuture channelFuture) {
+    return channelFuture.channel().isActive();
+  }
+
+  public PeerChannel getPeerChannel(String host, int port) {
+    return peerChannelPool.getPeerChannel(host, port);
+  }
+
+  public PeerChannel getPeerChannel(ChannelFuture future) {
+    int tryTimes = 1;
+    while (!isConnectFinish(future) && tryTimes <= 30) {
+      ThreadUtils.sleep(10 * tryTimes);
+      ++tryTimes;
+    }
+    if (future.channel() == null || future.channel().remoteAddress() == null) {
+      return null;
+    }
+    InetSocketAddress inetSocketAddress = (InetSocketAddress) future.channel().remoteAddress();
+    String host = inetSocketAddress.getHostString();
+    int port = inetSocketAddress.getPort();
+    return peerChannelPool.getPeerChannel(host, port);
   }
 
   public void close() {

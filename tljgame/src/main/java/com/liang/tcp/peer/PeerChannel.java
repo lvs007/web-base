@@ -2,7 +2,7 @@ package com.liang.tcp.peer;
 
 import com.liang.tcp.MessageQueue;
 import com.liang.tcp.message.Message;
-import com.liang.tcp.message.PingMessage;
+import com.liang.tcp.message.entity.PingMessage;
 import io.netty.channel.ChannelHandlerContext;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -39,7 +39,7 @@ public class PeerChannel {
 
   public void channelActive(ChannelHandlerContext ctx) {
     this.ctx = ctx;
-    messageQueue.activate(ctx);
+    messageQueue.activate(ctx, this);
     pingPongCheck();
   }
 
@@ -69,6 +69,9 @@ public class PeerChannel {
     return messageQueue.sendPingPongMessage(message);
   }
 
+  public void receiveMessage(Message message) {
+    messageQueue.receivedMessage(message);
+  }
 
   public MessageQueue getMessageQueue() {
     return messageQueue;

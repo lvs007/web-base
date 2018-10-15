@@ -34,4 +34,8 @@ public class PeerChannelGroup {
     this.peerChannelSet = peerChannelSet;
     return this;
   }
+
+  public int size() {
+    return peerChannelSet.size();
+  }
 }

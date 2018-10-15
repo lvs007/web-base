@@ -1,4 +1,7 @@
-package com.liang.tcp.message;
+package com.liang.tcp.message.entity;
+
+import com.liang.tcp.message.Message;
+import com.liang.tcp.message.MessageTypeEnum;
 
 public class PongMessage extends Message {
 

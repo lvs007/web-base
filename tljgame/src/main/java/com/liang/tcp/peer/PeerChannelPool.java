@@ -4,6 +4,7 @@ import com.liang.tcp.ThreadPool;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,15 @@ public class PeerChannelPool {
   @Autowired
   private ThreadPool threadPool;
 
+  @Autowired
+  private PeerController peerController;
+
   public void addPeerChannel(PeerChannel peerChannel) {
     synchronized (lock) {
       logger.info("addPeerChannel {},{}", peerChannel.getHost(), peerChannel.getPort());
       String key = buildKey(peerChannel.getHost(), peerChannel.getPort());
-      if (peerChannelMap.size() < MAX_NUMBER && !peerChannelMap.containsKey(key)) {
+      if (peerChannelMap.size() < MAX_NUMBER && !peerChannelMap.containsKey(key)
+          && peerController.canAdd(peerChannel)) {
         peerChannelMap.put(key, peerChannel);
       } else {
         //do disconnect
@@ -43,13 +48,25 @@ public class PeerChannelPool {
     if (peerChannelGroup != null) {
       peerChannelGroup.removePeerChannel(peerChannel);
     }
+    peerController.leave(peerChannel);
   }
 
   public void addGroup(String groupId, PeerChannel peerChannel) {
     synchronized (lock) {
+      if (StringUtils.equals(groupId, peerChannel.getGroupId())) {
+        return;
+      }
+      PeerChannelGroup peerChannelGroup = peerChannelGroupMap.get(peerChannel.getGroupId());
+      if (peerChannelGroup != null) {
+        peerChannelGroup.removePeerChannel(peerChannel);
+        if (peerChannelGroup.size() <= 0) {
+          peerChannelGroupMap.remove(peerChannel.getGroupId());
+        }
+      }
       if (!peerChannelGroupMap.containsKey(groupId)) {
         peerChannelGroupMap.put(groupId, new PeerChannelGroup());
       }
+      peerChannel.setGroupId(groupId);
       peerChannelGroupMap.get(groupId).addPeerChannel(peerChannel);
     }
   }

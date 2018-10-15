@@ -18,7 +18,6 @@
 package com.liang.tcp.handler;
 
 import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageFactory;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.tcp.peer.PeerChannelPool;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,9 +37,6 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
   private PeerChannel peerChannel;
 
   @Autowired
-  private MessageFactory messageFactory;
-
-  @Autowired
   private PeerChannelPool peerChannelPool;
 
   @Override
@@ -52,7 +48,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 
   @Override
   public void channelRead0(final ChannelHandlerContext ctx, Message msg) {
-    messageFactory.action(peerChannel, msg);
+    peerChannel.receiveMessage(msg);
   }
 
   @Override
