@@ -1,7 +1,6 @@
 package com.liang.tcp.message.entity;
 
 import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageTypeEnum;
 
 public class PongMessage extends Message {
 
@@ -9,11 +8,11 @@ public class PongMessage extends Message {
   private long sendTime;
 
   public PongMessage() {
-    super(MessageTypeEnum.PONG.value);
+    this(0L, 0L);
   }
 
   public PongMessage(long pingTime, long sendTime) {
-    super(MessageTypeEnum.PONG.value);
+    super((byte) 2);
     this.pingTime = pingTime;
     this.sendTime = sendTime;
   }
@@ -41,7 +40,7 @@ public class PongMessage extends Message {
     return "PongMessage{" +
         "pingTime=" + pingTime +
         ", sendTime=" + sendTime +
-        ", type=" + getMessageType() +
+        ", type=" + getType() +
         '}';
   }
 }

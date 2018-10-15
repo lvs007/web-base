@@ -16,6 +16,7 @@
         <module>spider</module>
       <module>tljgame</module>
       <module>dezhou</module>
+      <module>tcp-base</module>
     </modules>
 
     <properties>

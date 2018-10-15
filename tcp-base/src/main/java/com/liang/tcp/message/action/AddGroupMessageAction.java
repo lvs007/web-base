@@ -1,7 +1,7 @@
 package com.liang.tcp.message.action;
 
+import com.liang.tcp.message.AbstractMessageAction;
 import com.liang.tcp.message.entity.AddGroupMessage;
-import com.liang.tcp.message.MessageTypeEnum;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.tcp.peer.PeerChannelPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ public class AddGroupMessageAction extends AbstractMessageAction<AddGroupMessage
   private PeerChannelPool peerChannelPool;
 
   @Override
-  public MessageTypeEnum getMessageType() {
-    return MessageTypeEnum.ADD_GROUP;
+  public byte getMessageType() {
+    return 3;
   }
 
   @Override

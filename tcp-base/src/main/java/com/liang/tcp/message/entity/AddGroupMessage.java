@@ -1,7 +1,6 @@
 package com.liang.tcp.message.entity;
 
 import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageTypeEnum;
 
 public class AddGroupMessage extends Message {
 
@@ -12,7 +11,7 @@ public class AddGroupMessage extends Message {
   }
 
   public AddGroupMessage(String groupId) {
-    super(MessageTypeEnum.ADD_GROUP.value);
+    super((byte) 3);
     this.groupId = groupId;
   }
 
@@ -23,5 +22,13 @@ public class AddGroupMessage extends Message {
   public AddGroupMessage setGroupId(String groupId) {
     this.groupId = groupId;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "AddGroupMessage{" +
+        "groupId=" + groupId +
+        ", type=" + type +
+        '}';
   }
 }

@@ -1,6 +1,6 @@
 package com.liang.tcp.message.action;
 
-import com.liang.tcp.message.MessageTypeEnum;
+import com.liang.tcp.message.AbstractMessageAction;
 import com.liang.tcp.message.entity.PongMessage;
 import com.liang.tcp.peer.PeerChannel;
 import org.slf4j.Logger;
@@ -13,8 +13,8 @@ public class PongMessageAction extends AbstractMessageAction<PongMessage> {
   private static final Logger logger = LoggerFactory.getLogger(PongMessageAction.class);
 
   @Override
-  public MessageTypeEnum getMessageType() {
-    return MessageTypeEnum.PONG;
+  public byte getMessageType() {
+    return 2;
   }
 
   @Override

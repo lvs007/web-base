@@ -2,8 +2,10 @@ package com.liang.tcp.peer;
 
 import com.liang.tcp.ThreadPool;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +93,21 @@ public class PeerChannelPool {
         logger.info("{},{}", peerChannelMap.values(), peerChannelGroupMap.keySet());
       }
     });
+  }
+
+  @PreDestroy
+  public void destroy() {
+    close();
+  }
+
+  public void close() {
+    if (peerChannelMap.size() <= 0) {
+      return;
+    }
+    for (Iterator<PeerChannel> iterator = peerChannelMap.values().iterator();
+        ((Iterator) iterator).hasNext(); ) {
+      iterator.next().close();
+    }
   }
 
 }

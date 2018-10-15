@@ -1,7 +1,4 @@
-package com.liang.tcp.message.action;
-
-import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageFactory;
+package com.liang.tcp.message;
 
 public abstract class AbstractMessageAction<M extends Message> implements MessageAction<M> {
 

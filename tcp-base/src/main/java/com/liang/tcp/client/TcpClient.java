@@ -37,7 +37,6 @@ public class TcpClient {
   public TcpClient() {
     workerGroup = new NioEventLoopGroup(0, new ThreadFactory() {
       AtomicInteger cnt = new AtomicInteger(0);
-
       @Override
       public Thread newThread(Runnable r) {
         return new Thread(r, "TcpClientWorker-" + cnt.getAndIncrement());
@@ -51,6 +50,11 @@ public class TcpClient {
     } catch (Exception e) {
       logger.info("TcpClient: Can't connect to " + host + ":" + port + " (" + e.getMessage() + ")");
     }
+  }
+
+  public PeerChannel connectSync(String host, int port) {
+    ChannelFuture channelFuture = connectAsync(host, port);
+    return getPeerChannel(channelFuture);
   }
 
   public ChannelFuture connectAsync(String host, int port) {

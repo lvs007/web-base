@@ -1,9 +1,7 @@
 package com.liang.tcp.message;
 
 import com.alibaba.fastjson.JSON;
-import com.liang.tcp.message.action.MessageAction;
 import com.liang.tcp.peer.PeerChannel;
-import io.netty.channel.ChannelHandlerContext;
 import java.util.HashMap;
 import java.util.Map;
 import liang.common.exception.UnExistException;
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageFactory {
 
-  private static final Map<MessageTypeEnum, MessageAction<Message>> messageActionMap = new HashMap<>();
+  private static final Map<Byte, MessageAction<Message>> messageActionMap = new HashMap<>();
 
   public Message parseMessage(byte[] encoded)
       throws InstantiationException, IllegalAccessException {
@@ -42,11 +40,7 @@ public class MessageFactory {
   }
 
   private MessageAction<Message> select(byte type) {
-    MessageTypeEnum messageTypeEnum = MessageTypeEnum.get(type);
-    if (messageTypeEnum == null) {
-      return null;
-    }
-    MessageAction<Message> messageAction = messageActionMap.get(messageTypeEnum);
+    MessageAction<Message> messageAction = messageActionMap.get(type);
     if (messageAction == null) {
       throw UnExistException.throwException("不存在这样消息的action（处理器）！");
     }

@@ -2,11 +2,13 @@ package com.liang.tcp.message;
 
 import com.alibaba.fastjson.JSON;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * type = 1（ping消息）,2（pong消息）,3（add group 加入群组消息）已经被使用，不能占用
+ */
 public abstract class Message {
 
   protected static final Logger logger = LoggerFactory.getLogger("Message");
@@ -27,10 +29,6 @@ public abstract class Message {
 
   public byte getType() {
     return type;
-  }
-
-  public MessageTypeEnum getMessageType() {
-    return MessageTypeEnum.get(type);
   }
 
   public static byte[] stringToBytes(String str) {

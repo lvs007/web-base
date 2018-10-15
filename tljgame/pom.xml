@@ -38,6 +38,11 @@
       <artifactId>mvc-base</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.liang.web</groupId>
+      <artifactId>tcp-base</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
     <!--thymeleaf模版-->
     <dependency>
       <groupId>org.springframework.boot</groupId>

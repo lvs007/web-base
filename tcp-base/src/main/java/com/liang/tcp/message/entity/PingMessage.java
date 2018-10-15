@@ -1,18 +1,17 @@
 package com.liang.tcp.message.entity;
 
 import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageTypeEnum;
 
 public class PingMessage extends Message {
 
   private long sendTime;
 
   public PingMessage() {
-    super(MessageTypeEnum.PING.value);
+    this(0L);
   }
 
   public PingMessage(long sendTime) {
-    super(MessageTypeEnum.PING.value);
+    super((byte) 1);
     this.sendTime = sendTime;
   }
 
@@ -29,7 +28,7 @@ public class PingMessage extends Message {
   public String toString() {
     return "PingMessage{" +
         "sendTime=" + sendTime +
-        ", type=" + getMessageType() +
+        ", type=" + getType() +
         '}';
   }
 }

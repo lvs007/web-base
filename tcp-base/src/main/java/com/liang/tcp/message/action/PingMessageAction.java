@@ -1,6 +1,6 @@
 package com.liang.tcp.message.action;
 
-import com.liang.tcp.message.MessageTypeEnum;
+import com.liang.tcp.message.AbstractMessageAction;
 import com.liang.tcp.message.entity.PingMessage;
 import com.liang.tcp.message.entity.PongMessage;
 import com.liang.tcp.peer.PeerChannel;
@@ -14,8 +14,8 @@ public class PingMessageAction extends AbstractMessageAction<PingMessage> {
   private static final Logger logger = LoggerFactory.getLogger(PingMessageAction.class);
 
   @Override
-  public MessageTypeEnum getMessageType() {
-    return MessageTypeEnum.PING;
+  public byte getMessageType() {
+    return 1;
   }
 
   @Override

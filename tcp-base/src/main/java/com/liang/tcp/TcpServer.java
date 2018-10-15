@@ -1,6 +1,5 @@
 package com.liang.tcp;
 
-import com.liang.service.ConfigService;
 import com.liang.tcp.handler.TcpChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,7 +9,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +29,8 @@ public class TcpServer {
   @Autowired
   private ApplicationContext ctx;
 
-  @Autowired
-  private ConfigService configService;
-
-  @PostConstruct
-  public void init() {
-    if (configService.startTcpService()) {
-      new Thread(() -> start(10010)).start();
-    }
+  public void startAsync(int port) {
+    new Thread(() -> start(port), "tcp-server").start();
   }
 
   public void start(int port) {
