@@ -1,6 +1,7 @@
 package com.liang.start;
 
 import com.liang.tcp.TcpServer;
+import com.liang.udp.UdpServer;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -15,18 +16,22 @@ import org.springframework.context.annotation.ImportResource;
 @Configuration//配置控制
 @EnableAutoConfiguration
 @ComponentScan//组件扫描
-@ImportResource({"classpath:applicationContext-base.xml","classpath:applicationContext.xml"})
+@ImportResource({"classpath:applicationContext-base.xml", "classpath:applicationContext.xml"})
 public class Start {
 
-    @Autowired
-    private TcpServer tcpServer;
+  @Autowired
+  private TcpServer tcpServer;
 
-    @PostConstruct
-    public void init() {
-        tcpServer.startAsync(10011);
-    }
+  @Autowired
+  private UdpServer udpServer;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Start.class, args);
-    }
+  @PostConstruct
+  public void init() {
+    tcpServer.startAsync(10011);
+    udpServer.startAsync(10011);
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(Start.class, args);
+  }
 }

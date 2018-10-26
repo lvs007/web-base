@@ -1,7 +1,7 @@
 package com.liang.tcp.handler;
 
-import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageFactory;
+import com.liang.common.message.Message;
+import com.liang.common.message.MessageFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

@@ -15,53 +15,54 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the ethereumJ library. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.liang.tcp.handler;
+package com.liang.udp.handler;
 
-import com.liang.tcp.message.Message;
-import com.liang.tcp.peer.PeerChannel;
-import com.liang.tcp.peer.PeerChannelPool;
+import com.liang.common.message.Message;
+import com.liang.common.message.MessageFactory;
+import com.liang.udp.UdpMsgSendAndReceive;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.slf4j.Logger;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Component
-@Scope("prototype")
-public class MessageHandler extends SimpleChannelInboundHandler<Message> {
+public class UdpMessageHandler extends SimpleChannelInboundHandler<Message> {
 
-  private static final Logger logger = LoggerFactory.getLogger(MessageHandler.class);
-
-  private PeerChannel peerChannel;
+  private static final org.slf4j.Logger logger = LoggerFactory.getLogger("MessageHandler");
 
   @Autowired
-  private PeerChannelPool peerChannelPool;
+  private MessageFactory messageFactory;
 
-  @Override
-  public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    super.channelActive(ctx);
-    peerChannel.channelActive(ctx);
-    peerChannelPool.addPeerChannel(peerChannel);
+  @Autowired
+  private UdpMsgSendAndReceive udpMsgSendAndReceive;
+
+  public UdpMessageHandler() {
   }
 
   @Override
-  public void channelRead0(final ChannelHandlerContext ctx, Message msg) {
-    peerChannel.receiveMessage(msg);
+  public void channelActive(ChannelHandlerContext ctx) throws Exception {
+  }
+
+  @Override
+  public void channelRead0(ChannelHandlerContext ctx, Message message) {
+    udpMsgSendAndReceive.receiveMessage(message);
+  }
+
+  @Override
+  public void channelReadComplete(ChannelHandlerContext ctx) {
+    ctx.flush();
   }
 
   @Override
   public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-    logger.error("MessageHandler read message error!", cause);
+    logger.info("exception caught, {} {}", ctx.channel().remoteAddress(), cause.getMessage());
+    ctx.close();
   }
 
-  public void close() {
-    peerChannel.shutdown();
-    peerChannelPool.remove(peerChannel);
-  }
-
-  public void setPeerChannel(PeerChannel peerChannel) {
-    this.peerChannel = peerChannel;
+  public void set(NioDatagramChannel channel) {
+    udpMsgSendAndReceive.activate(channel);
   }
 }

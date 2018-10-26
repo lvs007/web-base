@@ -1,6 +1,6 @@
 package com.liang.tcp.message.action;
 
-import com.liang.tcp.message.AbstractMessageAction;
+import com.liang.common.message.AbstractMessageAction;
 import com.liang.tcp.message.entity.PongMessage;
 import com.liang.tcp.peer.PeerChannel;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class PongMessageAction extends AbstractMessageAction<PongMessage> {
 
   @Override
   public byte getMessageType() {
-    return 2;
+    return PongMessage.mType;
   }
 
   @Override

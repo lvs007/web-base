@@ -1,7 +1,7 @@
 package com.liang.tcp;
 
-import com.liang.tcp.message.Message;
-import com.liang.tcp.message.MessageFactory;
+import com.liang.common.message.Message;
+import com.liang.common.message.MessageFactory;
 import com.liang.tcp.message.entity.PingMessage;
 import com.liang.tcp.message.entity.PongMessage;
 import com.liang.tcp.peer.PeerChannel;

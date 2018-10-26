@@ -1,6 +1,6 @@
 package com.liang.tcp.message.action;
 
-import com.liang.tcp.message.AbstractMessageAction;
+import com.liang.common.message.AbstractMessageAction;
 import com.liang.tcp.message.entity.AddGroupMessage;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.tcp.peer.PeerChannelPool;
@@ -15,7 +15,7 @@ public class AddGroupMessageAction extends AbstractMessageAction<AddGroupMessage
 
   @Override
   public byte getMessageType() {
-    return 3;
+    return AddGroupMessage.mType;
   }
 
   @Override

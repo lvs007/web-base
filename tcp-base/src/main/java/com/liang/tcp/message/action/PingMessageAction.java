@@ -1,6 +1,6 @@
 package com.liang.tcp.message.action;
 
-import com.liang.tcp.message.AbstractMessageAction;
+import com.liang.common.message.AbstractMessageAction;
 import com.liang.tcp.message.entity.PingMessage;
 import com.liang.tcp.message.entity.PongMessage;
 import com.liang.tcp.peer.PeerChannel;
@@ -15,7 +15,7 @@ public class PingMessageAction extends AbstractMessageAction<PingMessage> {
 
   @Override
   public byte getMessageType() {
-    return 1;
+    return PingMessage.mType;
   }
 
   @Override

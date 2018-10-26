@@ -1,6 +1,8 @@
-package com.liang.tcp.message;
+package com.liang.common.message;
 
 import com.alibaba.fastjson.JSON;
+import com.liang.common.message.Message;
+import com.liang.common.message.MessageAction;
 import com.liang.tcp.peer.PeerChannel;
 import java.util.HashMap;
 import java.util.Map;

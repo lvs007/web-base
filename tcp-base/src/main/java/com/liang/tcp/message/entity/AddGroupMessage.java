@@ -1,17 +1,19 @@
 package com.liang.tcp.message.entity;
 
-import com.liang.tcp.message.Message;
+import com.liang.common.message.Message;
 
 public class AddGroupMessage extends Message {
 
   private String groupId;
+
+  public static final byte mType = 3;
 
   public AddGroupMessage() {
     this(null);
   }
 
   public AddGroupMessage(String groupId) {
-    super((byte) 3);
+    super(mType);
     this.groupId = groupId;
   }
 

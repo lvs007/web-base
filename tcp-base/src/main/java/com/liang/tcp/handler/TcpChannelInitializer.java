@@ -48,16 +48,16 @@ public class TcpChannelInitializer extends ChannelInitializer<NioSocketChannel> 
   @Autowired
   private ApplicationContext ctx;
 
-  private MessageHandler messageHandler;
+  private TcpMessageHandler messageHandler;
   private MessageDecoder messageDecoder;
   private MessageEncoder messageEncoder;
   private PeerChannel peerChannel;
 
   @Override
-  public void initChannel(NioSocketChannel ch) throws Exception {
+  public void initChannel(NioSocketChannel ch) {
     try {
       logger.info("TcpChannelInitializer,{}", ch.remoteAddress());
-      messageHandler = ctx.getBean(MessageHandler.class);
+      messageHandler = ctx.getBean(TcpMessageHandler.class);
       messageDecoder = ctx.getBean(MessageDecoder.class);
       messageEncoder = ctx.getBean(MessageEncoder.class);
       peerChannel = ctx.getBean(PeerChannel.class);

@@ -1,17 +1,19 @@
 package com.liang.tcp.message.entity;
 
-import com.liang.tcp.message.Message;
+import com.liang.common.message.Message;
 
 public class PingMessage extends Message {
 
   private long sendTime;
+
+  public static final byte mType = 1;
 
   public PingMessage() {
     this(0L);
   }
 
   public PingMessage(long sendTime) {
-    super((byte) 1);
+    super(mType);
     this.sendTime = sendTime;
   }
 
