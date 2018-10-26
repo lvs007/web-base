@@ -2,7 +2,7 @@ package com.liang.controller;
 
 import com.liang.tcp.client.TcpClient;
 import com.liang.tcp.message.entity.AddGroupMessage;
-import com.liang.udp.UdpMsgSendAndReceive;
+import com.liang.udp.UdpMessageSender;
 import com.liang.udp.message.UdpMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ public class ClientTest {
   private TcpClient tcpClient;
 
   @Autowired
-  private UdpMsgSendAndReceive udpMsgSendAndReceive;
+  private UdpMessageSender udpMsgSendAndReceive;
 
   public Object testClient(@RequestParam(required = true, defaultValue = "123456") String groupId) {
     tcpClient.connectSync("127.0.0.1", 10011).sendMessage(new AddGroupMessage(groupId));

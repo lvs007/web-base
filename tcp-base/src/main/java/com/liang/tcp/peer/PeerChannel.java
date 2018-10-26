@@ -1,7 +1,7 @@
 package com.liang.tcp.peer;
 
 import com.liang.common.message.Message;
-import com.liang.common.message.SendAndReceiveMessage;
+import com.liang.common.message.SendMessage;
 import com.liang.tcp.MessageQueue;
 import com.liang.tcp.message.entity.PingMessage;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class PeerChannel implements SendAndReceiveMessage {
+public class PeerChannel implements SendMessage {
 
   private ScheduledExecutorService pingTimer =
       Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, "TcpPingTimer"));

@@ -19,7 +19,7 @@ package com.liang.udp.handler;
 
 import com.liang.common.message.Message;
 import com.liang.common.message.MessageFactory;
-import com.liang.udp.UdpMsgSendAndReceive;
+import com.liang.udp.UdpMessageQueue;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -37,7 +37,7 @@ public class UdpMessageHandler extends SimpleChannelInboundHandler<Message> {
   private MessageFactory messageFactory;
 
   @Autowired
-  private UdpMsgSendAndReceive udpMsgSendAndReceive;
+  private UdpMessageQueue udpMessageQueue;
 
   public UdpMessageHandler() {
   }
@@ -48,7 +48,7 @@ public class UdpMessageHandler extends SimpleChannelInboundHandler<Message> {
 
   @Override
   public void channelRead0(ChannelHandlerContext ctx, Message message) {
-    udpMsgSendAndReceive.receiveMessage(message);
+    udpMessageQueue.receivedMessage(message);
   }
 
   @Override
@@ -63,6 +63,6 @@ public class UdpMessageHandler extends SimpleChannelInboundHandler<Message> {
   }
 
   public void set(NioDatagramChannel channel) {
-    udpMsgSendAndReceive.activate(channel);
+    udpMessageQueue.activate(channel);
   }
 }
