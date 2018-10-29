@@ -40,7 +40,7 @@
     </dependency>
     <dependency>
       <groupId>com.liang.web</groupId>
-      <artifactId>tcp-base</artifactId>
+      <artifactId>net-base</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <!--thymeleaf模版-->

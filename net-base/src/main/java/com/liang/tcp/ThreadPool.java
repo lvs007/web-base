@@ -28,7 +28,7 @@ public class ThreadPool {
   }
 
   public void executeLog(Runnable runnable) {
-    logService.scheduleWithFixedDelay(runnable, 10, 10, TimeUnit.SECONDS);
+    logService.scheduleWithFixedDelay(runnable, 1, 1, TimeUnit.MINUTES);
   }
 
   @PostConstruct
@@ -36,7 +36,7 @@ public class ThreadPool {
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) sendMessageService;
     Executors.newSingleThreadScheduledExecutor(
         new ThreadFactoryBuilder().setNameFormat("Print-Pool").build()).
-        scheduleWithFixedDelay(() -> logger.info("{}", threadPoolExecutor.toString()), 10, 10,
+        scheduleWithFixedDelay(() -> logger.info("{}", threadPoolExecutor.toString()), 110, 110,
             TimeUnit.SECONDS);
   }
 

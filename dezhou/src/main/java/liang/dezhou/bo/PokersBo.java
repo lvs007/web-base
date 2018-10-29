@@ -1,9 +1,7 @@
 package liang.dezhou.bo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import org.apache.commons.collections.CollectionUtils;
 
 /**
  * 一副牌,不包含大小王

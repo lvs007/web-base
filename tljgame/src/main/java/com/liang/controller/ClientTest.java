@@ -19,6 +19,7 @@ public class ClientTest {
 
   public Object testClient(@RequestParam(required = true, defaultValue = "123456") String groupId) {
     tcpClient.connectSync("127.0.0.1", 10011).sendMessage(new AddGroupMessage(groupId));
+    tcpClient.getPeerChannel("127.0.0.1", 10011).close();
     return "list";
   }
 

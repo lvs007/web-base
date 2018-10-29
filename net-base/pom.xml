@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>tcp-base</artifactId>
+  <artifactId>net-base</artifactId>
 
   <dependencies>
     <dependency>
