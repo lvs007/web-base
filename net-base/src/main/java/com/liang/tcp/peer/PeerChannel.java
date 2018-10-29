@@ -88,13 +88,14 @@ public class PeerChannel implements SendMessage {
   }
 
   public void shutdown() {
-    if (pingTask != null && !pingTask.isCancelled()) {
-      pingTask.cancel(false);
+    if (pingTask != null) {
+      pingTask.cancel(true);
     }
   }
 
   public void close() {
     run = false;
+    messageQueue.close();
     if (ctx != null) {
       ctx.close();
     }

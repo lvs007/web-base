@@ -49,6 +49,9 @@ public class PeerChannelPool {
     PeerChannelGroup peerChannelGroup = peerChannelGroupMap.get(peerChannel.getGroupId());
     if (peerChannelGroup != null) {
       peerChannelGroup.removePeerChannel(peerChannel);
+      if (peerChannelGroup.size() == 0) {
+        peerChannelGroupMap.remove(peerChannel.getGroupId());
+      }
     }
     peerController.leave(peerChannel);
   }

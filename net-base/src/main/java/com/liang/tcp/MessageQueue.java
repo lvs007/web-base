@@ -101,6 +101,8 @@ public class MessageQueue {
 
   public void close() {
     continueFlag = false;
+    msgSendQueue.clear();
+    pingPongMsgSendQueue.clear();
   }
 
 }
