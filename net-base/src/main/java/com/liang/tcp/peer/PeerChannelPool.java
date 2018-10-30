@@ -91,12 +91,8 @@ public class PeerChannelPool {
 
   @PostConstruct
   public void printLog() {
-    threadPool.executeLog(new Runnable() {
-      @Override
-      public void run() {
-        logger.info("{},{}", peerChannelMap.values(), peerChannelGroupMap.keySet());
-      }
-    });
+    threadPool.executeLog(() -> logger
+        .info("{},{}", peerChannelMap.values().size(), peerChannelGroupMap.keySet().size()));
   }
 
   @PreDestroy

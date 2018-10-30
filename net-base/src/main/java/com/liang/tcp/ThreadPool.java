@@ -44,10 +44,9 @@ public class ThreadPool {
   @PostConstruct
   public void print() {
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) sendMessageService;
-    Executors.newSingleThreadScheduledExecutor(
-        new ThreadFactoryBuilder().setNameFormat("Print-Pool").build()).
-        scheduleWithFixedDelay(() -> logger.info("{}", threadPoolExecutor.toString()), 110, 110,
-            TimeUnit.SECONDS);
+    Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().
+        setNameFormat("Print-Pool").build()).scheduleWithFixedDelay(() -> logger.info("{}",
+        threadPoolExecutor.toString()), 110, 110, TimeUnit.SECONDS);
   }
 
   @PreDestroy

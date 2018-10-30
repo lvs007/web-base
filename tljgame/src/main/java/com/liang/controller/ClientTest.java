@@ -25,6 +25,13 @@ public class ClientTest {
     return "list";
   }
 
+  public Object test(int count) {
+    for (int i = 0; i < count; i++) {
+      tcpClient.connectAsync("127.0.0.1", 10011);
+    }
+    return "list";
+  }
+
   public Object testUdp(
       @RequestParam(required = true, defaultValue = "nihao world") String content) {
     UdpMessage udpMessage = new UdpMessage();
