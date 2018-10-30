@@ -29,8 +29,12 @@ public class TcpServer {
   @Autowired
   private ApplicationContext ctx;
 
+  @Autowired
+  private MessageQueueConsumer messageQueueConsumer;
+
   public void startAsync(int port) {
     new Thread(() -> start(port), "tcp-server").start();
+    messageQueueConsumer.start();
   }
 
   public void start(int port) {

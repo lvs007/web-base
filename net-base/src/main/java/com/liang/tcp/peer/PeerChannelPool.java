@@ -4,6 +4,7 @@ import com.liang.tcp.ThreadPool;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +20,7 @@ public class PeerChannelPool {
 
   private static final int MAX_NUMBER = 100;
 
-  private Map<String, PeerChannel> peerChannelMap = new HashMap<>();
+  private Map<String, PeerChannel> peerChannelMap = new ConcurrentHashMap<>();
   private Map<String, PeerChannelGroup> peerChannelGroupMap = new HashMap<>();
 
   private Object lock = new Object();
@@ -113,4 +114,7 @@ public class PeerChannelPool {
     }
   }
 
+  public Map<String, PeerChannel> getPeerChannelMap() {
+    return peerChannelMap;
+  }
 }

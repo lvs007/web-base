@@ -40,7 +40,7 @@ public class PeerChannel implements SendMessage {
 
   public void channelActive(ChannelHandlerContext ctx) {
     this.ctx = ctx;
-    messageQueue.activate(ctx, this);
+    messageQueue.activate(this);
     pingPongCheck();
   }
 

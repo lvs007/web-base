@@ -36,12 +36,12 @@ public class UdpMessageQueue {
 
   public void activate(Channel channel) {
     this.channel = channel;
-    threadPool.executeMessage(() -> {
+    threadPool.executeSendMessage(() -> {
       while (continueFlag) {
         send(msgSendQueue);
       }
     });
-    threadPool.executeMessage(() -> {
+    threadPool.executeSendMessage(() -> {
       while (continueFlag) {
         try {
           Message msg = receiveMsgQueue.take();
