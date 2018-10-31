@@ -20,23 +20,19 @@ package com.liang.tcp.handler;
 import com.liang.common.message.Message;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.tcp.peer.PeerChannelPool;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
+@Sharable
 public class TcpMessageHandler extends SimpleChannelInboundHandler<Message> {
 
   private static final Logger logger = LoggerFactory.getLogger(TcpMessageHandler.class);
 
   private PeerChannel peerChannel;
 
-  @Autowired
   private PeerChannelPool peerChannelPool;
 
   @Override
@@ -57,11 +53,15 @@ public class TcpMessageHandler extends SimpleChannelInboundHandler<Message> {
   }
 
   public void close() {
-    peerChannel.shutdown();
     peerChannelPool.remove(peerChannel);
   }
 
   public void setPeerChannel(PeerChannel peerChannel) {
     this.peerChannel = peerChannel;
+  }
+
+  public TcpMessageHandler setPeerChannelPool(PeerChannelPool peerChannelPool) {
+    this.peerChannelPool = peerChannelPool;
+    return this;
   }
 }

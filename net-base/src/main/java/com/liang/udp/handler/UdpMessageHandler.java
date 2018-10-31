@@ -18,7 +18,6 @@
 package com.liang.udp.handler;
 
 import com.liang.common.message.Message;
-import com.liang.common.message.MessageFactory;
 import com.liang.udp.UdpMessageQueue;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -32,9 +31,6 @@ import org.springframework.stereotype.Component;
 public class UdpMessageHandler extends SimpleChannelInboundHandler<Message> {
 
   private static final org.slf4j.Logger logger = LoggerFactory.getLogger("MessageHandler");
-
-  @Autowired
-  private MessageFactory messageFactory;
 
   @Autowired
   private UdpMessageQueue udpMessageQueue;

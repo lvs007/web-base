@@ -31,21 +31,30 @@ public class PeerChannelPool {
   @Autowired
   private PeerController peerController;
 
+//  public void addPeerChannel(PeerChannel peerChannel) {
+//    synchronized (lock) {
+//      logger.info("addPeerChannel {},{}", peerChannel.getHost(), peerChannel.getPort());
+//      String key = buildKey(peerChannel.getHost(), peerChannel.getPort());
+//      if (peerChannelMap.size() < MAX_NUMBER && !peerChannelMap.containsKey(key)
+//          && peerController.canAdd(peerChannel)) {
+//        peerChannelMap.put(key, peerChannel);
+//      } else {
+//        //do disconnect
+//        peerChannel.close();
+//      }
+//    }
+//  }
+
   public void addPeerChannel(PeerChannel peerChannel) {
     synchronized (lock) {
       logger.info("addPeerChannel {},{}", peerChannel.getHost(), peerChannel.getPort());
       String key = buildKey(peerChannel.getHost(), peerChannel.getPort());
-      if (peerChannelMap.size() < MAX_NUMBER && !peerChannelMap.containsKey(key)
-          && peerController.canAdd(peerChannel)) {
-        peerChannelMap.put(key, peerChannel);
-      } else {
-        //do disconnect
-        peerChannel.close();
-      }
+      peerChannelMap.put(key, peerChannel);
     }
   }
 
   public void remove(PeerChannel peerChannel) {
+    logger.debug("Remove peer: {}",peerChannel.getCtx().channel().remoteAddress());
     peerChannelMap.values().remove(peerChannel);
     PeerChannelGroup peerChannelGroup = peerChannelGroupMap.get(peerChannel.getGroupId());
     if (peerChannelGroup != null) {
@@ -91,8 +100,9 @@ public class PeerChannelPool {
 
   @PostConstruct
   public void printLog() {
-    threadPool.executeLog(() -> logger
-        .info("{},{}", peerChannelMap.values().size(), peerChannelGroupMap.keySet().size()));
+    threadPool.executeLog(() -> logger.info("PeerChannelPool state: {},{}",
+        peerChannelMap.values().size() > 100 ? peerChannelMap.values().size()
+            : peerChannelMap.values(), peerChannelGroupMap.keySet().size()));
   }
 
   @PreDestroy

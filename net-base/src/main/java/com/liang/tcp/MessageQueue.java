@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,10 +30,6 @@ public class MessageQueue {
   @Autowired
   private ThreadPool threadPool;
 
-  @Autowired
-  private MessageFactory messageFactory;
-
-
   public void activate(PeerChannel peerChannel) {
     this.peerChannel = peerChannel;
   }
@@ -47,7 +44,7 @@ public class MessageQueue {
 
   public void receivedMessage(Message msg) {
     if (msg instanceof PingMessage || msg instanceof PongMessage) {
-      messageFactory.action(peerChannel, msg);
+      MessageFactory.action(peerChannel, msg);
     } else {
       receiveMsgQueue.offer(msg);
     }

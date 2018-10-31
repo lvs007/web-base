@@ -26,7 +26,6 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,9 +34,6 @@ public class PacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
   private static final Logger logger = LoggerFactory.getLogger(PacketDecoder.class);
 
   private static final int MAXSIZE = 2048;
-
-  @Autowired
-  private MessageFactory messageFactory;
 
   @Override
   public void decode(ChannelHandlerContext ctx, DatagramPacket packet, List<Object> out) {
@@ -51,7 +47,7 @@ public class PacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
     byte[] encoded = new byte[length];
     buf.readBytes(encoded);
     try {
-      Message message = messageFactory.parseMessage(encoded);
+      Message message = MessageFactory.parseMessage(encoded);
       message.setAddress(packet.sender());
       out.add(message);
     } catch (Exception e) {

@@ -18,6 +18,7 @@
 package com.liang.tcp.handler;
 
 import com.liang.tcp.peer.PeerChannel;
+import com.liang.tcp.peer.PeerChannelPool;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -44,25 +45,19 @@ public class TcpChannelInitializer extends ChannelInitializer<NioSocketChannel> 
 
   private static final Logger logger = LoggerFactory.getLogger(TcpChannelInitializer.class);
 
-
   @Autowired
   private ApplicationContext ctx;
-
-  private TcpMessageHandler messageHandler;
-  private MessageDecoder messageDecoder;
-  private MessageEncoder messageEncoder;
-  private PeerChannel peerChannel;
+  @Autowired
+  private PeerChannelPool peerChannelPool;
 
   @Override
   public void initChannel(NioSocketChannel ch) {
     try {
-      logger.info("TcpChannelInitializer,{}", ch.remoteAddress());
-      messageHandler = ctx.getBean(TcpMessageHandler.class);
-      messageDecoder = ctx.getBean(MessageDecoder.class);
-      messageEncoder = ctx.getBean(MessageEncoder.class);
-      peerChannel = ctx.getBean(PeerChannel.class);
-
+      logger.info("TcpChannelInitializer, {}", ch.remoteAddress());
+      PeerChannel peerChannel = ctx.getBean(PeerChannel.class);
+      TcpMessageHandler messageHandler = new TcpMessageHandler();
       messageHandler.setPeerChannel(peerChannel);
+      messageHandler.setPeerChannelPool(peerChannelPool);
       // limit the size of receiving buffer to 1024
       ch.config().setRecvByteBufAllocator(new FixedRecvByteBufAllocator(256 * 1024));
       ch.config().setOption(ChannelOption.SO_RCVBUF, 256 * 1024);
@@ -75,17 +70,14 @@ public class TcpChannelInitializer extends ChannelInitializer<NioSocketChannel> 
       int offset = 0;
       ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(maxLength,
           offset, lengthFieldLength, ignoreLength, lengthFieldLength));
-      ch.pipeline().addLast("messageDecoder", messageDecoder);
+      ch.pipeline().addLast("messageDecoder", new MessageDecoder());
       ch.pipeline().addLast(new LengthFieldPrepender(4, true));
-      ch.pipeline().addLast("messageEncoder", messageEncoder);
+      ch.pipeline().addLast("messageEncoder", new MessageEncoder());
       ch.pipeline().addLast("messageHandler", messageHandler);
       // be aware of channel closing
       ch.closeFuture().addListener((ChannelFutureListener) future -> {
-        if (!future.isSuccess()) {
-          logger.info("Close channel: {}, {}", future.channel().remoteAddress(), future.cause());
-        } else {
-          messageHandler.close();
-        }
+        logger.info("Close channel: {}", future.channel().remoteAddress(), future.cause());
+        messageHandler.close();
       });
 
     } catch (Exception e) {

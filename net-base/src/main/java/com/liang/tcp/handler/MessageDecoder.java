@@ -8,18 +8,12 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
+//@Component
+//@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MessageDecoder extends ByteToMessageDecoder {
 
   private static final Logger logger = LoggerFactory.getLogger(MessageDecoder.class);
-
-  @Autowired
-  private MessageFactory messageFactory;
 
   @Override
   protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) {
@@ -36,7 +30,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
   private Message createMessage(byte[] encoded)
       throws IllegalAccessException, InstantiationException {
-    return messageFactory.parseMessage(encoded);
+    return MessageFactory.parseMessage(encoded);
   }
 
 }

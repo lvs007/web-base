@@ -26,9 +26,6 @@ public class MessageQueueConsumer {
   @Autowired
   private ThreadPool threadPool;
 
-  @Autowired
-  private MessageFactory messageFactory;
-
   public void start() {
     Thread sendThread = new Thread(() -> {
       while (continueFlag) {
@@ -69,7 +66,10 @@ public class MessageQueueConsumer {
         Message msg = queue.poll();
         if (ctx.channel().isActive() && msg != null) {
           logger.info("Send to {}, {} ", ctx.channel().remoteAddress(), msg);
-          peerChannel.getMessageQueue().getPingPongMsgSendQueue().clear();
+          if (peerChannel.getMessageQueue().getPingPongMsgSendQueue().size() > 0) {
+            peerChannel.setHasPong(true);
+            peerChannel.getMessageQueue().getPingPongMsgSendQueue().clear();
+          }
           ctx.writeAndFlush(msg).addListener((ChannelFutureListener) future -> {
             if (!future.isSuccess()) {
               logger
@@ -90,7 +90,7 @@ public class MessageQueueConsumer {
         Message msg = queue.poll();
         if (msg != null) {
           logger.info("Receive from {}, {}", peerChannel.getCtx().channel().remoteAddress(), msg);
-          messageFactory.action(peerChannel, msg);
+          MessageFactory.action(peerChannel, msg);
         }
       } catch (Exception e) {
         logger.error("receive message have a error!", e);

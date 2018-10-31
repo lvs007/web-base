@@ -31,9 +31,6 @@ public class UdpMessageQueue {
   @Autowired
   private ThreadPool threadPool;
 
-  @Autowired
-  private MessageFactory messageFactory;
-
   public void activate(Channel channel) {
     this.channel = channel;
     threadPool.executeSendMessage(() -> {
@@ -45,7 +42,7 @@ public class UdpMessageQueue {
       while (continueFlag) {
         try {
           Message msg = receiveMsgQueue.take();
-          messageFactory.action(null, msg);
+          MessageFactory.action(null, msg);
         } catch (InterruptedException e) {
           logger.error("receive message have a error!", e);
           Thread.currentThread().interrupt();

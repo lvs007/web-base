@@ -3,31 +3,21 @@ package com.liang.tcp.peer;
 import com.liang.common.message.Message;
 import com.liang.common.message.SendMessage;
 import com.liang.tcp.MessageQueue;
-import com.liang.tcp.message.entity.PingMessage;
 import io.netty.channel.ChannelHandlerContext;
 import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @Scope("prototype")
 public class PeerChannel implements SendMessage {
 
-  private ScheduledExecutorService pingTimer =
-      Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, "TcpPingTimer"));
-
-  private ScheduledFuture<?> pingTask;
-
-  private static final int MAX_TIME_OUT_TIMES = 3;
+  private static final Logger logger = LoggerFactory.getLogger(PeerChannel.class);
 
   private volatile boolean hasPong = true;
-
-  private volatile boolean run = true;
 
   private ChannelHandlerContext ctx;
 
@@ -41,25 +31,6 @@ public class PeerChannel implements SendMessage {
   public void channelActive(ChannelHandlerContext ctx) {
     this.ctx = ctx;
     messageQueue.activate(this);
-    pingPongCheck();
-  }
-
-  private void pingPongCheck() {
-    pingTask = pingTimer.scheduleAtFixedRate(() -> {
-      if (run) {
-        if (hasPong || failTimes <= MAX_TIME_OUT_TIMES) {
-          if (hasPong) {
-            failTimes = 0;
-          } else {
-            ++failTimes;
-          }
-          hasPong = false;
-          messageQueue.sendPingPongMessage(new PingMessage(System.currentTimeMillis()));
-        } else {//disconnect the peer
-          close();
-        }
-      }
-    }, 10, 10, TimeUnit.SECONDS);
   }
 
   public boolean sendMessage(Message message) {
@@ -87,14 +58,7 @@ public class PeerChannel implements SendMessage {
     return ctx;
   }
 
-  public void shutdown() {
-    if (pingTask != null) {
-      pingTask.cancel(true);
-    }
-  }
-
   public void close() {
-    run = false;
     messageQueue.close();
     if (ctx != null) {
       ctx.close();
@@ -106,8 +70,11 @@ public class PeerChannel implements SendMessage {
   }
 
   public String getHost() {
-    InetSocketAddress inetSocketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-    return inetSocketAddress.getHostString();
+    if (ctx.channel() != null) {
+      InetSocketAddress inetSocketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+      return inetSocketAddress.getHostString();
+    }
+    return null;
   }
 
   public int getPort() {
@@ -121,6 +88,19 @@ public class PeerChannel implements SendMessage {
 
   public PeerChannel setGroupId(String groupId) {
     this.groupId = groupId;
+    return this;
+  }
+
+  public boolean isHasPong() {
+    return hasPong;
+  }
+
+  public int getFailTimes() {
+    return failTimes;
+  }
+
+  public PeerChannel setFailTimes(int failTimes) {
+    this.failTimes = failTimes;
     return this;
   }
 

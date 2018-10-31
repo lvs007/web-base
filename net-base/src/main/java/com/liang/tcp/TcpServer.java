@@ -32,9 +32,13 @@ public class TcpServer {
   @Autowired
   private MessageQueueConsumer messageQueueConsumer;
 
+  @Autowired
+  private PingPongManager pingPongManager;
+
   public void startAsync(int port) {
     new Thread(() -> start(port), "tcp-server").start();
     messageQueueConsumer.start();
+    pingPongManager.pingPongCheck();
   }
 
   public void start(int port) {

@@ -7,10 +7,11 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-@Component
-@Scope("prototype")
+//@Component
+//@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MessageEncoder extends MessageToByteEncoder<Message> {
 
   private static final Logger logger = LoggerFactory.getLogger(MessageEncoder.class);
