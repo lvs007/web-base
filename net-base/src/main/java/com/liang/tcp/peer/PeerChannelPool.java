@@ -31,27 +31,27 @@ public class PeerChannelPool {
   @Autowired
   private PeerController peerController;
 
-//  public void addPeerChannel(PeerChannel peerChannel) {
-//    synchronized (lock) {
-//      logger.info("addPeerChannel {},{}", peerChannel.getHost(), peerChannel.getPort());
-//      String key = buildKey(peerChannel.getHost(), peerChannel.getPort());
-//      if (peerChannelMap.size() < MAX_NUMBER && !peerChannelMap.containsKey(key)
-//          && peerController.canAdd(peerChannel)) {
-//        peerChannelMap.put(key, peerChannel);
-//      } else {
-//        //do disconnect
-//        peerChannel.close();
-//      }
-//    }
-//  }
-
   public void addPeerChannel(PeerChannel peerChannel) {
     synchronized (lock) {
       logger.info("addPeerChannel {},{}", peerChannel.getHost(), peerChannel.getPort());
       String key = buildKey(peerChannel.getHost(), peerChannel.getPort());
-      peerChannelMap.put(key, peerChannel);
+      if (peerChannelMap.size() < MAX_NUMBER && !peerChannelMap.containsKey(key)
+          && peerController.canAdd(peerChannel)) {
+        peerChannelMap.put(key, peerChannel);
+      } else {
+        //do disconnect
+        peerChannel.close();
+      }
     }
   }
+
+//  public void addPeerChannel(PeerChannel peerChannel) {
+//    synchronized (lock) {
+//      logger.info("addPeerChannel {},{}", peerChannel.getHost(), peerChannel.getPort());
+//      String key = buildKey(peerChannel.getHost(), peerChannel.getPort());
+//      peerChannelMap.put(key, peerChannel);
+//    }
+//  }
 
   public void remove(PeerChannel peerChannel) {
     logger.debug("Remove peer: {}",peerChannel.getCtx().channel().remoteAddress());

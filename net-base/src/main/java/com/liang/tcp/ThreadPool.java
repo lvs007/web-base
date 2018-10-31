@@ -38,7 +38,7 @@ public class ThreadPool {
   }
 
   public void executeLog(Runnable runnable) {
-    logService.scheduleWithFixedDelay(runnable, 1, 1, TimeUnit.SECONDS);
+    logService.scheduleWithFixedDelay(runnable, 1, 1, TimeUnit.MINUTES);
   }
 
   @PostConstruct
