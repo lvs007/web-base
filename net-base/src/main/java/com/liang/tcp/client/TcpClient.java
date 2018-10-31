@@ -53,11 +53,19 @@ public class TcpClient {
   }
 
   public PeerChannel connectSync(String host, int port) {
+    PeerChannel peerChannel = getPeerChannel(host, port);
+    if (peerChannel != null) {
+      return peerChannel;
+    }
     ChannelFuture channelFuture = connectAsync(host, port);
     return getPeerChannel(channelFuture);
   }
 
   public ChannelFuture connectAsync(String host, int port) {
+    PeerChannel peerChannel = getPeerChannel(host, port);
+    if (peerChannel != null) {
+      return null;
+    }
     return connectImpl(host, port).addListener((ChannelFutureListener) future -> {
       if (!future.isSuccess()) {
         logger.error("connect to {}:{} fail,cause:{}", host, port,
