@@ -1,6 +1,6 @@
 package com.liang.common.message;
 
-import com.alibaba.fastjson.JSON;
+import com.liang.common.EnDecoder;
 import com.liang.tcp.peer.PeerChannel;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,8 @@ public class MessageFactory {
     if (rawData == null || rawData.length == 0) {
       return messageAction.getMessageClass().newInstance();
     }
-    return JSON.parseObject(Message.bytesToString(rawData), messageAction.getMessageClass());
+    return EnDecoder.decoder(rawData, messageAction.getMessageClass());
+//    return JSON.parseObject(Message.bytesToString(rawData), messageAction.getMessageClass());
   }
 
   private static MessageAction<Message> select(byte type) {

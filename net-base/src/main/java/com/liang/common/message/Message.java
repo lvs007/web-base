@@ -1,6 +1,6 @@
 package com.liang.common.message;
 
-import com.alibaba.fastjson.JSON;
+import com.liang.common.EnDecoder;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import org.apache.commons.lang3.ArrayUtils;
@@ -8,7 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * type = 1（ping消息）,2（pong消息）,3（add group 加入群组消息）已经被使用，不能占用
+ * type = 1（ping消息）,2（pong消息）,3（add group 加入群组消息）已经被使用，不能占用 规约：tcp message type > 0; ucp message
+ * type < 0
  */
 public abstract class Message {
 
@@ -16,7 +17,7 @@ public abstract class Message {
 
   protected byte type;
 
-  protected InetSocketAddress address;
+  protected transient InetSocketAddress address;
 
   public Message(byte type) {
     this.type = type;
@@ -27,7 +28,8 @@ public abstract class Message {
   }
 
   public byte[] data() {
-    return JSON.toJSONString(this).getBytes(Charset.forName("UTF-8"));
+    return EnDecoder.encoder(this);
+//    return JSON.toJSONString(this).getBytes(Charset.forName("UTF-8"));
   }
 
   public byte getType() {

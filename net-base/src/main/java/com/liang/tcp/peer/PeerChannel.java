@@ -25,12 +25,15 @@ public class PeerChannel implements SendMessage {
 
   private String groupId;
 
+  private long connectTime;
+
   @Autowired
   private MessageQueue messageQueue;
 
   public void channelActive(ChannelHandlerContext ctx) {
     this.ctx = ctx;
     messageQueue.activate(this);
+    connectTime = System.nanoTime();
   }
 
   public boolean sendMessage(Message message) {
@@ -101,6 +104,15 @@ public class PeerChannel implements SendMessage {
 
   public PeerChannel setFailTimes(int failTimes) {
     this.failTimes = failTimes;
+    return this;
+  }
+
+  public long getConnectTime() {
+    return connectTime;
+  }
+
+  public PeerChannel setConnectTime(long connectTime) {
+    this.connectTime = connectTime;
     return this;
   }
 

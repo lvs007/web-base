@@ -60,7 +60,8 @@ public class UdpMessageQueue {
       address = message.getAddress();
       sendPacket(message.sendData(), address);
     } catch (Exception e) {
-      logger.error("Fail send to {}, error info: {}", address.getAddress(), e);
+      logger.error("Fail send to {}, error info: {}",
+          address == null ? "null" : address.getAddress(), e);
     }
   }
 
