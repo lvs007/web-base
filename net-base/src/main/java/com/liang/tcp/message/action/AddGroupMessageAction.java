@@ -24,8 +24,7 @@ public class AddGroupMessageAction extends AbstractMessageAction<AddGroupMessage
   }
 
   @Override
-  public <T> T action(PeerChannel peerChannel, AddGroupMessage message) {
+  public void action(PeerChannel peerChannel, AddGroupMessage message) {
     peerChannelPool.addGroup(message.getGroupId(), peerChannel);
-    return null;
   }
 }

@@ -24,9 +24,8 @@ public class PingMessageAction extends AbstractMessageAction<PingMessage> {
   }
 
   @Override
-  public <T> T action(PeerChannel peerChannel, PingMessage message) {
+  public void action(PeerChannel peerChannel, PingMessage message) {
     PongMessage pongMessage = new PongMessage(message.getSendTime(), System.currentTimeMillis());
     peerChannel.sendPingPongMessage(pongMessage);
-    return null;
   }
 }

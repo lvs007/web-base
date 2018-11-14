@@ -23,9 +23,8 @@ public class PongMessageAction extends AbstractMessageAction<PongMessage> {
   }
 
   @Override
-  public <T> T action(PeerChannel peerChannel, PongMessage message) {
+  public void action(PeerChannel peerChannel, PongMessage message) {
     peerChannel.setHasPong(true);
-    return null;
   }
 
 }

@@ -20,12 +20,12 @@ public class MessageFactory {
     return message;
   }
 
-  public static <T> T action(PeerChannel peerChannel, Message message) {
+  public static void action(PeerChannel peerChannel, Message message) {
     MessageAction<Message> messageAction = select(message.getType());
     if (messageAction == null) {
-      return null;
+      return;
     }
-    return messageAction.action(peerChannel, message);
+    messageAction.action(peerChannel, message);
   }
 
   private static Message createMessage(byte[] encoded, MessageAction<Message> messageAction)

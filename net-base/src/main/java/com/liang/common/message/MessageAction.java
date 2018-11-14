@@ -9,5 +9,5 @@ public interface MessageAction<M extends Message> {
 
   Class<M> getMessageClass();
 
-  <T> T action(PeerChannel peerChannel, M message);
+  void action(PeerChannel peerChannel, M message);
 }

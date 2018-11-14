@@ -23,8 +23,7 @@ public class UdpMessageAction extends AbstractMessageAction<UdpMessage> {
   }
 
   @Override
-  public <T> T action(PeerChannel peerChannel, UdpMessage message) {
+  public void action(PeerChannel peerChannel, UdpMessage message) {
     logger.info("UdpMessageAction : {}", message);
-    return null;
   }
 }
