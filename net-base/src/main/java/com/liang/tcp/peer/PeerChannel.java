@@ -1,7 +1,7 @@
 package com.liang.tcp.peer;
 
 import com.liang.common.message.Message;
-import com.liang.common.message.SendMessage;
+import com.liang.common.message.SendMessageService;
 import com.liang.tcp.MessageQueue;
 import io.netty.channel.ChannelHandlerContext;
 import java.net.InetSocketAddress;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Scope("prototype")
-public class PeerChannel implements SendMessage {
+public class PeerChannel implements SendMessageService {
 
   private static final Logger logger = LoggerFactory.getLogger(PeerChannel.class);
 

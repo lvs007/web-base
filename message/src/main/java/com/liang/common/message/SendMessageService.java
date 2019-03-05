@@ -1,6 +1,6 @@
 package com.liang.common.message;
 
-public interface SendMessage {
+public interface SendMessageService {
 
   boolean sendMessage(Message message);
 

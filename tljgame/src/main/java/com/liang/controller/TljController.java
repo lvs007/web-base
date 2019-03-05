@@ -1,10 +1,10 @@
 package com.liang.controller;
 
-import com.liang.service.TljService;
 import com.liang.bo.PeopleInfo;
 import com.liang.bo.Table;
 import com.liang.common.TransferTo;
 import com.liang.core.TablePool;
+import com.liang.service.TljService;
 import com.liang.vo.TableVo;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,10 +47,14 @@ public class TljController {
     return "list";
   }
 
+  public String index() {
+    return "index";
+  }
+
   @PcLogin
   public String add(String tableId, int site) throws IOException {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-        PeopleInfo peopleInfo = TransferTo.transferTo(userInfo);
+    PeopleInfo peopleInfo = TransferTo.transferTo(userInfo);
     Table result = tljService.add(tableId, site, peopleInfo);
     if (result != null) {
       return "redirect:/v1/tlj/table?tableId=" + result.getTableId();

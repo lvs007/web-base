@@ -15,7 +15,7 @@ public abstract class AbstractSpider implements Crower {
     protected WebDriver webDriver;
 
     public AbstractSpider() {
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        webDriver = new ChromeDriver();
+//        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+//        webDriver = new ChromeDriver();
     }
 }

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PingMessageAction extends AbstractMessageAction<PingMessage> {
 
-  private static final Logger logger = LoggerFactory.getLogger(PingMessageAction.class);
-
   @Override
   public byte getMessageType() {
     return PingMessage.mType;

@@ -17,6 +17,8 @@
       <module>tljgame</module>
       <module>dezhou</module>
       <module>net-base</module>
+      <module>message</module>
+      <module>sangong</module>
     </modules>
 
     <properties>
@@ -45,7 +47,7 @@
         <aliyun-ons-version>1.2.7.Final</aliyun-ons-version>
         <groovy-version>2.4.3</groovy-version>
         <aspectj-version>1.8.13</aspectj-version>
-        <netty-version>4.1.30.Final</netty-version>
+        <netty-version>4.1.33.Final</netty-version>
         <protostuff-version>1.1.3</protostuff-version>
     </properties>
 

@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PongMessageAction extends AbstractMessageAction<PongMessage> {
 
-  private static final Logger logger = LoggerFactory.getLogger(PongMessageAction.class);
-
   @Override
   public byte getMessageType() {
     return PongMessage.mType;

@@ -2,8 +2,9 @@ package com.liang.start;
 
 import com.liang.tcp.TcpServer;
 import com.liang.udp.UdpServer;
+import com.liang.udp.message.action.UdpMessageAction;
 import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.PreDestroy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,16 +20,22 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({"classpath:applicationContext-base.xml", "classpath:applicationContext.xml"})
 public class Start {
 
-  @Autowired
   private TcpServer tcpServer;
 
-  @Autowired
   private UdpServer udpServer;
 
   @PostConstruct
   public void init() {
+    tcpServer = new TcpServer();
     tcpServer.startAsync(10011);
+    udpServer = new UdpServer();
+    udpServer.register(new UdpMessageAction());
     udpServer.startAsync(10011);
+  }
+
+  @PreDestroy
+  public void destory(){
+    tcpServer.close();
   }
 
   public static void main(String[] args) {

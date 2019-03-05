@@ -1,0 +1,5 @@
+package liang.spider.yidianzixun;
+
+public class YiDian {
+
+}
