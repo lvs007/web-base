@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>learn Resources</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/static/css/bootstrap.css}"/>
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css"
+        th:href="@{/static/css/bootstrap.min.css}"/>
+</head>
+<body background="/static/dating.png" style="background-size: 100%; background-repeat:no-repeat;">
+<div style="text-align: center;margin:0 auto;width: 1000px; ">
+  <h1>修改</h1>
+  <form action="">
+    <input type="hidden" name="id" th:value="1"/>
+    <table width="100%" border="1" cellspacing="1" cellpadding="0">
+
+      <tr>
+        <td>需要流控的对象：</td>
+        <td><input type="text" th:value="1" name="value"/></td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
+          <input type="submit" value="修改"/>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

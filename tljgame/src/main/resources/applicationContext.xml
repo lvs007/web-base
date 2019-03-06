@@ -50,7 +50,7 @@
       </list>
     </property>
   </bean>
-  <bean id="propertiesManager" class="liang.common.util.PropertiesManager"
+  <bean id="propertiesManager" class="com.liang.common.util.PropertiesManager"
     parent="propertyPlaceholderConfigurer"/>
 
   <mvc:resources mapping="/static/**" location="classpath:/static/"/>
@@ -62,7 +62,7 @@
       <!--<mvc:exclude-mapping path="/v1/login/get-user-info"/>-->
       <!--<mvc:exclude-mapping path="/static/**"/>-->
 
-      <!--<bean class="liang.flow.interceptor.FlowAndForbiddenInterceptor"/>-->
+      <!--<bean class="com.liang.flow.interceptor.FlowAndForbiddenInterceptor"/>-->
     <!--</mvc:interceptor>-->
 
   <!--</mvc:interceptors>-->

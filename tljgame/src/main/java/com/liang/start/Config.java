@@ -1,6 +1,6 @@
 package com.liang.start;
 
-import liang.mvc.handler.mapping.SpringMvcConfiguration;
+import com.liang.mvc.handler.mapping.SpringMvcConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 /**

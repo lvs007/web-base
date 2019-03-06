@@ -1,0 +1,259 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.liang.dao.jdbc.common;
+
+import com.liang.dao.jdbc.split.SqlConstants;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 一条sql语句,就是简单的对SQL字符串的封装
+ *
+ * @author
+ */
+public class Sql {
+
+    private String tablePre;
+    private String realTable;
+    private String sql;
+    private List<Object> params = new ArrayList<>();
+    private List<List<Object>> batchList = new ArrayList<>();
+
+    private SqlConstants.DML dml;
+
+    private boolean bypass = false;
+    private String splitColumn;
+    private int index = -1;
+    private boolean groupBy;
+
+    public Sql(String sql) {
+        this.sql = sql;
+    }
+
+    public static Sql from(String sql, Object... params) {
+        Sql s = new Sql(sql);
+        for (Object obj : params) {
+            s.addParam(obj);
+        }
+        return s;
+    }
+
+    public void setOrderBy(String orderBy) {
+        if (StringUtils.containsIgnoreCase(sql, " order by ")) {
+            throw new IllegalStateException("当前已经有排序了，不允许再设置:" + sql);
+        }
+        sql += " " + orderBy + " ";
+    }
+
+    public void setPaging(int offset, int limit) {
+        //取最后20个字符串，如果包括limit，则表示已经有分页了，这个时候就抛出异常，不允许
+        //select * from t_table wher x=1 order by id desc limit 1,2
+        String end = StringUtils.right(sql, 20);
+        if (StringUtils.containsIgnoreCase(end, " limit ")) {
+            throw new IllegalStateException("当前已经有分页参数了，不允许再设置:" + sql);
+        }
+        sql = sql + " limit " + offset + "," + limit;
+    }
+
+    @Override
+    public Sql clone() {
+        Sql other = new Sql(sql);
+        other.params = new ArrayList<>(this.params);
+        other.batchList = new ArrayList<>(this.batchList);
+        other.tablePre = this.tablePre;
+//        other.realTable = this.realTable;
+        other.dml = this.dml;
+        other.index = index;
+        other.groupBy = groupBy;
+        return other;
+    }
+
+    /**
+     * 重置所有参数，从头开始
+     *
+     * @return
+     */
+    public Sql reset() {
+        params.clear();
+        batchList.clear();
+        return this;
+    }
+
+    public Sql count() {
+        String s = String.valueOf(sql).toLowerCase();
+        if (s.matches(".*\\s+group\\s+by\\s+.*")) {
+            throw new IllegalArgumentException("含有“group by”的语句无法自动生成count语句，请手动填入count语句");
+        }
+        int index = s.indexOf(" from ");
+        if (index != -1) {
+            String temp = "select count(*) " + s.substring(index);
+            Sql other = new Sql(temp);
+            other.params = new ArrayList<>(this.params);
+            other.batchList = new ArrayList<>(this.batchList);
+            return other;
+        } else {
+            throw new IllegalStateException("当前不是一条查询语句:" + s);
+        }
+    }
+
+    public Sql addAllParams(List<Object> params) {
+        for (int i = 0; i < params.size(); i++) {
+            Object obj = params.get(i);
+            if (obj instanceof Float) {
+                Float ff = (Float) obj;
+                if (ff.isInfinite() || ff.isNaN()) {
+                    params.set(i, Float.valueOf(0f));
+                }
+            }
+        }
+        this.params.addAll(params);
+        return this;
+    }
+
+    public Sql addParam(Object obj) {
+        if (obj instanceof Float) {
+            Float ff = (Float) obj;
+            if (ff.isInfinite() || ff.isNaN()) {
+                obj = Float.valueOf(0f);
+            }
+        }
+        params.add(obj);
+        return this;
+    }
+
+    public Sql addBatch() {
+        batchList.add(params);
+        params = new ArrayList<>();
+        return this;
+    }
+
+    public String getRawSql() {
+        return sql;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(sql);
+        if (CollectionUtils.isNotEmpty(params)) {
+            sb.append(" | ").append(params);
+        }
+        return sb.toString();
+    }
+
+    public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+        PreparedStatement pre = conn.prepareStatement(sql);
+        if (CollectionUtils.isEmpty(batchList)) {
+            for (int i = 0; i < params.size(); i++) {
+                pre.setObject(i + 1, params.get(i));
+            }
+        } else {
+            for (List<Object> list : batchList) {
+                for (int i = 0; i < list.size(); i++) {
+                    pre.setObject(i + 1, list.get(i));
+                }
+                pre.addBatch();
+            }
+        }
+
+        return pre;
+    }
+
+    public PreparedStatement createPreparedStatement(Connection conn, int autoGeneratedKeys) throws SQLException {
+        PreparedStatement pre = conn.prepareStatement(sql, autoGeneratedKeys);
+        if (CollectionUtils.isEmpty(batchList)) {
+            for (int i = 0; i < params.size(); i++) {
+                pre.setObject(i + 1, params.get(i));
+            }
+        } else {
+            for (List<Object> list : batchList) {
+                for (int i = 0; i < list.size(); i++) {
+                    pre.setObject(i + 1, list.get(i));
+                }
+                pre.addBatch();
+            }
+        }
+        return pre;
+    }
+
+    public Sql setSql(String sql) {
+        this.sql = sql;
+        return this;
+    }
+
+    public List<Object> getParams() {
+        return params;
+    }
+
+    public List<List<Object>> getBatchList() {
+        return batchList;
+    }
+
+    public String getTablePre() {
+        return tablePre;
+    }
+
+    public void setTablePre(String tablePre) {
+        this.tablePre = tablePre;
+    }
+
+    public String getRealTable() {
+        return realTable;
+    }
+
+    public void setRealTable(String realTable) {
+        this.realTable = realTable;
+    }
+
+    public SqlConstants.DML getDml() {
+        return dml;
+    }
+
+    public void setDml(SqlConstants.DML dml) {
+        this.dml = dml;
+    }
+
+    public boolean isBypass() {
+        return bypass;
+    }
+
+    public void setBypass(boolean bypass) {
+        this.bypass = bypass;
+    }
+
+    public String getSplitColumn() {
+        return splitColumn;
+    }
+
+    public void setSplitColumn(String splitColumn) {
+        this.splitColumn = splitColumn;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public void cleanBatchList() {
+        batchList.clear();
+    }
+
+    public boolean isGroupBy() {
+        return groupBy;
+    }
+
+    public void setGroupBy(boolean groupBy) {
+        this.groupBy = groupBy;
+    }
+}

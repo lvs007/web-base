@@ -1,5 +1,6 @@
 package com.liang.tcp.client;
 
+import com.liang.common.util.ThreadUtils;
 import com.liang.tcp.handler.TcpChannelInitializer;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.tcp.peer.PeerChannelPool;
@@ -14,7 +15,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
-import liang.common.util.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

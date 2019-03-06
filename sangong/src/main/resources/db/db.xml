@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+       default-lazy-init="true">
+
+    <description>数据源配置(支持事务)</description>
+    <bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="slowSqlMillis" value="1000"/>
+        <property name="logSlowSql" value="true"/>
+        <property name="mergeSql" value="true"/>
+    </bean>
+    <bean id="wallFilter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="logViolation" value="true"/>
+        <property name="throwException" value="false"/>
+    </bean>
+    <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="maxActive" value="20"/>
+        <property name="minIdle" value="2"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxWait" value="10000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="180"/>
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
+        <property name="proxyFilters">
+            <list>
+                <ref bean="statFilter"/>
+                <ref bean="wallFilter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- jdbc实现方式配置-->
+    <bean id="storageManager" class="com.liang.dao.jdbc.common.StorageManager" p:name="account-manage" p:maxErrorCount="600"
+          p:maxSlowCount="300"/>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="druidDataSource"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="druidDataSource"/>
+    </bean>
+
+</beans>

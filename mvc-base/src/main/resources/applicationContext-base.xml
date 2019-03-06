@@ -11,10 +11,10 @@
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <context:component-scan base-package="liang.mvc"/>
+    <context:component-scan base-package="com.liang.mvc"/>
 
     <bean id="idealRequestMappingConfiguration"
-          class="liang.mvc.handler.mapping.IdealRequestMappingConfiguration">
+          class="com.liang.mvc.handler.mapping.IdealRequestMappingConfiguration">
         <property name="packagePattern" value="^com.liang.controller.?"/>
         <property name="packageReplacement" value="/v1/"/>
         <property name="requestMethodPatterns">
@@ -26,10 +26,10 @@
     </bean>
 
     <!-- 异常处理 -->
-    <bean class="liang.mvc.handler.resolver.GlobalHandlerExceptionResolver"/>
+    <bean class="com.liang.mvc.handler.resolver.GlobalHandlerExceptionResolver"/>
 
     <!-- 方便在工具类中获取bean-->
-    <bean class="liang.mvc.commons.SpringContextHolder" lazy-init="false"/>
+    <bean class="com.liang.mvc.commons.SpringContextHolder" lazy-init="false"/>
 
     <mvc:interceptors>
 
@@ -37,7 +37,7 @@
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/static/**"/>
 
-            <bean class="liang.mvc.interceptor.ControllerInterceptor"/>
+            <bean class="com.liang.mvc.interceptor.ControllerInterceptor"/>
         </mvc:interceptor>
 
     </mvc:interceptors>
@@ -54,7 +54,7 @@
     </bean>
 
     <!-- 系统配置文件读取 -->
-    <!--<bean id="propertiesManager" class="liang.common.util.PropertiesManager">-->
+    <!--<bean id="propertiesManager" class="com.liang.common.util.PropertiesManager">-->
         <!--<property name="locations">-->
             <!--<list>-->
                 <!--<value>classpath*:/application.properties</value>-->

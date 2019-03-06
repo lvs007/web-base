@@ -13,8 +13,10 @@
 
   <description>Spring公共配置</description>
 
+  <import resource="db/db.xml"/>
+
   <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-  <context:component-scan base-package="com.liang"/>
+  <context:component-scan base-package="com.liang.sangong,com.liang.dao,com.liang.mvc"/>
 
   <tx:annotation-driven proxy-target-class="true"/>
 
@@ -50,7 +52,7 @@
       </list>
     </property>
   </bean>
-  <bean id="propertiesManager" class="liang.common.util.PropertiesManager"
+  <bean id="propertiesManager" class="com.liang.common.util.PropertiesManager"
     parent="propertyPlaceholderConfigurer"/>
 
   <mvc:resources mapping="/static/**" location="classpath:/static/"/>
@@ -62,7 +64,7 @@
       <!--<mvc:exclude-mapping path="/v1/login/get-user-info"/>-->
       <!--<mvc:exclude-mapping path="/static/**"/>-->
 
-      <!--<bean class="liang.flow.interceptor.FlowAndForbiddenInterceptor"/>-->
+      <!--<bean class="com.liang.flow.interceptor.FlowAndForbiddenInterceptor"/>-->
     <!--</mvc:interceptor>-->
 
   <!--</mvc:interceptors>-->

@@ -1,12 +1,12 @@
 package com.liang.common;
 
+import com.liang.common.exception.TypeErrorException;
 import com.liang.common.message.SendMessageService;
+import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.tcp.TcpMessageSender;
 import com.liang.tcp.client.TcpClient;
 import com.liang.tcp.peer.PeerChannel;
 import com.liang.udp.UdpMessageSender;
-import liang.common.exception.TypeErrorException;
-import liang.mvc.commons.SpringContextHolder;
 
 public class MessageSendFactory {
 

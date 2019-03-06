@@ -1,7 +1,7 @@
 package com.liang.common;
 
 import com.liang.bo.PeopleInfo;
-import liang.mvc.filter.UserInfo;
+import com.liang.mvc.filter.UserInfo;
 
 public class TransferTo {
 
