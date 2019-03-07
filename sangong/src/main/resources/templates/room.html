@@ -98,7 +98,7 @@
 
     function invite(){
         var name = document.getElementById('inviteName').value;
-        var str = {"messageType":"sendInvite", "name":"+name+"}
+        var str = {"messageType":"sendInvite", "name":name}
         var strJson = JSON.stringify(str)
         websocket.send(strJson);
     }

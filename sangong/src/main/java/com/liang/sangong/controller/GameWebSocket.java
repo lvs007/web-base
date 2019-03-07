@@ -1,6 +1,7 @@
 package com.liang.sangong.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
 import com.liang.sangong.message.Message.MessageType;
@@ -34,7 +35,6 @@ public class GameWebSocket {
   //与某个客户端的连接会话，需要通过它来给客户端发送数据
   private Session session;
 
-  @Autowired
   private MessageAction messageAction;
 
   /**
@@ -87,6 +87,7 @@ public class GameWebSocket {
   @OnMessage
   public void onMessage(String message, Session session) throws IOException {
     System.out.println("来自客户端的消息:" + message);
+    messageAction = SpringContextHolder.getBean(MessageAction.class);
     MessageType messageType = null;
     try {
       String type = JSON.parseObject(message).getString("messageType");
@@ -96,8 +97,8 @@ public class GameWebSocket {
       return;
     }
 
-    messageAction.action(message, messageType);
-
+    String value = messageAction.action(message, messageType);
+    sendMessage(value);
   }
 
   /**

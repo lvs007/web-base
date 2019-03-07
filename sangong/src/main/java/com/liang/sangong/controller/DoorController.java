@@ -38,4 +38,12 @@ public class DoorController {
     roomService.createRoom(userInfo, PeopleType.valueOf(type));
     return "room";
   }
+
+  @PcLogin
+  public String comeInRoom(@RequestParam(name = "peopleType", required = false,
+          defaultValue = "TRX") String type) {
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    roomService.createRoom(userInfo, PeopleType.valueOf(type));
+    return "room";
+  }
 }
