@@ -1,12 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>My WebSocket</title>
+  <title>learn Resources</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 
-<body background="">
-Welcome<br/>
-<input id="text" type="text" /><button onclick="send()">Send</button>    <button onclick="closeWebSocket()">Close</button>
+<body style="background-image:url(/static/room1.png);background-size: 100%; background-repeat:no-repeat;">
+
+<!--<input id="text" type="text" /><button onclick="send()">Send</button>-->
+<!--<button onclick="closeWebSocket()">Close</button>-->
+<div style="position: absolute;right: 100px;top:50px;width:150px;height:50px;">
+    <input id="inviteName" name="name" value="" type="text"/>
+    <button onclick="invite()">邀请玩家</button>
+</div>
 <div id="message">
 </div>
 </body>
@@ -16,10 +22,23 @@ Welcome<br/>
 
     //判断当前浏览器是否支持WebSocket
     if('WebSocket' in window){
-        websocket = new WebSocket("ws://127.0.0.1:9095/gamesocket");
+        var token = getToken("nb_token");
+        websocket = new WebSocket("ws://127.0.0.1:9095/gamesocket?token="+token);
     }
     else{
         alert('Not support websocket')
+    }
+
+    //读取cookies
+    function getToken(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+
+        if(arr=document.cookie.match(reg))
+
+            return unescape(arr[2]);
+        else
+            return null;
     }
 
     //连接发生错误的回调方法
@@ -34,7 +53,7 @@ Welcome<br/>
 
     //接收到消息的回调方法
     websocket.onmessage = function(event){
-        setMessageInnerHTML(event.data);
+        alert(event.data);
     }
 
     //连接关闭的回调方法
@@ -63,10 +82,25 @@ Welcome<br/>
         websocket.close();
     }
 
+    //login(1, "登录"), logout(2, "登出"),
+    //add(3, "进房间"), leave(4, "离开房间"),
+    //confirm(5, "准备"), unconfirm(6, "取消准备"),
+    //begin(7, "开始"), createRoom(8, "创建房间"),
+    //selectPeopleType(9, "选择币类型"), invite(10, "邀请用户加入房间")
+    //sendInvite(11, "发送邀请"),
     //发送消息
     function send(){
         var message = document.getElementById('text').value;
-        websocket.send(message);
+        var str = {"messageType":"leave", "site":"http://www.runoob.com"}
+        var strJson = JSON.stringify(str)
+        websocket.send(strJson);
+    }
+
+    function invite(){
+        var name = document.getElementById('inviteName').value;
+        var str = {"messageType":"sendInvite", "name":"+name+"}
+        var strJson = JSON.stringify(str)
+        websocket.send(strJson);
     }
 </script>
 </html>

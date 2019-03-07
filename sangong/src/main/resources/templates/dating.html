@@ -3,9 +3,6 @@
 <head>
   <title>learn Resources</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/static/css/bootstrap.css}"/>
-  <link rel="stylesheet" href="../static/css/bootstrap.min.css"
-        th:href="@{/static/css/bootstrap.min.css}"/>
 </head>
 <body background="/static/dating.png" style="background-size: 100%; background-repeat:no-repeat;">
 
@@ -35,4 +32,52 @@
   </form>
 </div>
 </body>
+
+<script type="text/javascript">
+    var websocket = null;
+
+    //判断当前浏览器是否支持WebSocket
+    if('WebSocket' in window){
+        var token = getToken("nb_token");
+        websocket = new WebSocket("ws://127.0.0.1:9095/gamesocket?token="+token);
+    }
+    else{
+        alert('Not support websocket')
+    }
+
+    //读取cookies
+    function getToken(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+
+        if(arr=document.cookie.match(reg))
+
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function(event){
+        alert(event.data);
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function(){
+        websocket.close();
+    }
+
+    //解析message
+    function parseMessage(message){
+      var obj = JSON.parse(message);
+
+    }
+
+    //关闭连接
+    function closeWebSocket(){
+        websocket.close();
+    }
+
+</script>
+
 </html>

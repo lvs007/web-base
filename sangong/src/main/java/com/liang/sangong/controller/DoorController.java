@@ -5,6 +5,7 @@ import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
+import com.liang.sangong.core.RoomPool;
 import com.liang.sangong.core.RoomService;
 import com.liang.sangong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class DoorController {
 
   @Autowired
   private RoomService roomService;
+
+  @Autowired
+  private RoomPool roomPool;
 
   @PcLogin
   public String door() {

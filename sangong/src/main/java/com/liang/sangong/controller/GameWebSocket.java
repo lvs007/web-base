@@ -1,12 +1,14 @@
 package com.liang.sangong.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
 import com.liang.sangong.message.Message.MessageType;
+import com.liang.sangong.message.action.MessageAction;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.websocket.OnClose;
@@ -15,20 +17,25 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @ServerEndpoint(value = "/gamesocket")
 @Component
-public class GameController {
+public class GameWebSocket {
 
   //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
   private static final AtomicInteger onlineCount = new AtomicInteger(0);
 
   //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-  private static final Map<Long, GameController> webSocketSet = new ConcurrentHashMap<>();
+  public static final Map<Long, GameWebSocket> webSocketMap = new ConcurrentHashMap<>();
 
   //与某个客户端的连接会话，需要通过它来给客户端发送数据
   private Session session;
+
+  @Autowired
+  private MessageAction messageAction;
 
   /**
    * 连接建立成功调用的方法
@@ -36,19 +43,24 @@ public class GameController {
   @OnOpen
   public void onOpen(Session session) throws IOException {
     this.session = session;
-    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    String queryString = session.getQueryString();
+    if (StringUtils.isEmpty(queryString) || !StringUtils.contains(queryString, "token=")) {
+      return;
+    }
+    String token = StringUtils.split(queryString, "=")[1];
+    UserInfo userInfo = LoginUtils.getUser(token);
     if (userInfo == null) {
       session.close();
       return;
     }
-    webSocketSet.put(userInfo.getId(), this);     //加入set中
+    GameWebSocket gameWebSocket = webSocketMap.get(userInfo.getId());
+    if (gameWebSocket != null) {
+      gameWebSocket.getSession().close();
+    }
+    webSocketMap.put(userInfo.getId(), this);     //加入set中
     addOnlineCount();           //在线数加1
     System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
-    try {
-      sendMessage("");
-    } catch (IOException e) {
-      System.out.println("IO异常");
-    }
+    sendMessage("");
   }
 
   /**
@@ -56,12 +68,14 @@ public class GameController {
    */
   @OnClose
   public void onClose() {
-    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    if (userInfo == null) {
-      return;
+    for (Iterator<Entry<Long, GameWebSocket>> iterator = webSocketMap.entrySet().iterator();
+        iterator.hasNext(); ) {
+      if (iterator.next().getValue().equals(this)) {
+        iterator.remove();
+        subOnlineCount();           //在线数减1
+      }
     }
-    webSocketSet.remove(userInfo.getId());  //从set中删除
-    subOnlineCount();           //在线数减1
+
     System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
   }
 
@@ -71,18 +85,19 @@ public class GameController {
    * @param message 客户端发送过来的消息
    */
   @OnMessage
-  public void onMessage(String message, Session session) {
+  public void onMessage(String message, Session session) throws IOException {
     System.out.println("来自客户端的消息:" + message);
-    String type = JSON.parseObject(message).getString("messageType");
-    MessageType messageType = MessageType.valueOf(type);
-    //群发消息
-    for (GameController item : webSocketSet.values()) {
-      try {
-        item.sendMessage(message);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    MessageType messageType = null;
+    try {
+      String type = JSON.parseObject(message).getString("messageType");
+      messageType = MessageType.valueOf(type);
+    } catch (Exception e) {
+      session.close();
+      return;
     }
+
+    messageAction.action(message, messageType);
+
   }
 
   /**
@@ -95,8 +110,12 @@ public class GameController {
   }
 
 
-  public void sendMessage(String message) throws IOException {
-    this.session.getBasicRemote().sendText(message);
+  public void sendMessage(String message) {
+    try {
+      this.session.getBasicRemote().sendText(message);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     //this.session.getAsyncRemote().sendText(message);
   }
 
@@ -104,13 +123,9 @@ public class GameController {
   /**
    * /** 群发自定义消息
    */
-  public static void sendInfo(String message) throws IOException {
-    for (GameController item : webSocketSet.values()) {
-      try {
-        item.sendMessage(message);
-      } catch (IOException e) {
-        continue;
-      }
+  public static void sendInfo(String message) {
+    for (GameWebSocket item : webSocketMap.values()) {
+      item.sendMessage(message);
     }
   }
 
@@ -124,5 +139,9 @@ public class GameController {
 
   public static synchronized void subOnlineCount() {
     onlineCount.decrementAndGet();
+  }
+
+  public Session getSession() {
+    return session;
   }
 }

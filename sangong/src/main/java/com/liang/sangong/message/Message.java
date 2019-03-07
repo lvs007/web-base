@@ -1,5 +1,7 @@
 package com.liang.sangong.message;
 
+import com.alibaba.fastjson.JSON;
+
 public class Message {
 
   private MessageType messageType;
@@ -9,7 +11,8 @@ public class Message {
     add(3, "进房间"), leave(4, "离开房间"),
     confirm(5, "准备"), unconfirm(6, "取消准备"),
     begin(7, "开始"), createRoom(8, "创建房间"),
-    selectPeopleType(9, "选择币类型");
+    selectPeopleType(9, "选择币类型"), invite(10, "邀请用户加入房间"),
+    sendInvite(11, "发送邀请");
 
     MessageType(int code, String desc) {
       this.code = code;
@@ -31,5 +34,10 @@ public class Message {
   public Message setMessageType(MessageType messageType) {
     this.messageType = messageType;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return JSON.toJSONString(this);
   }
 }

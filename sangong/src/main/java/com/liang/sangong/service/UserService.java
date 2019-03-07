@@ -85,7 +85,12 @@ public class UserService {
 
   public PeopleInfo findUser(long userId, int type) {
     return userDao.findOne(SqlPath.where("user_id", Operator.EQ, userId).
-        and("type", Operator.EQ, PeopleType.TRX.code));
+        and("type", Operator.EQ, type));
+  }
+
+  public PeopleInfo findUser(String name, int type) {
+    return userDao.findOne(SqlPath.where("name", Operator.EQ, name).
+        and("type", Operator.EQ, type));
   }
 
 }

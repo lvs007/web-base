@@ -4,11 +4,12 @@ import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.core.PeoplePlay;
 import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.Room;
+import com.liang.sangong.core.Room.RoomType;
 
 public class Test {
 
   public static void main(String[] args) {
-    Room table = new Room(GameType.ZHUANGJIA);
+    Room table = new Room(GameType.ZHUANGJIA, RoomType.PRIVATE);
     PeoplePlay peoplePlay1 = new PeoplePlay(new PeopleInfo("s1", 100000));
     PeoplePlay peoplePlay2 = new PeoplePlay(new PeopleInfo("s2", 1000));
     PeoplePlay peoplePlay3 = new PeoplePlay(new PeopleInfo("s3", 1000));
