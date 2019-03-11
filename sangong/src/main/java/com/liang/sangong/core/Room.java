@@ -57,6 +57,7 @@ public class Room {
         && !begin) {
       peoplePlay.setRoom(this);
       peoplePlay.setGameType(gameType);
+      peoplePlay.setSite(peoplePlayList.size());
       return peoplePlayList.add(peoplePlay);
     }
     return false;
@@ -71,6 +72,9 @@ public class Room {
           iterator.remove();
           break;
         }
+      }
+      for (int i = 0; i < peoplePlayList.size(); i++) {
+        peoplePlayList.get(i).setSite(i);
       }
       return true;
     } else {
@@ -133,5 +137,24 @@ public class Room {
 
   public String getRoomId() {
     return roomId;
+  }
+
+  public Room setPeoplePlayList(List<PeoplePlay> peoplePlayList) {
+    this.peoplePlayList = peoplePlayList;
+    return this;
+  }
+
+  public Room setRoomId(String roomId) {
+    this.roomId = roomId;
+    return this;
+  }
+
+  public RoomType getRoomType() {
+    return roomType;
+  }
+
+  public Room setRoomType(RoomType roomType) {
+    this.roomType = roomType;
+    return this;
   }
 }

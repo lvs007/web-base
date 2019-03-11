@@ -6,31 +6,21 @@
 </head>
 <body background="/static/dating.png" style="background-size: 100%; background-repeat:no-repeat;">
 
+<div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;">
+  <span id="name" style="color:#F00" th:text="'姓名：' + ${peopleInfo.name}"></span>
+  <span id="coinShow" style="color:#F00" th:text="'金币：' + ${peopleInfo.coin}"></span>
+</div>
+<div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;">
+  <input id="coin" name="coin" value="" type="text"/>
+  <button onclick="recharge()">充值</button>
+</div>
 <div style="position: absolute;right: 100px;top:50px;width:150px;height:50px;">
   <form action="/v1/door/create-room">
 
     <button type="submit">创建房间</button>
   </form>
 </div>
-<div style="text-align: center;margin:0 auto;width: 1000px; ">
-  <h1>修改</h1>
-  <form action="">
-    <input type="hidden" name="id" th:value="1"/>
-    <table width="100%" border="1" cellspacing="1" cellpadding="0">
 
-      <tr>
-        <td>需要流控的对象：</td>
-        <td><input type="text" th:value="1" name="value"/></td>
-      </tr>
-
-      <tr>
-        <td colspan="2">
-          <input type="submit" value="修改"/>
-        </td>
-      </tr>
-    </table>
-  </form>
-</div>
 </body>
 
 <script type="text/javascript">
@@ -60,17 +50,59 @@
     //接收到消息的回调方法
     websocket.onmessage = function(event){
       var message = parseMessage(event.data);
-      if(message.messageType == "sendInvite"){
+      if(message.messageType == "invite"){
         var truthBeTold = window.confirm("是否加入房间");
         if (truthBeTold) {
-          var token = getToken("nb_token");
-          var str = {"messageType":"add", "roomId":message.roomId,"peopleType":message.peopleType,"token":token}
-          var strJson = JSON.stringify(str)
-          websocket.send(strJson);
+          <!--var token = getToken("nb_token");-->
+          <!--var str = {"messageType":"add", "roomId":message.roomId,"peopleType":message.peopleType,"token":token}-->
+          <!--var strJson = JSON.stringify(str)-->
+          <!--websocket.send(strJson);-->
+
+          var str = {'roomId':message.roomId,'peopleType':message.peopleType}
+          <!--var strJson = JSON.stringify(str)-->
+          doFormRequest("/v1/door/come-in-room","post",str);
         } else{
 
         }
+      }else if(message.messageType == "returnRecharge"){
+        document.getElementById('name').innerText="姓名："+message.name;
+        document.getElementById('coinShow').innerText="金币："+message.coin;
       }
+    }
+
+    /*
+    * @url: url link
+    * @action: "get", "post"
+    * @json: {'key1':'value2', 'key2':'value2'}
+    */
+    function doFormRequest(url, action, json)
+    {
+        var form = document.createElement("form");
+        form.action = url;
+        form.method = action;
+
+        // append input attribute and valus
+        for (var key in json)
+        {
+            if (json.hasOwnProperty(key))
+            {
+                var val = json[key];
+                input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = val;
+
+                // append key-value to form
+                form.appendChild(input)
+            }
+        }
+
+        // send post request
+        document.body.appendChild(form);
+        form.submit();
+
+        // remove form from document
+        document.body.removeChild(form);
     }
 
     //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -81,12 +113,20 @@
     //解析message
     function parseMessage(message){
       var obj = JSON.parse(message);
-
+      return obj;
     }
 
     //关闭连接
     function closeWebSocket(){
         websocket.close();
+    }
+
+    function recharge(){
+        var token = getToken("nb_token");
+        var coin = document.getElementById('coin').value;
+        var str = {"messageType":"recharge", "coin":coin, "token":token, "peopleType":"TRX"}
+        var strJson = JSON.stringify(str)
+        websocket.send(strJson);
     }
 
 </script>

@@ -2,12 +2,14 @@ package com.liang.sangong.core;
 
 import static com.liang.sangong.common.Constants.MIN_ZUOZHUANG_COIN;
 
+import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.bo.PokesBo.Poke;
 import com.liang.sangong.common.Constants;
 import com.liang.sangong.common.ThreadUtils;
 import com.liang.sangong.core.Room.TableState;
+import com.liang.sangong.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +17,15 @@ public class PeoplePlay {
 
   private PeopleInfo peopleInfo;
   private List<Poke> currentPoke = new ArrayList<>();
+  private List<Poke> beforePoke = new ArrayList<>();
   private boolean isZhuangjia;
   private PeopleState state = PeopleState.INIT;
-  private Room room;
+  private transient Room room;
   private long playCoin;
   private GameType gameType = GameType.ZIDONG;
   private PeopleType peopleType = PeopleType.TRX;
+  private int site;//座位
+  private UserService userService;
 
   public enum PeopleState {
     INIT, CONFIRM, PLAY
@@ -32,6 +37,7 @@ public class PeoplePlay {
 
   public PeoplePlay(PeopleInfo peopleInfo) {
     this.peopleInfo = peopleInfo;
+    userService = SpringContextHolder.getBean(UserService.class);
   }
 
   public boolean isCanBegin() {
@@ -72,7 +78,7 @@ public class PeoplePlay {
     }
     currentPoke.clear();
     state = PeopleState.CONFIRM;
-    peopleInfo.decr(coin);
+    userService.decrCoin(peopleInfo.getUserId(), peopleType, coin);
     setPlayCoin(coin);
     return true;
   }
@@ -80,14 +86,14 @@ public class PeoplePlay {
   public synchronized boolean unConfirm() {
     if (state == PeopleState.CONFIRM) {
       state = PeopleState.INIT;
-      peopleInfo.incr(playCoin);
+      userService.incrCoin(peopleInfo.getUserId(), peopleType, playCoin);
       playCoin = 0L;
       return true;
     }
     return false;
   }
 
-  public synchronized void begin() {
+  public synchronized boolean begin() {
     if (isCanBegin()) {
       room.setBegin(true);
       ThreadUtils.sleep(Constants.WAIT_TIME_TO_BEGIN);
@@ -98,15 +104,26 @@ public class PeoplePlay {
         room.fapai();
         room.compare();
         end();
+        return true;
       } else {
         room.setBegin(false);
+        return false;
       }
+    } else {
+      return false;
     }
   }
 
   public void end() {
-    state = PeopleState.INIT;
-    playCoin = 0;
+    for (PeoplePlay peoplePlay : room.getPeoplePlayList()) {
+      if (!peoplePlay.isZhuangjia()) {
+        peoplePlay.setState(PeopleState.INIT);
+      }
+      peoplePlay.setPlayCoin(0);
+      peoplePlay.getBeforePoke().clear();
+      peoplePlay.getBeforePoke().addAll(peoplePlay.getCurrentPoke());
+      peoplePlay.getCurrentPoke().clear();
+    }
   }
 
   public boolean zuoZhuang() {
@@ -125,6 +142,7 @@ public class PeoplePlay {
           return false;
         }
       }
+      setState(PeopleState.CONFIRM);
       setZhuangjia(true);
       return true;
     }
@@ -132,8 +150,9 @@ public class PeoplePlay {
 
   public boolean unZuoZhuang() {
     synchronized (room) {
-      if (isZhuangjia) {
+      if (isZhuangjia && !room.isBegin()) {
         setZhuangjia(false);
+        setState(PeopleState.INIT);
         return true;
       }
       return false;
@@ -214,5 +233,39 @@ public class PeoplePlay {
   public PeoplePlay setPeopleType(PeopleType peopleType) {
     this.peopleType = peopleType;
     return this;
+  }
+
+  public int getSite() {
+    return site;
+  }
+
+  public PeoplePlay setSite(int site) {
+    this.site = site;
+    return this;
+  }
+
+  public List<Poke> getBeforePoke() {
+    return beforePoke;
+  }
+
+  public PeoplePlay setBeforePoke(List<Poke> beforePoke) {
+    this.beforePoke = beforePoke;
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    return "PeoplePlay{" +
+        "peopleInfo=" + peopleInfo +
+        ", currentPoke=" + currentPoke +
+        ", isZhuangjia=" + isZhuangjia +
+        ", state=" + state +
+        ", room=" + room +
+        ", playCoin=" + playCoin +
+        ", gameType=" + gameType +
+        ", peopleType=" + peopleType +
+        ", site=" + site +
+        ", beforePoke=" + beforePoke +
+        '}';
   }
 }

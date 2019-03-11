@@ -19,7 +19,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @ServerEndpoint(value = "/gamesocket")
@@ -29,7 +28,7 @@ public class GameWebSocket {
   //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
   private static final AtomicInteger onlineCount = new AtomicInteger(0);
 
-  //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
+  //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。key:userId
   public static final Map<Long, GameWebSocket> webSocketMap = new ConcurrentHashMap<>();
 
   //与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -60,7 +59,6 @@ public class GameWebSocket {
     webSocketMap.put(userInfo.getId(), this);     //加入set中
     addOnlineCount();           //在线数加1
     System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
-    sendMessage("");
   }
 
   /**
@@ -97,7 +95,7 @@ public class GameWebSocket {
       return;
     }
 
-    String value = messageAction.action(message, messageType);
+    String value = messageAction.action(message, messageType, this);
     sendMessage(value);
   }
 
