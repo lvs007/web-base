@@ -231,10 +231,11 @@
                div.appendChild(img);
                div.style.display="none";//隐藏
                if(!meConfirm){
-                showPokeTimeout(div,k,i,winner);
+                showPokeTimeout(div,k);
                }
                mainDiv.appendChild(div);
             }
+            gameOverTimeout(i,winner);
           }
         }
 
@@ -265,11 +266,13 @@
       }
     }
 
-    function showPokeTimeout(div,i,index,winner) {
+    function showPokeTimeout(div,i) {
       setTimeout(function() {
         div.style.display="";//显示
       }, 1000*i);
+    }
 
+    function gameOverTimeout(index,winner){
       setTimeout(function() {
         var div = document.getElementById('winner'+index);
         var img = document.createElement("img");
@@ -414,6 +417,7 @@
         var strJson = JSON.stringify(str)
         websocket.send(strJson);
     }
+
 
 
 </script>

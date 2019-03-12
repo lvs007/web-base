@@ -94,6 +94,7 @@ public class UserService {
   }
 
   private boolean updateUser(PeopleInfo peopleInfo) {
+    peopleInfo.setUpdate_time(System.currentTimeMillis());
     if (userDao.update(peopleInfo)) {
       PeoplePlay peoplePlay = roomPool.getPeople(peopleInfo.getUserId());
       if (peoplePlay != null) {
