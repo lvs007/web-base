@@ -124,6 +124,7 @@ public class PeoplePlay {
       peoplePlay.getBeforePoke().addAll(peoplePlay.getCurrentPoke());
       peoplePlay.getCurrentPoke().clear();
     }
+    room.setBegin(false);
   }
 
   public boolean zuoZhuang() {
