@@ -32,7 +32,6 @@ nbproject/
 *.project
 .settings
 bin/
-out/
 
 # IntelliJ related
 .idea/
