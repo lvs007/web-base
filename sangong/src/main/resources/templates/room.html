@@ -48,6 +48,7 @@
   <br/>
   <span id="paycoin0" style="color:#F00">下注金额：0</span>
   <div id="winner0" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
+    <img id="winnerimg0" src="" style="width:50px;height:50px;display:none"/>
   </div>
 </div>
 <div id="people1Poke" style="position: absolute;left: 15.5%;bottom: 25%;width:200px;height:200px;">
@@ -61,6 +62,7 @@
   <br/>
   <span id="paycoin1" style="color:#F00">下注金额：0</span>
   <div id="winner1" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
+    <img id="winnerimg1" src="" style="width:50px;height:50px;display:none"/>
   </div>
 </div>
 <div id="people2Poke" style="position: absolute;left: 35.5%;bottom: 10%;width:200px;height:200px;">
@@ -192,7 +194,8 @@
             document.getElementById('zuozhuang'+i).innerText="";
           }
           var winner = false;
-          if(room.winner && room.winner.peopleInfo.userId == userId){
+          var winnerObj = message.room.winner;
+          if(winnerObj && winnerObj.peopleInfo.userId == peoplePlayList[i].peopleInfo.userId){
             winner = true;
           }
           //控制组件的显示
@@ -279,14 +282,13 @@
     function gameOverTimeout(index,winner){
       setTimeout(function() {
         var div = document.getElementById('winner'+index);
-        var img = document.createElement("img");
-        img.style.cssText="width:50px;height:50px;";
+        var img = document.getElementById("winnerimg"+index);
         if(winner){
           img.src="/static/ying.png";
         }else{
           img.src="/static/shu.png";
         }
-        div.appendChild(img);
+        img.style.display="block";
       }, 2100);
     }
 
