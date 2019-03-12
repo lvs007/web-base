@@ -45,6 +45,10 @@
   <span id="coin0" style="color:#F00">金币：</span>
   <span id="confirm0" style="color:#F00"></span>
   <span id="zuozhuang0" style="color:#F00"></span>
+  <br/>
+  <span id="paycoin0" style="color:#F00">下注金额：0</span>
+  <div id="winner0" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
+  </div>
 </div>
 <div id="people1Poke" style="position: absolute;left: 15.5%;bottom: 25%;width:200px;height:200px;">
 </div>
@@ -54,6 +58,8 @@
   <span id="coin1" style="color:#F00">金币：</span>
   <span id="confirm1" style="color:#F00"></span>
   <span id="zuozhuang1" style="color:#F00"></span>
+  <br/>
+  <span id="paycoin1" style="color:#F00">下注金额：0</span>
 </div>
 <div id="people2Poke" style="position: absolute;left: 35.5%;bottom: 10%;width:200px;height:200px;">
 </div>
@@ -63,6 +69,8 @@
   <span id="coin2" style="color:#F00">金币：</span>
   <span id="confirm2" style="color:#F00"></span>
   <span id="zuozhuang2" style="color:#F00"></span>
+  <br/>
+  <span id="paycoin2" style="color:#F00">下注金额：0</span>
 </div>
 <div id="people3Poke" style="position: absolute;right: 35.5%;bottom: 10%;width:200px;height:200px;">
 </div>
@@ -72,6 +80,8 @@
   <span id="coin3" style="color:#F00">金币：</span>
   <span id="confirm3" style="color:#F00"></span>
   <span id="zuozhuang3" style="color:#F00"></span>
+  <br/>
+  <span id="paycoin3" style="color:#F00">下注金额：0</span>
 </div>
 <div id="people4Poke" style="position: absolute;right: 15.5%;bottom: 20%;width:200px;height:200px;">
 </div>
@@ -81,6 +91,8 @@
   <span id="coin4" style="color:#F00">金币：</span>
   <span id="confirm4" style="color:#F00"></span>
   <span id="zuozhuang4" style="color:#F00"></span>
+  <br/>
+  <span id="paycoin4" style="color:#F00">下注金额：0</span>
 </div>
 <div id="people5Poke" style="position: absolute;right: 15.5%;top: 12%;width:200px;height:200px;">
 </div>
@@ -90,6 +102,8 @@
   <span id="coin5" style="color:#F00">金币：</span>
   <span id="confirm5" style="color:#F00"></span>
   <span id="zuozhuang5" style="color:#F00"></span>
+  <br/>
+  <span id="paycoin5" style="color:#F00">下注金额：0</span>
 </div>
 </body>
 
@@ -150,11 +164,21 @@
         document.getElementById('roomId').innerText=message.room.roomId;
         var peoplePlayList = message.room.peoplePlayList;
         /* <![CDATA[ */
+        var userId = document.getElementById('userId').innerText;
         var length = peoplePlayList.length;
         var haszuozhuang = false;
+        var meConfirm = false;
+        for(var i = 0; i < length; i++){
+          if(peoplePlayList[i].peopleInfo.userId == userId){
+            if(peoplePlayList[i].state == "CONFIRM"){
+              meConfirm = true;
+            }
+          }
+        }
         for(var i = 0; i < length; i++){
           document.getElementById('name'+i).innerText="姓名："+peoplePlayList[i].peopleInfo.name;
           document.getElementById('coin'+i).innerText="金币："+peoplePlayList[i].peopleInfo.coin;
+          document.getElementById('paycoin'+i).innerText="下注金额："+peoplePlayList[i].playCoin;
           if(peoplePlayList[i].state == "CONFIRM"){
             document.getElementById('confirm'+i).innerText="准备";
           }else{
@@ -165,9 +189,11 @@
           }else{
             document.getElementById('zuozhuang'+i).innerText="";
           }
-
+          var winner = false;
+          if(room.winner.peopleInfo.userId == userId){
+            winner = true;
+          }
           //控制组件的显示
-          var userId = document.getElementById('userId').innerText;
           if(peoplePlayList[i].peopleInfo.userId == userId){
             if(peoplePlayList[i].state == "INIT"){
               document.getElementById('confirmDiv').style.display="";//显示
@@ -204,7 +230,9 @@
                div.style.cssText="width:200px;height:200px;position: absolute;left: "+30*k+"%;";
                div.appendChild(img);
                div.style.display="none";//隐藏
-               showPokeTimeout(div,k);
+               if(!meConfirm){
+                showPokeTimeout(div,k,i,winner);
+               }
                mainDiv.appendChild(div);
             }
           }
@@ -237,10 +265,21 @@
       }
     }
 
-    function showPokeTimeout(div,i) {
+    function showPokeTimeout(div,i,index,winner) {
       setTimeout(function() {
         div.style.display="";//显示
       }, 1000*i);
+
+      setTimeout(function() {
+        var div = document.getElementById('winner'+index);
+        var img = document.createElement("img");
+        if(winner){
+          img.src="/static/ying.png";
+        }else{
+          img.src="/static/shu.png";
+        }
+        div.appendChild(img);
+      }, 2100);
     }
 
     //连接关闭的回调方法

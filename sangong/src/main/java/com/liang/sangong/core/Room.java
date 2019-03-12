@@ -1,5 +1,6 @@
 package com.liang.sangong.core;
 
+import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.sangong.bo.OnePoke;
 import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.PeoplePlay.PeopleState;
@@ -23,6 +24,10 @@ public class Room {
 
   private RoomType roomType;
 
+  private PeoplePlay winner;
+
+  private RoomService roomService;
+
   public enum TableState {
     INIT, ALL_CONFIRM, DOING;
   }
@@ -35,6 +40,7 @@ public class Room {
     this.gameType = gameType;
     this.roomType = roomType;
     this.roomId = UUID.randomUUID().toString().replaceAll("-", "");
+    roomService = SpringContextHolder.getBean(RoomService.class);
   }
 
   public TableState getState() {
@@ -92,21 +98,13 @@ public class Room {
   }
 
   public void compare() {
-    PeoplePlay winner = winner();
     if (gameType == GameType.ZIDONG) {
-
+      //固定金额，赢者通吃
+      roomService.zidong(this);
     } else {
-
+      //如果庄家的钱不够当前下注的用户金额，则按比例分配，如果庄家赢则按比例收取玩家的钱，如果玩家赢
+      roomService.zhuangjia(this);
     }
-    System.out.println("winner: " + winner.getCurrentPoke());
-  }
-
-  private PeoplePlay winner() {
-    PeoplePlay winner = peoplePlayList.get(0);
-    for (int i = 1; i < peoplePlayList.size(); i++) {
-      winner = Rule.compareRetrunWinner(winner, peoplePlayList.get(i));
-    }
-    return winner;
   }
 
   public boolean isCanAdd() {
@@ -155,6 +153,15 @@ public class Room {
 
   public Room setRoomType(RoomType roomType) {
     this.roomType = roomType;
+    return this;
+  }
+
+  public PeoplePlay getWinner() {
+    return winner;
+  }
+
+  public Room setWinner(PeoplePlay winner) {
+    this.winner = winner;
     return this;
   }
 }

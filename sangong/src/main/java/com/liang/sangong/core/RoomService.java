@@ -7,6 +7,7 @@ import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.message.action.ComeInMessageAction;
 import com.liang.sangong.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +95,26 @@ public class RoomService {
 
   public Object getRoomData(String roomId) {
     return roomPool.getRoom(roomId);
+  }
+
+  public void zidong(Room room) {
+    PeoplePlay winner = winner(room.getPeoplePlayList());
+    room.setWinner(winner);
+    System.out.println("winner: " + winner.getCurrentPoke());
+  }
+
+  public void zhuangjia(Room room) {
+    PeoplePlay winner = winner(room.getPeoplePlayList());
+    room.setWinner(winner);
+    System.out.println("winner: " + winner.getCurrentPoke());
+  }
+
+  private PeoplePlay winner(List<PeoplePlay> peoplePlayList) {
+    PeoplePlay winner = peoplePlayList.get(0);
+    for (int i = 1; i < peoplePlayList.size(); i++) {
+      winner = Rule.compareRetrunWinner(winner, peoplePlayList.get(i));
+    }
+    return winner;
   }
 
 }
