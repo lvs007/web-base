@@ -7,6 +7,7 @@ import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.message.action.ComeInMessageAction;
 import com.liang.sangong.service.UserService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,9 +105,19 @@ public class RoomService {
   }
 
   public void zhuangjia(Room room) {
-    PeoplePlay winner = winner(room.getPeoplePlayList());
-    room.setWinner(winner);
-    System.out.println("winner: " + winner.getCurrentPoke());
+    PeoplePlay zhuangjia = null;
+    List<PeoplePlay> comparePeoples = new ArrayList<>();
+    for (PeoplePlay peoplePlay : room.getPeoplePlayList()) {
+      if (peoplePlay.isZhuangjia()) {
+        zhuangjia = peoplePlay;
+      } else {
+        comparePeoples.add(peoplePlay);
+      }
+    }
+    PeoplePlay winner = null;
+    for (PeoplePlay peoplePlay : comparePeoples) {
+      winner = Rule.compareRetrunWinner(zhuangjia, peoplePlay);
+    }
   }
 
   private PeoplePlay winner(List<PeoplePlay> peoplePlayList) {

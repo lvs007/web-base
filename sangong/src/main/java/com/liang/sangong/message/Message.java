@@ -14,7 +14,8 @@ public class Message {
     selectPeopleType(9, "选择币类型"), invite(10, "邀请用户加入房间"),
     sendInvite(11, "发送邀请"), getRoom(12, "获取房间信息"),
     returnRoom(13, "返回房间信息"), error(14, "请求失败"),
-    zuozhuang(15, "坐庄"), recharge(16, "充值"), returnRecharge(17, "返回充值消息");
+    zuozhuang(15, "坐庄"), recharge(16, "充值"), returnRecharge(17, "返回充值消息"),
+    beginReturn(18, "返回开始游戏数据");
 
     MessageType(int code, String desc) {
       this.code = code;

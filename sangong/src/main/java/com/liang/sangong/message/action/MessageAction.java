@@ -21,6 +21,7 @@ import com.liang.sangong.message.in.GetRoomMessage;
 import com.liang.sangong.message.in.LeaveRoomMessage;
 import com.liang.sangong.message.in.RechargeMessage;
 import com.liang.sangong.message.in.ZuoZhuangMessage;
+import com.liang.sangong.message.out.ReturnBeginMessage;
 import com.liang.sangong.message.out.ReturnRechargeMessage;
 import com.liang.sangong.message.out.ReturnRoomMessage;
 import com.liang.sangong.service.UserService;
@@ -173,7 +174,7 @@ public class MessageAction {
           return ErrorMessage.build("请加入游戏");
         }
         if (peoplePlay.begin()) {
-          sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          sendAllBeginMessage(peoplePlay.getRoom().getPeoplePlayList());
         } else {
           return ErrorMessage.build("当前不满足开始游戏条件");
         }
@@ -192,6 +193,20 @@ public class MessageAction {
         System.out.println("向" + peoplePlay.getPeopleInfo().getName() + "发送getRoom消息");
         gameWebSocket.sendMessage(
             new GetRoomMessage().setRoomId(peoplePlay.getRoom().getRoomId()).toString());
+      }
+    }
+  }
+
+  private void sendAllBeginMessage(List<PeoplePlay> peoplePlayList) {
+    for (PeoplePlay peoplePlay : peoplePlayList) {
+      GameWebSocket gameWebSocket = GameWebSocket.webSocketMap
+          .get(peoplePlay.getPeopleInfo().getUserId());
+      if (gameWebSocket != null && gameWebSocket.getSession().isOpen()) {
+        System.out.println("向" + peoplePlay.getPeopleInfo().getName() + "发送getRoom消息");
+        gameWebSocket.sendMessage(
+            new ReturnBeginMessage().setPeoplePlayList(peoplePlayList)
+                .setWinner(peoplePlay.getRoom().getWinner().getPeopleInfo().getUserId())
+                .toString());
       }
     }
   }

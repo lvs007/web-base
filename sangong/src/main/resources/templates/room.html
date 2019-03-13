@@ -193,59 +193,12 @@
           }else{
             document.getElementById('zuozhuang'+i).innerText="";
           }
-          var winner = false;
-          var winnerObj = message.room.winner;
-          if(winnerObj && winnerObj.peopleInfo.userId == peoplePlayList[i].peopleInfo.userId){
-            winner = true;
-          }
           //控制组件的显示
-          if(peoplePlayList[i].peopleInfo.userId == userId){
-            if(peoplePlayList[i].state == "INIT"){
-              document.getElementById('confirmDiv').style.display="";//显示
-              document.getElementById('leaveDiv').style.display="";//显示
-            }else{
-              document.getElementById('confirmDiv').style.display="none";//隐藏
-              document.getElementById('leaveDiv').style.display="none";//隐藏
-            }
-            if(peoplePlayList[i].zhuangjia){
-              document.getElementById('beginDiv').style.display="";//显示
-            }else{
-              document.getElementById('beginDiv').style.display="none";//隐藏
-            }
-          }
+          showComponent(peoplePlayList[i]);
           if(peoplePlayList[i].zhuangjia){
             haszuozhuang = true;
           }
-          //控制扑克的显示
-          var mainDiv = document.getElementById('people'+i+'Poke')
-          var pokeList = peoplePlayList[i].beforePoke;
-          if(pokeList && pokeList.length>0){
-            for(var k = 0; k < pokeList.length; k++){
-               var div = document.createElement("div");
-               var img = document.createElement("img");
-               if(pokeList[k].pokerType == "FANGP"){
-                img.src="/static/pk/fangkuai_"+pokeList[k].value+".jpg";
-               }else if(pokeList[k].pokerType == "MEIH"){
-                img.src="/static/pk/meihua_"+pokeList[k].value+".jpg";
-               }else if(pokeList[k].pokerType == "HONGT"){
-                img.src="/static/pk/hongtao_"+pokeList[k].value+".jpg";
-               }else if(pokeList[k].pokerType == "HEIT"){
-                img.src="/static/pk/heitao_"+pokeList[k].value+".jpg";
-               }
-               div.style.cssText="width:200px;height:200px;position: absolute;left: "+30*k+"%;";
-               div.appendChild(img);
-               div.style.display="none";//隐藏
-               if(!meConfirm){
-                showPokeTimeout(div,k);
-               }
-               mainDiv.appendChild(div);
-            }
-            if(!meConfirm){
-              gameOverTimeout(i,winner);
-            }
-          }
         }
-
         if(haszuozhuang){
           document.getElementById('zuozhuangDiv').style.display="none";//隐藏
         }else{
@@ -255,6 +208,7 @@
         for(var i = length; i < 6; i++){
           document.getElementById('name'+i).innerText="姓名：";
           document.getElementById('coin'+i).innerText="金币：";
+          document.getElementById('paycoin'+i).innerText="下注金额：";
         }
         <!--fapai(peoplePlayList);-->
         /* ]]> */
@@ -270,6 +224,40 @@
         }
       }else if(message.messageType == "leave"){
 
+      }else if(message.messageType == "beginReturn"){
+          /* <![CDATA[ */
+          var peoplePlayList = message.peoplePlayList;
+          for(var i=0; i < peoplePlayList.length; i++){
+            var winner = false;
+            if(message.winner == peoplePlayList[i].peopleInfo.userId){
+              winner = true;
+            }
+            //控制扑克的显示
+            var mainDiv = document.getElementById('people'+i+'Poke');
+            var pokeList = peoplePlayList[i].beforePoke;
+            if(pokeList && pokeList.length>0){
+              for(var k = 0; k < pokeList.length; k++){
+                 var div = document.createElement("div");
+                 var img = document.createElement("img");
+                 if(pokeList[k].pokerType == "FANGP"){
+                  img.src="/static/pk/fangkuai_"+pokeList[k].value+".jpg";
+                 }else if(pokeList[k].pokerType == "MEIH"){
+                  img.src="/static/pk/meihua_"+pokeList[k].value+".jpg";
+                 }else if(pokeList[k].pokerType == "HONGT"){
+                  img.src="/static/pk/hongtao_"+pokeList[k].value+".jpg";
+                 }else if(pokeList[k].pokerType == "HEIT"){
+                  img.src="/static/pk/heitao_"+pokeList[k].value+".jpg";
+                 }
+                 div.style.cssText="width:200px;height:200px;position: absolute;left: "+30*k+"%;";
+                 div.appendChild(img);
+                 div.style.display="none";//隐藏
+                 showPokeTimeout(div,k);
+                 mainDiv.appendChild(div);
+              }
+              gameOverTimeout(i,winner,peoplePlayList[i]);
+            }
+          }
+        /* ]]> */
       }
     }
 
@@ -279,7 +267,7 @@
       }, 1000*i);
     }
 
-    function gameOverTimeout(index,winner){
+    function gameOverTimeout(index,winner,peoplePlay){
       setTimeout(function() {
         var div = document.getElementById('winner'+index);
         var img = document.getElementById("winnerimg"+index);
@@ -289,7 +277,37 @@
           img.src="/static/shu.png";
         }
         img.style.display="block";
+        document.getElementById('coin'+index).innerText="金币："+peoplePlay.peopleInfo.coin;
+        showComponent(peoplePlay);
       }, 2100);
+      //hidden
+      setTimeout(function() {
+        var img = document.getElementById("winnerimg"+index);
+        img.style.display="none";
+        var mainDiv = document.getElementById('people'+index+'Poke');
+        mainDiv.style.display="none";//隐藏
+        document.getElementById('paycoin'+index).innerText="下注金额：";
+        document.getElementById('confirm'+index).innerText="";
+      },4100);
+    }
+
+    function showComponent(peoplePlay){
+       //控制组件的显示
+      var userId = document.getElementById('userId').innerText;
+      if(peoplePlay.peopleInfo.userId == userId){
+        if(peoplePlay.state == "INIT"){
+          document.getElementById('confirmDiv').style.display="";//显示
+          document.getElementById('leaveDiv').style.display="";//显示
+        }else{
+          document.getElementById('confirmDiv').style.display="none";//隐藏
+          document.getElementById('leaveDiv').style.display="none";//隐藏
+        }
+        if(peoplePlay.zhuangjia){
+          document.getElementById('beginDiv').style.display="";//显示
+        }else{
+          document.getElementById('beginDiv').style.display="none";//隐藏
+        }
+      }
     }
 
     //连接关闭的回调方法
@@ -424,6 +442,7 @@
         var strJson = JSON.stringify(str)
         websocket.send(strJson);
     }
+
 
 
 
