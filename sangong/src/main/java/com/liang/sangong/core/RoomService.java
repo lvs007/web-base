@@ -8,6 +8,7 @@ import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.message.action.ComeInMessageAction;
 import com.liang.sangong.service.UserService;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -115,8 +116,44 @@ public class RoomService {
       }
     }
     PeoplePlay winner = null;
-    for (PeoplePlay peoplePlay : comparePeoples) {
+    long coin = 0;
+    for (Iterator<PeoplePlay> iterator = comparePeoples.iterator(); iterator.hasNext(); ) {
+      PeoplePlay peoplePlay = iterator.next();
       winner = Rule.compareRetrunWinner(zhuangjia, peoplePlay);
+      if (winner.getPeopleInfo().getUserId() == zhuangjia.getPeopleInfo().getUserId()) {
+        //庄家赢
+        if (zhuangjia.getPeopleInfo().getCoin() >= peoplePlay.getPlayCoin()) {
+          coin += peoplePlay.getPlayCoin();
+        } else {
+          coin += zhuangjia.getPeopleInfo().getCoin();
+          userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(),
+              peoplePlay.getPeopleType(),
+              peoplePlay.getPlayCoin() - zhuangjia.getPeopleInfo().getCoin());
+        }
+        iterator.remove();
+      }
+    }
+    coin += zhuangjia.getPeopleInfo().getCoin();
+    long allCoin = 0;
+    for (PeoplePlay peoplePlay : comparePeoples) {//都是赢家
+      allCoin += peoplePlay.getPlayCoin();
+    }
+    for (PeoplePlay peoplePlay : comparePeoples) {
+      if (allCoin > coin) {
+        long value = (peoplePlay.getPlayCoin() / allCoin) * coin;
+        userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
+            value);
+      } else {
+        userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
+            peoplePlay.getPlayCoin());
+      }
+    }
+    if (allCoin > coin) {
+      userService.decrCoin(zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getPeopleType(),
+          zhuangjia.getPeopleInfo().getCoin());
+    } else {
+      userService.incrCoin(zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getPeopleType(),
+          coin - allCoin);
     }
   }
 
