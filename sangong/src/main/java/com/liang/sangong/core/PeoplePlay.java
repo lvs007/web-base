@@ -9,6 +9,7 @@ import com.liang.sangong.bo.PokesBo.Poke;
 import com.liang.sangong.common.Constants;
 import com.liang.sangong.common.ThreadUtils;
 import com.liang.sangong.core.Room.TableState;
+import com.liang.sangong.core.Rule.ResultType;
 import com.liang.sangong.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class PeoplePlay {
   private GameType gameType = GameType.ZIDONG;
   private PeopleType peopleType = PeopleType.TRX;
   private int site;//座位
+  private ResultType resultType;
+  private int dianshu;
   private UserService userService;
 
   public enum PeopleState {
@@ -251,6 +254,24 @@ public class PeoplePlay {
 
   public PeoplePlay setBeforePoke(List<Poke> beforePoke) {
     this.beforePoke = beforePoke;
+    return this;
+  }
+
+  public ResultType getResultType() {
+    return resultType;
+  }
+
+  public PeoplePlay setResultType(ResultType resultType) {
+    this.resultType = resultType;
+    return this;
+  }
+
+  public int getDianshu() {
+    return dianshu;
+  }
+
+  public PeoplePlay setDianshu(int dianshu) {
+    this.dianshu = dianshu;
     return this;
   }
 
