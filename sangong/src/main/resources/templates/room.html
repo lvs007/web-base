@@ -162,8 +162,8 @@
 
         }
       }else if(message.messageType == "add"){
-        document.getElementById('name'+message.peoplePlay.site).innerText=message.peoplePlay.peopleInfo.name;
-        document.getElementById('coin'+message.peoplePlay.site).innerText=message.peoplePlay.peopleInfo.coin;
+        document.getElementById('name'+message.peoplePlay.site).innerText="姓名："+message.peoplePlay.peopleInfo.name;
+        document.getElementById('coin'+message.peoplePlay.site).innerText="金币："+message.peoplePlay.peopleInfo.coin;
       }else if(message.messageType == "returnRoom"){
         document.getElementById('roomId').innerText=message.room.roomId;
         var peoplePlayList = message.room.peoplePlayList;
@@ -253,6 +253,7 @@
                  div.style.display="none";//隐藏
                  showPokeTimeout(div,k);
                  mainDiv.appendChild(div);
+                 mainDiv.style.display="";//显示
               }
               gameOverTimeout(i,winner,peoplePlayList[i]);
             }
@@ -271,10 +272,23 @@
       setTimeout(function() {
         var div = document.getElementById('winner'+index);
         var img = document.getElementById("winnerimg"+index);
-        if(winner){
-          img.src="/static/ying.png";
+        if(peoplePlay.gameType == "ZIDONG"){
+          if(winner){
+            img.src="/static/ying.png";
+          }else{
+            img.src="/static/shu.png";
+          }
         }else{
-          img.src="/static/shu.png";
+        //ZHIZHUN(1), SANTIAO(2), SANGONG(3), DIANSHU(4);
+          if(peoplePlay.resultType == "ZHIZHUN"){
+            img.src="/static/result/zhizhun.png";
+          }else if(peoplePlay.resultType == "SANTIAO"){
+            img.src="/static/result/santiao.png";
+          }else if(peoplePlay.resultType == "SANGONG"){
+            img.src="/static/result/sangong.png";
+          }else{
+            img.src="/static/result/dianshu_"+peoplePlay.dianshu+".png";
+          }
         }
         img.style.display="block";
         document.getElementById('coin'+index).innerText="金币："+peoplePlay.peopleInfo.coin;

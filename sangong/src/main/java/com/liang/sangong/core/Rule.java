@@ -66,6 +66,8 @@ public class Rule {
     Collections.sort(pokeList2);
     ResultType resultType1 = getPokeResultType(pokeList1);
     ResultType resultType2 = getPokeResultType(pokeList2);
+    peoplePlay1.setResultType(resultType1);
+    peoplePlay2.setResultType(resultType2);
     if (resultType1 == ResultType.ZHIZHUN) {
       return peoplePlay1;
     }
@@ -89,6 +91,8 @@ public class Rule {
     if (resultType1 == resultType2 && resultType1 == ResultType.DIANSHU) {
       int dianshu1 = dianshu(pokeList1);
       int dianshu2 = dianshu(pokeList2);
+      peoplePlay1.setDianshu(dianshu1);
+      peoplePlay2.setDianshu(dianshu2);
       if (dianshu1 > dianshu2) {
         return peoplePlay1;
       } else if (dianshu1 < dianshu2) {

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
+import com.liang.sangong.message.ErrorMessage;
 import com.liang.sangong.message.Message.MessageType;
 import com.liang.sangong.message.action.MessageAction;
 import java.io.IOException;
@@ -96,6 +97,9 @@ public class GameWebSocket {
     }
 
     String value = messageAction.action(message, messageType, this);
+    if (StringUtils.equals(value, ErrorMessage.NOT_RETURN)) {
+      return;
+    }
     sendMessage(value);
   }
 

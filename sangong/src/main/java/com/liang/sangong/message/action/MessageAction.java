@@ -92,8 +92,8 @@ public class MessageAction {
         GetRoomMessage getRoomMessage = JSON.parseObject(message, GetRoomMessage.class);
         Room room = roomPool.getRoom(getRoomMessage.getRoomId());
         socket.sendMessage(new ReturnRoomMessage().setRoom(room).toString());
+        return ErrorMessage.notReturn();
       }
-      break;
       case leave: {
         LeaveRoomMessage leaveRoomMessage = JSON.parseObject(message, LeaveRoomMessage.class);
         UserInfo userInfo = LoginUtils.getUser(leaveRoomMessage.getToken());
@@ -126,11 +126,11 @@ public class MessageAction {
         boolean result = peoplePlay.confirm(confirmMessage.getCoin());
         if (result) {
           sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("准备失败");
         }
       }
-      break;
       case zuozhuang: {
         ZuoZhuangMessage zuoZhuangMessage = JSON.parseObject(message, ZuoZhuangMessage.class);
         UserInfo userInfo = LoginUtils.getUser(zuoZhuangMessage.getToken());
@@ -141,11 +141,11 @@ public class MessageAction {
         boolean result = peoplePlay.zuoZhuang();
         if (result) {
           sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("不满足坐庄的条件");
         }
       }
-      break;
       case recharge: {
         RechargeMessage rechargeMessage = JSON.parseObject(message, RechargeMessage.class);
         UserInfo userInfo = LoginUtils.getUser(rechargeMessage.getToken());
@@ -158,11 +158,11 @@ public class MessageAction {
               .setCoin(peopleInfo.getCoin())
               .setName(peopleInfo.getName());
           socket.sendMessage(returnRechargeMessage.toString());
+          return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("充值失败！");
         }
       }
-      break;
       case begin: {
         BeginMessage beginMessage = JSON.parseObject(message, BeginMessage.class);
         UserInfo userInfo = LoginUtils.getUser(beginMessage.getToken());
@@ -175,11 +175,11 @@ public class MessageAction {
         }
         if (peoplePlay.begin()) {
           sendAllBeginMessage(peoplePlay.getRoom().getPeoplePlayList());
+          return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("当前不满足开始游戏条件");
         }
       }
-      break;
       default:
     }
     return new ErrorMessage().setReason("success").toString();
@@ -202,11 +202,13 @@ public class MessageAction {
       GameWebSocket gameWebSocket = GameWebSocket.webSocketMap
           .get(peoplePlay.getPeopleInfo().getUserId());
       if (gameWebSocket != null && gameWebSocket.getSession().isOpen()) {
-        System.out.println("向" + peoplePlay.getPeopleInfo().getName() + "发送getRoom消息");
-        gameWebSocket.sendMessage(
-            new ReturnBeginMessage().setPeoplePlayList(peoplePlayList)
-                .setWinner(peoplePlay.getRoom().getWinner().getPeopleInfo().getUserId())
-                .toString());
+        System.out.println("向" + peoplePlay.getPeopleInfo().getName() + "发送beginReturn消息");
+        ReturnBeginMessage returnBeginMessage = new ReturnBeginMessage();
+        returnBeginMessage.setPeoplePlayList(peoplePlayList);
+        if (peoplePlay.getRoom().getWinner() != null) {
+          returnBeginMessage.setWinner(peoplePlay.getRoom().getWinner().getPeopleInfo().getUserId());
+        }
+        gameWebSocket.sendMessage(returnBeginMessage.toString());
       }
     }
   }
