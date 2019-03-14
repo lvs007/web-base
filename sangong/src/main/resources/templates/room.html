@@ -30,29 +30,31 @@
 
 <!--<input id="text" type="text" /><button onclick="send()">Send</button>-->
 <!--<button onclick="closeWebSocket()">Close</button>-->
-<div style="position: absolute;left: 3.5%;top:3%;width:250px;height:25px;" id="leaveDiv">
-  <button onclick="leave()">离开房间</button>
-</div>
-<div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;" id="confirmDiv">
-  <span style="font-size:24px" onclick="jian('coin')">-</span>
-  <input id="coin" name="coin" value="10" type="text" oninput="value=value.replace(/[^\d]/g,'')"/>
-  <span style="font-size:24px" onclick="jia('coin')">+</span>
-  <button onclick="confirmGame()">下注</button>
-</div>
-<div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;display:none;" id="unconfirmDiv">
-  <button onclick="unconfirmGame()">取消下注</button>
-</div>
-<div style="position: absolute;left: 30.5%;top:3%;width:250px;height:25px;" id="zuozhuangDiv">
-  <button onclick="zuozhuang()">坐庄</button>
-</div>
-<div style="position: absolute;left: 30.5%;top:3%;width:250px;height:25px;display:none;" id="unzuozhuangDiv">
-  <button onclick="unzuozhuang()">取消坐庄</button>
-</div>
-<div style="position: absolute;left: 35.5%;top:3%;width:250px;height:25px;" id="beginDiv">
-  <button onclick="begin()">开始游戏</button>
-</div>
-<div style="position: absolute;right: 3.5%;top:3%;width:250px;height:25px;">
-  <button onclick="openDialog('inviteNameWindow')">邀请玩家</button>
+<div style="right: 0.5%;top:3%;height:25px;width:100%;">
+  <div style="float: right;width:10%;height:100%;" id="leaveDiv">
+    <button onclick="leave()">离开房间</button>
+  </div>
+  <div style="float: right;width:10%;height:100%;">
+    <button onclick="openDialog('inviteNameWindow')">邀请玩家</button>
+  </div>
+  <div style="float: right;width:10%;height:100%;" id="beginDiv">
+    <button onclick="begin()">开始游戏</button>
+  </div>
+  <div style="float: right;width:10%;height:100%;display:none;" id="unzuozhuangDiv">
+    <button onclick="unzuozhuang()">取消坐庄</button>
+  </div>
+  <div style="float: right;width:10%;height:100%;" id="zuozhuangDiv">
+    <button onclick="zuozhuang()">坐庄</button>
+  </div>
+  <div style="float: right;width:10%;height:100%;display:none;" id="unconfirmDiv">
+    <button onclick="unconfirmGame()">取消下注</button>
+  </div>
+  <div style="float: right;width:20%;height:100%;" id="confirmDiv">
+    <span style="color:#F00;font-weight:bold;" onclick="jian('coin')">-</span>
+    <input id="coin" name="coin" value="10" type="text" oninput="value=value.replace(/[^\d]/g,'')"/>
+    <span style="color:#F00;font-weight:bold;" onclick="jia('coin')">+</span>
+    <button onclick="confirmGame()">下注</button>
+  </div>
 </div>
 <div id="room">
   <span id="roomId" hidden="hidden" th:text="${room.roomId}"></span>
