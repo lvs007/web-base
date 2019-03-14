@@ -2,7 +2,6 @@ package com.liang.sangong.core;
 
 import static com.liang.sangong.common.Constants.MIN_ZUOZHUANG_COIN;
 
-import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.bo.PokesBo.Poke;
@@ -10,7 +9,6 @@ import com.liang.sangong.common.Constants;
 import com.liang.sangong.common.ThreadUtils;
 import com.liang.sangong.core.Room.TableState;
 import com.liang.sangong.core.Rule.ResultType;
-import com.liang.sangong.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class PeoplePlay {
   private int site;//座位
   private ResultType resultType;
   private int dianshu;
-  private UserService userService;
 
   public enum PeopleState {
     INIT, CONFIRM, PLAY
@@ -40,7 +37,6 @@ public class PeoplePlay {
 
   public PeoplePlay(PeopleInfo peopleInfo) {
     this.peopleInfo = peopleInfo;
-    userService = SpringContextHolder.getBean(UserService.class);
   }
 
   public boolean isCanBegin() {
@@ -81,7 +77,7 @@ public class PeoplePlay {
     }
     currentPoke.clear();
     state = PeopleState.CONFIRM;
-    userService.decrCoin(peopleInfo.getUserId(), peopleType, coin);
+    peopleInfo.decr(coin);
     setPlayCoin(coin);
     return true;
   }
@@ -89,7 +85,7 @@ public class PeoplePlay {
   public synchronized boolean unConfirm() {
     if (state == PeopleState.CONFIRM) {
       state = PeopleState.INIT;
-      userService.incrCoin(peopleInfo.getUserId(), peopleType, playCoin);
+      peopleInfo.incr(playCoin);
       playCoin = 0L;
       return true;
     }
@@ -146,6 +142,8 @@ public class PeoplePlay {
           return false;
         }
       }
+      peopleInfo.incr(playCoin);
+      playCoin = 0;
       setState(PeopleState.CONFIRM);
       setZhuangjia(true);
       return true;

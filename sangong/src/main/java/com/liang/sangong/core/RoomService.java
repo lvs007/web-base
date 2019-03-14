@@ -116,24 +116,25 @@ public class RoomService {
       }
     }
     PeoplePlay winner = null;
-    long coin = 0;
+    long coin = zhuangjia.getPeopleInfo().getCoin();
     for (Iterator<PeoplePlay> iterator = comparePeoples.iterator(); iterator.hasNext(); ) {
       PeoplePlay peoplePlay = iterator.next();
       winner = Rule.compareRetrunWinner(zhuangjia, peoplePlay);
+      //庄家赢
       if (winner.getPeopleInfo().getUserId() == zhuangjia.getPeopleInfo().getUserId()) {
-        //庄家赢
+        long decrCoin = 0;
         if (zhuangjia.getPeopleInfo().getCoin() >= peoplePlay.getPlayCoin()) {
           coin += peoplePlay.getPlayCoin();
+          decrCoin = peoplePlay.getPlayCoin();
         } else {
           coin += zhuangjia.getPeopleInfo().getCoin();
-          userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(),
-              peoplePlay.getPeopleType(),
-              peoplePlay.getPlayCoin() - zhuangjia.getPeopleInfo().getCoin());
+          decrCoin = zhuangjia.getPeopleInfo().getCoin();
         }
+        userService.decrCoin(peoplePlay.getPeopleInfo().getUserId(),
+            peoplePlay.getPeopleType(), decrCoin);
         iterator.remove();
       }
     }
-    coin += zhuangjia.getPeopleInfo().getCoin();
     long allCoin = 0;
     for (PeoplePlay peoplePlay : comparePeoples) {//都是赢家
       allCoin += peoplePlay.getPlayCoin();
@@ -148,12 +149,11 @@ public class RoomService {
             peoplePlay.getPlayCoin());
       }
     }
-    if (allCoin > coin) {
+    if (allCoin >= coin) {
       userService.decrCoin(zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getPeopleType(),
           zhuangjia.getPeopleInfo().getCoin());
     } else {
-      userService.incrCoin(zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getPeopleType(),
-          coin - allCoin);
+      userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
     }
   }
 

@@ -20,6 +20,7 @@ import com.liang.sangong.message.in.ConfirmMessage;
 import com.liang.sangong.message.in.GetRoomMessage;
 import com.liang.sangong.message.in.LeaveRoomMessage;
 import com.liang.sangong.message.in.RechargeMessage;
+import com.liang.sangong.message.in.UnConfirmMessage;
 import com.liang.sangong.message.in.ZuoZhuangMessage;
 import com.liang.sangong.message.out.ReturnBeginMessage;
 import com.liang.sangong.message.out.ReturnRechargeMessage;
@@ -131,6 +132,21 @@ public class MessageAction {
           return ErrorMessage.build("准备失败");
         }
       }
+      case unconfirm: {
+        UnConfirmMessage unConfirmMessage = JSON.parseObject(message, UnConfirmMessage.class);
+        UserInfo userInfo = LoginUtils.getUser(unConfirmMessage.getToken());
+        PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
+        if (peoplePlay == null) {
+          return ErrorMessage.build("请重新加入游戏");
+        }
+        boolean result = peoplePlay.unConfirm();
+        if (result) {
+          sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          return ErrorMessage.notReturn();
+        } else {
+          return ErrorMessage.build("取消准备失败");
+        }
+      }
       case zuozhuang: {
         ZuoZhuangMessage zuoZhuangMessage = JSON.parseObject(message, ZuoZhuangMessage.class);
         UserInfo userInfo = LoginUtils.getUser(zuoZhuangMessage.getToken());
@@ -144,6 +160,21 @@ public class MessageAction {
           return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("不满足坐庄的条件");
+        }
+      }
+      case unzuozhuang: {
+        ZuoZhuangMessage zuoZhuangMessage = JSON.parseObject(message, ZuoZhuangMessage.class);
+        UserInfo userInfo = LoginUtils.getUser(zuoZhuangMessage.getToken());
+        PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
+        if (peoplePlay == null) {
+          return ErrorMessage.build("请登录加入游戏");
+        }
+        boolean result = peoplePlay.unZuoZhuang();
+        if (result) {
+          sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          return ErrorMessage.notReturn();
+        } else {
+          return ErrorMessage.build("当前不能取消坐庄");
         }
       }
       case recharge: {
@@ -206,7 +237,8 @@ public class MessageAction {
         ReturnBeginMessage returnBeginMessage = new ReturnBeginMessage();
         returnBeginMessage.setPeoplePlayList(peoplePlayList);
         if (peoplePlay.getRoom().getWinner() != null) {
-          returnBeginMessage.setWinner(peoplePlay.getRoom().getWinner().getPeopleInfo().getUserId());
+          returnBeginMessage
+              .setWinner(peoplePlay.getRoom().getWinner().getPeopleInfo().getUserId());
         }
         gameWebSocket.sendMessage(returnBeginMessage.toString());
       }

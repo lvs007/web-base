@@ -62,6 +62,11 @@ public class UserService {
   }
 
   @Transactional
+  public boolean updatePeopleInfo(PeopleInfo peopleInfo) {
+    return updateUser(peopleInfo);
+  }
+
+  @Transactional
   public boolean incrCoin(long userId, PeopleType type, long coin) {
     if (coin <= 0 || coin > 100000000000L) {
       return false;
