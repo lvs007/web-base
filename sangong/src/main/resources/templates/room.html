@@ -6,10 +6,27 @@
 <head>
   <title>learn Resources</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" href="../static/css/windows.css" th:href="@{/static/css/windows.css}"/>
+  <script type="text/javascript"   th:src="@{/static/js/windows.js}"></script>
 </head>
 
-<body
-    style="background-image:url(/static/room1.png);background-size: 100% 100%; background-repeat:no-repeat;">
+<body style="background-image:url(/static/room1.png);background-size: 100% 100%; background-repeat:no-repeat;">
+
+<div id="inviteNameWindow" class="white_content">
+  <table>
+    <tr>
+      <td><input id="inviteName" name="name" value="" type="text"/></td>
+    </tr>
+    <tr>
+      <td>
+        <button onclick="closeDialog('inviteNameWindow')">取消</button>
+      </td>
+      <td>
+        <button onclick="invite()">确认</button>
+      </td>
+    </tr>
+  </table>
+</div>
 
 <!--<input id="text" type="text" /><button onclick="send()">Send</button>-->
 <!--<button onclick="closeWebSocket()">Close</button>-->
@@ -17,7 +34,9 @@
   <button onclick="leave()">离开房间</button>
 </div>
 <div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;" id="confirmDiv">
-  <input id="coin" name="coin" value="" type="text"/>
+  <span style="font-size:24px" onclick="jian('coin')">-</span>
+  <input id="coin" name="coin" value="10" type="text" oninput="value=value.replace(/[^\d]/g,'')"/>
+  <span style="font-size:24px" onclick="jia('coin')">+</span>
   <button onclick="confirmGame()">下注</button>
 </div>
 <div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;display:none;" id="unconfirmDiv">
@@ -33,8 +52,7 @@
   <button onclick="begin()">开始游戏</button>
 </div>
 <div style="position: absolute;right: 3.5%;top:3%;width:250px;height:25px;">
-  <input id="inviteName" name="name" value="" type="text"/>
-  <button onclick="invite()">邀请玩家</button>
+  <button onclick="openDialog('inviteNameWindow')">邀请玩家</button>
 </div>
 <div id="room">
   <span id="roomId" hidden="hidden" th:text="${room.roomId}"></span>
@@ -433,6 +451,7 @@
         var str = {"messageType":"sendInvite", "name":name, "token":token}
         var strJson = JSON.stringify(str)
         websocket.send(strJson);
+        closeDialog('inviteNameWindow');
     }
 
     function getRoom(roomId){

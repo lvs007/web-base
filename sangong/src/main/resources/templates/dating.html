@@ -3,20 +3,38 @@
 <head>
   <title>learn Resources</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" href="../static/css/windows.css" th:href="@{/static/css/windows.css}"/>
+  <script type="text/javascript"   th:src="@{/static/js/windows.js}"></script>
 </head>
 <body background="/static/dating.png" style="background-size: 100%; background-repeat:no-repeat;">
 
+<div id="recharge" class="white_content">
+  <table>
+    <tr>
+      <td><input id="coin" name="coin" value="" type="text"/></td>
+    </tr>
+    <tr>
+      <td>
+        <button onclick="closeDialog('recharge')">取消</button>
+      </td>
+      <td>
+        <button onclick="recharge()">确认</button>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="fade" class="black_overlay"></div>
+
 <div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;">
   <span id="name" style="color:#F00" th:text="'姓名：' + ${peopleInfo.name}"></span>
+  <br/>
   <span id="coinShow" style="color:#F00" th:text="'金币：' + ${peopleInfo.coin}"></span>
 </div>
-<div style="position: absolute;left: 10.5%;top:3%;width:250px;height:25px;">
-  <input id="coin" name="coin" value="" type="text"/>
-  <button onclick="recharge()">充值</button>
+<div style="position: absolute;right: 15%;top:3%;width:150px;height:25px;">
+  <button onclick="openDialog('recharge')">充值</button>
 </div>
-<div style="position: absolute;right: 100px;top:50px;width:150px;height:50px;">
+<div style="position: absolute;right: 10%;top:3%;width:150px;height:25px;">
   <form action="/v1/door/create-room">
-
     <button type="submit">创建房间</button>
   </form>
 </div>
@@ -127,6 +145,7 @@
         var str = {"messageType":"recharge", "coin":coin, "token":token, "peopleType":"TRX"}
         var strJson = JSON.stringify(str)
         websocket.send(strJson);
+        closeDialog('recharge');
     }
 
 </script>
