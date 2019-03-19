@@ -34,4 +34,8 @@ public class RoomPool {
   public void removePeople(PeoplePlay peoplePlay) {
     peoplePlayMap.remove(peoplePlay.getPeopleInfo().getUserId());
   }
+
+  public int getUserNumber() {
+    return peoplePlayMap.size();
+  }
 }

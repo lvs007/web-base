@@ -98,6 +98,15 @@ public class LoginUtils {
         response.addHeader(MvcConstants.TOKEN, token);
     }
 
+    public static boolean logOut(String token) {
+      try {
+        return loginHttp.logOut(token) ? userInfoCache.remove(token) : false;
+      } catch (Exception e) {
+        LOG.error("登出出错", e);
+      }
+      return false;
+    }
+
     private static class LoginHttp extends BaseApi {
 
         public UserInfo getUser(String token) throws InternalException, ApiException, HttpException {
@@ -108,6 +117,12 @@ public class LoginUtils {
                 return null;
             }
             return jsonObject.getObject("data", UserInfo.class);
+        }
+
+        public boolean logOut(String token) throws InternalException, ApiException, HttpException {
+          ApiResponse response = httpGet(propertiesManager.getString("account.server.logout.url", "/v1/login/log-out") + "?nb_token=" + token);
+          JSONObject jsonObject = response.getJsonObject().getJSONObject("data");
+          return jsonObject.getBooleanValue("success");
         }
 
         @Override

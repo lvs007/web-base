@@ -1,6 +1,7 @@
 package com.liang.mq.consumer;
 
 import com.alibaba.fastjson.JSON;
+import com.liang.common.util.ThreadUtils;
 import com.liang.common.valid.ParameterValidate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public abstract class BaseConsumer {
                             consumerMessage(pop());
                         } catch (Exception e) {
                             LOG.error("consumer message has error !", e);
+                            ThreadUtils.sleep(1000);
                         }
                     }
                 }

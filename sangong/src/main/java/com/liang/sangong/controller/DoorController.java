@@ -1,6 +1,9 @@
 package com.liang.sangong.controller;
 
+import com.liang.common.util.Encodes;
+import com.liang.common.util.PropertiesManager;
 import com.liang.mvc.annotation.PcLogin;
+import com.liang.mvc.commons.ResponseUtils;
 import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
@@ -12,11 +15,15 @@ import com.liang.sangong.core.RoomPool;
 import com.liang.sangong.core.RoomService;
 import com.liang.sangong.message.in.GetRoomMessage;
 import com.liang.sangong.service.UserService;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class DoorController {
@@ -30,11 +37,11 @@ public class DoorController {
   @Autowired
   private RoomPool roomPool;
 
+  @Autowired
+  private PropertiesManager propertiesManager;
+
   @PcLogin
   public String door(ModelMap modelMap) {
-    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo);
-    modelMap.put("peopleInfo", peopleInfo);
     return "redirect:/v1/door/get-dating";
   }
 
@@ -48,13 +55,6 @@ public class DoorController {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
     Room result = roomService.createRoom(userInfo, peopleType);
     if (result != null) {
-//      modelMap.put("room", result);
-//      modelMap.put("userInfo", userInfo);
-//      GameWebSocket gameWebSocket = GameWebSocket.webSocketMap.get(userInfo.getId());
-//      if (gameWebSocket != null) {
-//        gameWebSocket.sendMessage(new GetRoomMessage().setRoomId(result.getRoomId()).toString());
-//      }
-//      return "room";
       return "redirect:/v1/door/get-room?roomId=" + result.getRoomId();
     }
     return "redirect:/v1/door/get-dating?type=" + type;
@@ -67,13 +67,6 @@ public class DoorController {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
     Room result = roomService.comeInRoom(roomId, userInfo, PeopleType.valueOf(type));
     if (result != null) {
-//      modelMap.put("room", result);
-//      modelMap.put("userInfo", userInfo);
-//      GameWebSocket gameWebSocket = GameWebSocket.webSocketMap.get(userInfo.getId());
-//      if (gameWebSocket != null) {
-//        gameWebSocket.sendMessage(new GetRoomMessage().setRoomId(roomId).toString());
-//      }
-//      return "room";
       return "redirect:/v1/door/get-room?roomId=" + result.getRoomId();
     }
     return "redirect:/v1/door/get-dating?type=" + type;
@@ -105,8 +98,39 @@ public class DoorController {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
     PeopleType peopleType = PeopleType.valueOf(type);
     peopleType = peopleType == null ? PeopleType.TRX : peopleType;
-    PeopleInfo peopleInfo = userService.findUser(userInfo.getId(), peopleType.code);
+    PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, peopleType);
     modelMap.put("peopleInfo", peopleInfo);
     return "dating";
+  }
+
+  @PcLogin
+  @ResponseBody
+  public Object getRoomPeople() {
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
+    if (peoplePlay != null) {
+      List<PeopleInfo> peopleInfoList = new ArrayList<>();
+      for (PeoplePlay play : peoplePlay.getRoom().getPeoplePlayList()) {
+        peopleInfoList.add(play.getPeopleInfo());
+      }
+      return peopleInfoList;
+    }
+    return ResponseUtils.ErrorResponse();
+  }
+
+  @PcLogin
+  public String logOut() throws IOException {
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    boolean result = LoginUtils.logOut(userInfo.getToken());
+    if (result) {
+      String loginUrl = propertiesManager.getString("account.login.url",
+          "http://127.0.0.1:9091/v1/pc-login/login-page");
+      String datingUrl = propertiesManager.getString("dating.url",
+          "http://127.0.0.1:9095/v1/door/get-dating");
+      loginUrl += "?callBackUrl=" + Encodes.urlEncode(datingUrl);
+//      SpringContextHolder.getResponse().sendRedirect(loginUrl);
+      return "redirect:" + loginUrl;
+    }
+    return "redirect:/v1/door/get-dating";
   }
 }

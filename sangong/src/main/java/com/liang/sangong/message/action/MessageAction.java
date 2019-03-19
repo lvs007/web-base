@@ -20,6 +20,7 @@ import com.liang.sangong.message.in.ConfirmMessage;
 import com.liang.sangong.message.in.GetRoomMessage;
 import com.liang.sangong.message.in.LeaveRoomMessage;
 import com.liang.sangong.message.in.RechargeMessage;
+import com.liang.sangong.message.in.TiRenMessage;
 import com.liang.sangong.message.in.UnConfirmMessage;
 import com.liang.sangong.message.in.ZuoZhuangMessage;
 import com.liang.sangong.message.out.ReturnBeginMessage;
@@ -98,7 +99,10 @@ public class MessageAction {
       case leave: {
         LeaveRoomMessage leaveRoomMessage = JSON.parseObject(message, LeaveRoomMessage.class);
         UserInfo userInfo = LoginUtils.getUser(leaveRoomMessage.getToken());
-        boolean result = roomService.leaveRoom(leaveRoomMessage.getRoomId(), userInfo);
+        if (userInfo == null) {
+          return ErrorMessage.build("错误的用户，当前用户不再房间中");
+        }
+        boolean result = roomService.leaveRoom(userInfo.getId());
         if (result) {
           Room room = roomPool.getRoom(leaveRoomMessage.getRoomId());
           if (room != null) {
@@ -209,6 +213,27 @@ public class MessageAction {
           return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("当前不满足开始游戏条件");
+        }
+      }
+      case tiren: {
+        TiRenMessage tiRenMessage = JSON.parseObject(message, TiRenMessage.class);
+        UserInfo userInfo = LoginUtils.getUser(tiRenMessage.getToken());
+        if (userInfo == null) {
+          return ErrorMessage.build("请登录");
+        }
+        PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
+        if (peoplePlay == null) {
+          return ErrorMessage.build("请加入游戏");
+        }
+        if (peoplePlay.getPeopleInfo().getUserId() == tiRenMessage.getUserId()) {
+          return ErrorMessage.build("不能剔除自己");
+        }
+        boolean result = roomService.tiRen(peoplePlay, tiRenMessage.getUserId());
+        if (result) {
+          sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          return ErrorMessage.notReturn();
+        } else {
+          return ErrorMessage.build("剔除用户失败！");
         }
       }
       default:

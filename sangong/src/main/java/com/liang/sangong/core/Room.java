@@ -59,8 +59,7 @@ public class Room {
   }
 
   public synchronized boolean add(PeoplePlay peoplePlay) {
-    if (isCanAdd() && peoplePlay.getState() == PeopleState.INIT && getState() == TableState.INIT
-        && !begin) {
+    if (isCanAdd() && peoplePlay.getState() == PeopleState.INIT && !begin) {
       peoplePlay.setRoom(this);
       peoplePlay.setGameType(gameType);
       peoplePlay.setSite(peoplePlayList.size());

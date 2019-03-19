@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
+import com.liang.sangong.common.SystemState;
+import com.liang.sangong.core.RoomService;
 import com.liang.sangong.message.ErrorMessage;
 import com.liang.sangong.message.Message.MessageType;
 import com.liang.sangong.message.action.MessageAction;
@@ -37,6 +39,8 @@ public class GameWebSocket {
 
   private MessageAction messageAction;
 
+  private RoomService roomService;
+
   /**
    * 连接建立成功调用的方法
    */
@@ -67,9 +71,12 @@ public class GameWebSocket {
    */
   @OnClose
   public void onClose() {
+    roomService = SpringContextHolder.getBean(RoomService.class);
     for (Iterator<Entry<Long, GameWebSocket>> iterator = webSocketMap.entrySet().iterator();
         iterator.hasNext(); ) {
-      if (iterator.next().getValue().equals(this)) {
+      Entry<Long, GameWebSocket> entry = iterator.next();
+      if (entry.getValue().equals(this)) {
+        roomService.leaveRoom(entry.getKey());
         iterator.remove();
         subOnlineCount();           //在线数减1
       }
@@ -86,6 +93,10 @@ public class GameWebSocket {
   @OnMessage
   public void onMessage(String message, Session session) throws IOException {
     System.out.println("来自客户端的消息:" + message);
+    if (SystemState.maintain) {
+      sendMessage(ErrorMessage.build("系统维护中"));
+      return;
+    }
     messageAction = SpringContextHolder.getBean(MessageAction.class);
     MessageType messageType = null;
     try {

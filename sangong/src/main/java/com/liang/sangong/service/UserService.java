@@ -24,7 +24,7 @@ public class UserService {
   private RoomPool roomPool;
 
   @Transactional
-  public PeopleInfo setPeopleInfo(UserInfo userInfo) {
+  public PeopleInfo setPeopleInfo(UserInfo userInfo, PeopleType peopleType) {
     synchronized (LockUtils.get(String.valueOf(userInfo.getId()))) {
       PeopleInfo peopleInfo = findUser(userInfo.getId(), PeopleType.TRX.code);
       if (peopleInfo == null) {
@@ -34,7 +34,7 @@ public class UserService {
         peopleInfo.setCreate_time(System.currentTimeMillis());
         peopleInfo.setUpdate_time(System.currentTimeMillis());
         peopleInfo.setState(UserState.ABLE.code);
-        peopleInfo.setType(PeopleType.TRX.code);
+        peopleInfo.setType(peopleType.code);
         userDao.insert(peopleInfo);
       }
       return peopleInfo;

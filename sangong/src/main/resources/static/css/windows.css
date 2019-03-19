@@ -25,6 +25,20 @@
     overflow: auto;
 }
 
+.tiren_window {
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 35%;
+    height: 35%;
+    padding: 20px;
+    border: 10px solid orange;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+}
+
 .select_input{
     position: absolute;
     width: 99px;

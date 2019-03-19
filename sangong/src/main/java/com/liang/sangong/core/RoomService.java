@@ -39,6 +39,7 @@ public class RoomService {
     room.add(peoplePlay);
     roomPool.addRoom(room);
     roomPool.addPeople(peoplePlay);
+    peoplePlay.zuoZhuang();
     return room;
   }
 
@@ -75,24 +76,31 @@ public class RoomService {
     }
   }
 
-  public boolean leaveRoom(String roomId, UserInfo userInfo) {
-    Room room = roomPool.getRoom(roomId);
+  public boolean leaveRoom(long userId) {
+    PeoplePlay peoplePlay = roomPool.getPeople(userId);
+    if (peoplePlay == null) {
+      return false;
+    }
+    Room room = peoplePlay.getRoom();
     if (room == null) {
       return false;
     }
     synchronized (room) {
-      PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
-      if (peoplePlay == null) {
-        return false;
-      }
       if (room.leave(peoplePlay)) {
         roomPool.removePeople(peoplePlay);
         if (room.getPeoplePlayList().size() == 0) {
-          roomPool.removeRoom(roomId);
+          roomPool.removeRoom(room.getRoomId());
         }
       }
       return true;
     }
+  }
+
+  public boolean tiRen(PeoplePlay play, long userId) {
+    if (play.isZhuangjia()) {
+      return leaveRoom(userId);
+    }
+    return false;
   }
 
   public Object getRoomData(String roomId) {

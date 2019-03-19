@@ -72,7 +72,15 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
             if (StringUtils.isBlank(token) || LoginUtils.getUser(token) == null) {//重定向到登陆页
                 if (pcLogin != null) {
                     String loginUrl = propertiesManager.getString("account.login.url", "http://127.0.0.1:9091/v1/pc-login/login-page");
-                    loginUrl += "?callBackUrl=" + Encodes.urlEncode(request.getRequestURL() + "?" + getQueryString(request));
+                    String requestUri = request.getRequestURL().toString();
+                    String queryString = getQueryString(request);
+//                    if (!StringUtils.startsWith(requestUri, "/")){
+//                        requestUri = "/" + requestUri;
+//                    }
+                    if (StringUtils.isNotBlank(queryString)) {
+                        requestUri = "?" + queryString;
+                    }
+                    loginUrl += "?callBackUrl=" + Encodes.urlEncode(requestUri);
                     response.sendRedirect(loginUrl);
                     return false;
                 } else {
