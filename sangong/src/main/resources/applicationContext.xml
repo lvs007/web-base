@@ -61,6 +61,9 @@
 
     <mvc:interceptor>
       <mvc:mapping path="/**"/>
+      <mvc:exclude-mapping path="/v1/door/error"/>
+      <mvc:exclude-mapping path="/v1/manager/system-maintain"/>
+      <mvc:exclude-mapping path="/v1/manager/set-user-limit"/>
       <mvc:exclude-mapping path="/static/**"/>
 
       <bean class="com.liang.sangong.interceptor.RequestInterceptor"/>

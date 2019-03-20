@@ -38,4 +38,8 @@ public class RoomPool {
   public int getUserNumber() {
     return peoplePlayMap.size();
   }
+
+  public Map<String, Room> getRoomPool() {
+    return roomPool;
+  }
 }

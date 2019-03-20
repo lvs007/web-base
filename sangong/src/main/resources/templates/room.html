@@ -285,17 +285,15 @@
         document.getElementById('name'+message.peoplePlay.site).innerText="姓名："+message.peoplePlay.peopleInfo.name;
         document.getElementById('coin'+message.peoplePlay.site).innerText="金币："+message.peoplePlay.peopleInfo.coin;
       }else if(message.messageType == "returnRoom"){
+        /* <![CDATA[ */
         document.getElementById('roomId').innerText=message.room.roomId;
         var peoplePlayList = message.room.peoplePlayList;
-        /* <![CDATA[ */
         var userId = document.getElementById('userId').innerText;
         var length = peoplePlayList.length;
-        var meConfirm = false;
+        var haveZhuangjia = false;
         for(var i = 0; i < length; i++){
-          if(peoplePlayList[i].peopleInfo.userId == userId){
-            if(peoplePlayList[i].state == "CONFIRM"){
-              meConfirm = true;
-            }
+          if(peoplePlayList[i].zhuangjia){
+            haveZhuangjia = true;
           }
         }
         for(var i = 0; i < length; i++){
@@ -315,7 +313,7 @@
             document.getElementById('paycoin'+i).innerText="";
           }
           //控制组件的显示
-          showComponent(peoplePlayList[i]);
+          showComponent(peoplePlayList[i],haveZhuangjia);
         }
 
         for(var i = length; i < 6; i++){
@@ -340,6 +338,12 @@
       }else if(message.messageType == "beginReturn"){
           /* <![CDATA[ */
           var peoplePlayList = message.peoplePlayList;
+          var haveZhuangjia = false;
+          for(var i = 0; i < peoplePlayList.length; i++){
+            if(peoplePlayList[i].zhuangjia){
+              haveZhuangjia = true;
+            }
+          }
           for(var i=0; i < peoplePlayList.length; i++){
             var winner = false;
             if(message.winner == peoplePlayList[i].peopleInfo.userId){
@@ -368,10 +372,12 @@
                  mainDiv.appendChild(div);
                  mainDiv.style.display="";//显示
               }
-              gameOverTimeout(i,winner,peoplePlayList[i]);
+              gameOverTimeout(i,winner,peoplePlayList[i],haveZhuangjia);
             }
           }
         /* ]]> */
+      }else if(message.messageType == "returnDating"){
+        doFormRequest("/v1/door/door","get","{}");
       }
     }
 
@@ -381,7 +387,7 @@
       }, 1000*i);
     }
 
-    function gameOverTimeout(index,winner,peoplePlay){
+    function gameOverTimeout(index,winner,peoplePlay,haveZhuangjia){
       setTimeout(function() {
         var div = document.getElementById('winner'+index);
         var img = document.getElementById("winnerimg"+index);
@@ -405,7 +411,7 @@
         }
         img.style.display="block";
         document.getElementById('coin'+index).innerText="金币："+peoplePlay.peopleInfo.coin;
-        showComponent(peoplePlay);
+        showComponent(peoplePlay,haveZhuangjia);
       }, 2100);
       //hidden
       setTimeout(function() {
@@ -418,7 +424,7 @@
       },400100);
     }
 
-    function showComponent(peoplePlay){
+    function showComponent(peoplePlay,haveZhuangjia){
        //控制组件的显示
       var userId = document.getElementById('userId').innerText;
       if(peoplePlay.peopleInfo.userId == userId){
@@ -433,7 +439,11 @@
         }else if(peoplePlay.state == "INIT"){
           document.getElementById('confirmDiv').style.display="";//显示
           document.getElementById('leaveDiv').style.display="";//显示
-          document.getElementById('zuozhuangDiv').style.display="";//显示
+          if(haveZhuangjia){
+            document.getElementById('zuozhuangDiv').style.display="none";//隐藏
+          }else{
+            document.getElementById('zuozhuangDiv').style.display="";//显示
+          }
           document.getElementById('unconfirmDiv').style.display="none";//隐藏
           document.getElementById('beginDiv').style.display="none";//隐藏
           document.getElementById('unzuozhuangDiv').style.display="none";//隐藏

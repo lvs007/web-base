@@ -94,6 +94,8 @@ public class LoginUtils {
 
     public static void setToken(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie(MvcConstants.TOKEN, token);
+        cookie.setPath("/");
+//        cookie.setDomain("");
         response.addCookie(cookie);
         response.addHeader(MvcConstants.TOKEN, token);
     }

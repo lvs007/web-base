@@ -149,3 +149,18 @@ function tiren(){
   websocket.send(strJson);
   closeDialog('tirenWindow');
 }
+
+function logOut(){
+  getRequest("/v1/door/log-out",1000,function(data){
+  });
+}
+
+function quickJoin(){
+  getRequest("/v1/door/quick-join",1000,function(data){
+  });
+}
+
+function createRoom(){
+  getRequest("/v1/door/create-room",1000,function(data){
+  });
+}

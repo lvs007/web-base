@@ -14,6 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -28,6 +31,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameWebSocket {
 
+  private long accessTime;
+
+  public static final Map<Long, GameWebSocket> disconnectSocket = new ConcurrentHashMap<>();
+
   //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
   private static final AtomicInteger onlineCount = new AtomicInteger(0);
 
@@ -40,6 +47,8 @@ public class GameWebSocket {
   private MessageAction messageAction;
 
   private RoomService roomService;
+
+  private long userId;
 
   /**
    * 连接建立成功调用的方法
@@ -57,12 +66,15 @@ public class GameWebSocket {
       session.close();
       return;
     }
+    userId = userInfo.getId();
+    accessTime = System.currentTimeMillis();
     GameWebSocket gameWebSocket = webSocketMap.get(userInfo.getId());
     if (gameWebSocket != null) {
       gameWebSocket.getSession().close();
     }
     webSocketMap.put(userInfo.getId(), this);     //加入set中
     addOnlineCount();           //在线数加1
+    disconnectSocket.remove(userId);
     System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
   }
 
@@ -76,11 +88,11 @@ public class GameWebSocket {
         iterator.hasNext(); ) {
       Entry<Long, GameWebSocket> entry = iterator.next();
       if (entry.getValue().equals(this)) {
-        roomService.leaveRoom(entry.getKey());
         iterator.remove();
         subOnlineCount();           //在线数减1
       }
     }
+    disconnectSocket.put(userId, this);
 
     System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
   }
@@ -93,6 +105,7 @@ public class GameWebSocket {
   @OnMessage
   public void onMessage(String message, Session session) throws IOException {
     System.out.println("来自客户端的消息:" + message);
+    accessTime = System.currentTimeMillis();
     if (SystemState.maintain) {
       sendMessage(ErrorMessage.build("系统维护中"));
       return;
@@ -133,16 +146,6 @@ public class GameWebSocket {
     //this.session.getAsyncRemote().sendText(message);
   }
 
-
-  /**
-   * /** 群发自定义消息
-   */
-  public static void sendInfo(String message) {
-    for (GameWebSocket item : webSocketMap.values()) {
-      item.sendMessage(message);
-    }
-  }
-
   public static synchronized int getOnlineCount() {
     return onlineCount.get();
   }
@@ -157,5 +160,13 @@ public class GameWebSocket {
 
   public Session getSession() {
     return session;
+  }
+
+  public long getAccessTime() {
+    return accessTime;
+  }
+
+  public long getUserId() {
+    return userId;
   }
 }

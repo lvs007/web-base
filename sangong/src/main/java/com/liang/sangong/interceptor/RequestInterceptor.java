@@ -1,5 +1,6 @@
 package com.liang.sangong.interceptor;
 
+import com.liang.common.util.Encodes;
 import com.liang.common.util.PropertiesManager;
 import com.liang.mvc.commons.ResponseUtils;
 import com.liang.sangong.common.SystemState;
@@ -22,22 +23,26 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
   @Autowired
   private RoomPool roomPool;
 
+  private static final String ERROR_URL = "/v1/door/error?message=";
+
   @Override
   public boolean preHandle(HttpServletRequest httpServletRequest,
-      HttpServletResponse httpServletResponse, Object object) {
+      HttpServletResponse httpServletResponse, Object object) throws Exception {
     boolean result = true;
     if (object instanceof HandlerMethod) {
       if (SystemState.maintain) {
-        ResponseUtils.writeToResponse(httpServletResponse,
-            ResponseUtils.ErrorResponse(50001, "系统维护中"));
-        result = false;
+//        httpServletRequest.setAttribute("message", "系统维护中");
+//        httpServletRequest.getRequestDispatcher("error")
+//            .forward(httpServletRequest, httpServletResponse);
+        httpServletResponse.sendRedirect(ERROR_URL + Encodes.urlEncode("系统维护中"));
+        return false;
       }
       String methodName = ((HandlerMethod) object).getMethod().getName();
-      if (StringUtils.equals(methodName, "comeInRoom") || StringUtils.equals(methodName, "createRoom")) {
+      if (StringUtils.equals(methodName, "comeInRoom") || StringUtils
+          .equals(methodName, "createRoom")) {
         if (roomPool.getUserNumber() >= SystemState.userLimit) {
-          ResponseUtils.writeToResponse(httpServletResponse,
-              ResponseUtils.ErrorResponse(50002, "当前玩家用户过多，请稍后重试"));
-          result = false;
+          httpServletResponse.sendRedirect(ERROR_URL + Encodes.urlEncode("当前玩家用户过多，请稍后重试"));
+          return false;
         }
       }
     }

@@ -74,11 +74,8 @@ public class ControllerInterceptor extends HandlerInterceptorAdapter {
                     String loginUrl = propertiesManager.getString("account.login.url", "http://127.0.0.1:9091/v1/pc-login/login-page");
                     String requestUri = request.getRequestURL().toString();
                     String queryString = getQueryString(request);
-//                    if (!StringUtils.startsWith(requestUri, "/")){
-//                        requestUri = "/" + requestUri;
-//                    }
                     if (StringUtils.isNotBlank(queryString)) {
-                        requestUri = "?" + queryString;
+                        requestUri = requestUri + "?" + queryString;
                     }
                     loginUrl += "?callBackUrl=" + Encodes.urlEncode(requestUri);
                     response.sendRedirect(loginUrl);

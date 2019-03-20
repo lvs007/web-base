@@ -10,6 +10,7 @@ import com.liang.sangong.service.UserService;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class RoomService {
   @Autowired
   private ComeInMessageAction comeInMessageAction;
 
-  public Room createRoom(UserInfo userInfo, PeopleType peopleType) {
+  public Room createRoom(UserInfo userInfo, PeopleType peopleType, RoomType roomType) {
     PeopleInfo peopleInfo = userService.findUser(userInfo.getId(), peopleType.code);
     if (peopleInfo == null || peopleType == null) {
       return null;
@@ -35,7 +36,7 @@ public class RoomService {
       return peoplePlay.getRoom();
     }
     peoplePlay = new PeoplePlay(peopleInfo);
-    Room room = new Room(GameType.ZHUANGJIA, RoomType.PRIVATE);
+    Room room = new Room(GameType.ZHUANGJIA, roomType);
     room.add(peoplePlay);
     roomPool.addRoom(room);
     roomPool.addPeople(peoplePlay);
@@ -43,8 +44,14 @@ public class RoomService {
     return room;
   }
 
-  public void invite() {
-
+  public Room quickJoin(UserInfo userInfo, PeopleType peopleType) {
+    for (Entry<String, Room> entry : roomPool.getRoomPool().entrySet()) {
+      Room room = entry.getValue();
+      if (room.getRoomType() == RoomType.PUBLIC && room.isCanAdd() && !room.isBegin()) {
+        return comeInRoom(room.getRoomId(), userInfo, peopleType);
+      }
+    }
+    return createRoom(userInfo, peopleType, RoomType.PUBLIC);
   }
 
   public Room comeInRoom(String roomId, UserInfo userInfo, PeopleType peopleType) {

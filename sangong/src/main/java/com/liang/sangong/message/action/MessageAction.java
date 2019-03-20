@@ -24,6 +24,7 @@ import com.liang.sangong.message.in.TiRenMessage;
 import com.liang.sangong.message.in.UnConfirmMessage;
 import com.liang.sangong.message.in.ZuoZhuangMessage;
 import com.liang.sangong.message.out.ReturnBeginMessage;
+import com.liang.sangong.message.out.ReturnDatingMessage;
 import com.liang.sangong.message.out.ReturnRechargeMessage;
 import com.liang.sangong.message.out.ReturnRoomMessage;
 import com.liang.sangong.service.UserService;
@@ -231,6 +232,7 @@ public class MessageAction {
         boolean result = roomService.tiRen(peoplePlay, tiRenMessage.getUserId());
         if (result) {
           sendAllGetRoomMessage(peoplePlay.getRoom().getPeoplePlayList());
+          sendRebackDatingMessage(tiRenMessage.getUserId());
           return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("剔除用户失败！");
@@ -267,6 +269,14 @@ public class MessageAction {
         }
         gameWebSocket.sendMessage(returnBeginMessage.toString());
       }
+    }
+  }
+
+  private void sendRebackDatingMessage(long userId) {
+    GameWebSocket gameWebSocket = GameWebSocket.webSocketMap.get(userId);
+    if (gameWebSocket != null && gameWebSocket.getSession().isOpen()) {
+      ReturnDatingMessage returnDatingMessage = new ReturnDatingMessage();
+      gameWebSocket.sendMessage(returnDatingMessage.toString());
     }
   }
 }

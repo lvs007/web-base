@@ -11,6 +11,7 @@ import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.core.PeoplePlay;
 import com.liang.sangong.core.Room;
+import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.core.RoomPool;
 import com.liang.sangong.core.RoomService;
 import com.liang.sangong.message.in.GetRoomMessage;
@@ -53,7 +54,22 @@ public class DoorController {
       return "redirect:/v1/door/get-dating?type=" + type;
     }
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    Room result = roomService.createRoom(userInfo, peopleType);
+    Room result = roomService.createRoom(userInfo, peopleType, RoomType.PRIVATE);
+    if (result != null) {
+      return "redirect:/v1/door/get-room?roomId=" + result.getRoomId();
+    }
+    return "redirect:/v1/door/get-dating?type=" + type;
+  }
+
+  @PcLogin
+  public String quickJoin(@RequestParam(name = "peopleType", required = false,
+      defaultValue = "TRX") String type) {
+    PeopleType peopleType = PeopleType.valueOf(type);
+    if (peopleType == null) {
+      return "redirect:/v1/door/get-dating?type=" + type;
+    }
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    Room result = roomService.quickJoin(userInfo, peopleType);
     if (result != null) {
       return "redirect:/v1/door/get-room?roomId=" + result.getRoomId();
     }
@@ -132,5 +148,10 @@ public class DoorController {
       return "redirect:" + loginUrl;
     }
     return "redirect:/v1/door/get-dating";
+  }
+
+  public String error(String message, ModelMap modelMap) {
+    modelMap.put("message", message);
+    return "error";
   }
 }
