@@ -8,6 +8,7 @@ import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.controller.GameWebSocket;
 import com.liang.sangong.core.PeoplePlay;
 import com.liang.sangong.core.Room;
+import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.core.RoomPool;
 import com.liang.sangong.core.RoomService;
 import com.liang.sangong.message.AddRoomMessage;
@@ -45,7 +46,7 @@ public class MessageAction {
   @Autowired
   private RoomService roomService;
 
-  public String action(String message, MessageType messageType, GameWebSocket socket) {
+  public String action(String message, MessageType messageType) {
     if (messageType == null) {
       return "消息类型错误";
     }
@@ -65,6 +66,9 @@ public class MessageAction {
         PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
         if (peoplePlay == null) {
           return ErrorMessage.build("请先创建房间");
+        }
+        if (peoplePlay.getRoom().getRoomType() == RoomType.PUBLIC) {
+          return ErrorMessage.build("当前房间不是私人房间，不允许邀请");
         }
         if (gameWebSocket.getSession().isOpen()) {
           InviteMessage inviteMessage = new InviteMessage();
@@ -93,8 +97,13 @@ public class MessageAction {
       }
       case getRoom: {
         GetRoomMessage getRoomMessage = JSON.parseObject(message, GetRoomMessage.class);
+        UserInfo userInfo = LoginUtils.getUser(getRoomMessage.getToken());
+        if (userInfo == null) {
+          return ErrorMessage.build("错误的用户，当前用户不再房间中");
+        }
         Room room = roomPool.getRoom(getRoomMessage.getRoomId());
-        socket.sendMessage(new ReturnRoomMessage().setRoom(room).toString());
+        GameWebSocket.webSocketMap.get(userInfo.getId())
+            .sendMessage(new ReturnRoomMessage().setRoom(room).toString());
         return ErrorMessage.notReturn();
       }
       case leave: {
@@ -185,15 +194,22 @@ public class MessageAction {
       case recharge: {
         RechargeMessage rechargeMessage = JSON.parseObject(message, RechargeMessage.class);
         UserInfo userInfo = LoginUtils.getUser(rechargeMessage.getToken());
+        if (userInfo == null) {
+          return ErrorMessage.build("请登录");
+        }
         boolean result = userService
             .incrCoin(userInfo.getId(), PeopleType.TRX, rechargeMessage.getCoin());
         if (result) {
-          PeopleInfo peopleInfo = userService
-              .findUser(userInfo.getId(), rechargeMessage.getPeopleType().code);
+          PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
+          if (peoplePlay == null) {
+            return ErrorMessage.build("请加入游戏");
+          }
+          PeopleInfo peopleInfo = peoplePlay.getPeopleInfo();
           ReturnRechargeMessage returnRechargeMessage = new ReturnRechargeMessage()
               .setCoin(peopleInfo.getCoin())
               .setName(peopleInfo.getName());
-          socket.sendMessage(returnRechargeMessage.toString());
+          GameWebSocket.webSocketMap.get(userInfo.getId())
+              .sendMessage(returnRechargeMessage.toString());
           return ErrorMessage.notReturn();
         } else {
           return ErrorMessage.build("充值失败！");

@@ -8,6 +8,7 @@ public class RechargeMessage extends Message {
   private String token;
   private long coin;
   private PeopleType peopleType;
+  private String pk;
 
   public RechargeMessage() {
     super(MessageType.recharge);
@@ -37,6 +38,15 @@ public class RechargeMessage extends Message {
 
   public RechargeMessage setPeopleType(PeopleType peopleType) {
     this.peopleType = peopleType;
+    return this;
+  }
+
+  public String getPk() {
+    return pk;
+  }
+
+  public RechargeMessage setPk(String pk) {
+    this.pk = pk;
     return this;
   }
 }

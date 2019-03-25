@@ -34,28 +34,28 @@
       <span id="coinShow" style="color:#bdaa35;" th:text="'金币：' + ${peopleInfo.coin}"></span>
     </div>
     <div style="position: relative;left: 1%;top:81%;width:100%;height:79px;">
-      <div style="float: left;width:18%;height:100%;">
+      <div style="float: left;width:18%;height:100%;" align="center">
         <form action="/v1/door/log-out">
-          <button style="background-image: url('/static/button.png');" type="submit">退出</button>
+          <button style="background: transparent;height: 79px;border:none;font-size:24px;color:#becdd4;outline:none;" type="submit">退出</button>
         </form>
       </div>
       <div style="float: left;width:1%;height:100%;">
       </div>
-      <div style="float: left;width:18.2%;height:100%;">
-        <button style="background-image: url('/static/button.png');" onclick="openDialog('recharge')">充值</button>
+      <div style="float: left;width:18.2%;height:100%;" align="center">
+        <button style="background: transparent;height: 79px;border:none;font-size:24px;color:#becdd4;outline:none;" onclick="openDialog('recharge')">充值</button>
       </div>
       <div style="float: left;width:1%;height:100%;">
       </div>
-      <div style="float: left;width:21.5%;height:100%;">
-        <form action="/v1/door/create-room">
-          <button style="background-image: url('/static/button.png');" type="submit">快速开始</button>
+      <div style="float: left;width:21.5%;height:100%;" align="center">
+        <form action="/v1/door/quick-join">
+          <button style="background: transparent;height: 79px;border:none;font-size:24px;color:#becdd4;outline:none;" type="submit">快速开始</button>
         </form>
       </div>
       <div style="float: left;width:1%;height:100%;">
       </div>
-      <div style="float: left;width:18%;height:100%;">
+      <div style="float: left;width:18%;height:100%;" align="center">
         <form action="/v1/door/create-room">
-          <button style="background-image: url('/static/button.png');" type="submit">创建房间</button>
+          <button style="background: transparent;height: 79px;border:none;font-size:24px;color:#becdd4;outline:none;" type="submit">创建房间</button>
         </form>
       </div>
     </div>

@@ -37,6 +37,7 @@
 
 <div id="room">
   <span id="roomId" hidden="hidden" th:text="${room.roomId}"></span>
+  <span id="roomType" hidden="hidden" th:text="${room.roomType}"></span>
 </div>
 <div id="userInfo">
   <span id="userId" hidden="hidden" th:text="${userInfo.id}"></span>
@@ -49,7 +50,7 @@
   </div>
   <div style="float: right;width:1%;height:100%;">
   </div>
-  <div style="float: right;width:6.6%;height:100%;">
+  <div style="float: right;width:6.6%;height:100%;" id="inviteDiv">
     <button style="background-image: url('/static/button.png');" onclick="openDialog('inviteNameWindow')">邀请玩家</button>
   </div>
   <div style="float: right;width:1%;height:100%;">
@@ -262,8 +263,9 @@
 
     //连接成功建立的回调方法
     websocket.onopen = function(event){
+        var token = getToken("nb_token");
         var roomId = document.getElementById('roomId').innerText
-        var str = {"messageType":"getRoom","roomId":roomId}
+        var str = {"messageType":"getRoom","roomId":roomId, "token":token}
         var strJson = JSON.stringify(str)
         websocket.send(strJson);
     }
@@ -287,6 +289,7 @@
       }else if(message.messageType == "returnRoom"){
         /* <![CDATA[ */
         document.getElementById('roomId').innerText=message.room.roomId;
+        document.getElementById('roomType').innerText=message.room.roomType;
         var peoplePlayList = message.room.peoplePlayList;
         var userId = document.getElementById('userId').innerText;
         var length = peoplePlayList.length;
@@ -427,7 +430,13 @@
     function showComponent(peoplePlay,haveZhuangjia){
        //控制组件的显示
       var userId = document.getElementById('userId').innerText;
+      var roomType = document.getElementById('roomType').innerText;
       if(peoplePlay.peopleInfo.userId == userId){
+        if(roomType == "PUBLIC"){
+          document.getElementById('inviteDiv').style.display="none";//隐藏
+        }else{
+          document.getElementById('inviteDiv').style.display="";//显示
+        }
         if(peoplePlay.zhuangjia){
           document.getElementById('tiren').style.display="";//显示
           document.getElementById('unzuozhuangDiv').style.display="";//显示

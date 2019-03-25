@@ -21,7 +21,8 @@ function invite(){
 }
 
 function getRoom(roomId){
-    var str = {"messageType":"getRoom", "roomId":roomId}
+    var token = getToken("nb_token");
+    var str = {"messageType":"getRoom", "roomId":roomId, "token":token}
     var strJson = JSON.stringify(str)
     websocket.send(strJson);
 }

@@ -3,6 +3,7 @@ package com.liang.sangong.core;
 import com.liang.mvc.filter.UserInfo;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
+import com.liang.sangong.common.Constants;
 import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.message.action.ComeInMessageAction;
@@ -29,6 +30,9 @@ public class RoomService {
   public Room createRoom(UserInfo userInfo, PeopleType peopleType, RoomType roomType) {
     PeopleInfo peopleInfo = userService.findUser(userInfo.getId(), peopleType.code);
     if (peopleInfo == null || peopleType == null) {
+      return null;
+    }
+    if (roomType == RoomType.PRIVATE && peopleInfo.getCoin() < Constants.MIN_ZUOZHUANG_COIN) {
       return null;
     }
     PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());

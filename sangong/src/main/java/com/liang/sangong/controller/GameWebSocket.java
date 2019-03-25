@@ -120,7 +120,7 @@ public class GameWebSocket {
       return;
     }
 
-    String value = messageAction.action(message, messageType, this);
+    String value = messageAction.action(message, messageType);
     if (StringUtils.equals(value, ErrorMessage.NOT_RETURN)) {
       return;
     }
