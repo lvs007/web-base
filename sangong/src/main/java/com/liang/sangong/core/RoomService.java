@@ -28,8 +28,11 @@ public class RoomService {
   private ComeInMessageAction comeInMessageAction;
 
   public Room createRoom(UserInfo userInfo, PeopleType peopleType, RoomType roomType) {
+    if (peopleType == null) {
+      return null;
+    }
     PeopleInfo peopleInfo = userService.findUser(userInfo.getId(), peopleType.code);
-    if (peopleInfo == null || peopleType == null) {
+    if (peopleInfo == null || peopleInfo.getCoin() < Constants.MIN_PLAY_COIN) {
       return null;
     }
     if (roomType == RoomType.PRIVATE && peopleInfo.getCoin() < Constants.MIN_ZUOZHUANG_COIN) {
@@ -63,13 +66,16 @@ public class RoomService {
     if (room == null) {
       return null;
     }
+    if (peopleType == null) {
+      return null;
+    }
     synchronized (room) {
       room = roomPool.getRoom(roomId);
       if (room == null) {
         return null;
       }
       PeopleInfo peopleInfo = userService.findUser(userInfo.getId(), peopleType.code);
-      if (peopleInfo == null || peopleType == null) {
+      if (peopleInfo == null || peopleInfo.getCoin() < Constants.MIN_PLAY_COIN) {
         return null;
       }
       PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());

@@ -26,7 +26,7 @@ public class UserService {
   @Transactional
   public PeopleInfo setPeopleInfo(UserInfo userInfo, PeopleType peopleType) {
     synchronized (LockUtils.get(String.valueOf(userInfo.getId()))) {
-      PeopleInfo peopleInfo = findUser(userInfo.getId(), PeopleType.TRX.code);
+      PeopleInfo peopleInfo = findUser(userInfo.getId(), peopleType.code);
       if (peopleInfo == null) {
         peopleInfo = new PeopleInfo();
         peopleInfo.setUserId(userInfo.getId());

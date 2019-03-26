@@ -1,7 +1,5 @@
 package com.liang.sangong.message.action;
 
-import com.liang.mvc.filter.LoginUtils;
-import com.liang.mvc.filter.UserInfo;
 import com.liang.sangong.message.in.RechargeMessage;
 import com.liang.sangong.service.UserService;
 import com.liang.sangong.trx.tron.TransferService;
@@ -17,8 +15,8 @@ public class TransferAction {
   @Autowired
   private TransferService transferService;
 
-  public boolean recharge(RechargeMessage rechargeMessage) {
-    return transferService.transferTrx(rechargeMessage.getPk(), rechargeMessage.getCoin());
+  public boolean recharge(RechargeMessage rechargeMessage, long userId) {
+    return transferService.transferTrx(rechargeMessage.getPk(), rechargeMessage.getCoin(), userId);
 //    boolean result = userService
 //        .incrCoin(userInfo.getId(), PeopleType.TRX, rechargeMessage.getCoin());
   }

@@ -13,7 +13,11 @@
   <div id="recharge" class="white_content">
     <table>
       <tr>
-        <td><input id="coin" name="coin" value="" type="text"/></td>
+        <td><input oninput="value=value.replace(/[^\d]/g,'')" style="width:50%" id="coin" name="coin" value="" type="text"/></td>
+        <td><span id="trxBalance"></span></td>
+      </tr>
+      <tr>
+        <td colspan="2"><input style="width:100%" id="pk" name="pk" value="" type="text" onchange="queryTx()"/></td>
       </tr>
       <tr>
         <td>

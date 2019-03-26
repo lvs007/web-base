@@ -9,7 +9,8 @@ import com.liang.common.http.api.exception.ApiException;
 import com.liang.common.http.api.exception.HttpException;
 import com.liang.common.http.api.exception.InternalException;
 import com.liang.sangong.bo.TransactionInfo;
-import com.liang.sangong.common.Constants;
+import com.liang.sangong.bo.TransactionInfo.TxState;
+import com.liang.sangong.common.SystemState;
 import com.liang.sangong.service.TransactionInfoService;
 import com.liang.sangong.trx.tron.api.GrpcAPI.Return;
 import com.liang.sangong.trx.tron.api.GrpcAPI.TransactionExtention;
@@ -19,13 +20,19 @@ import com.liang.sangong.trx.tron.crypto.ByteUtil;
 import com.liang.sangong.trx.tron.crypto.ECKey;
 import com.liang.sangong.trx.tron.crypto.ECKey.ECDSASignature;
 import com.liang.sangong.trx.tron.protos.Contract.TransferContract;
+import com.liang.sangong.trx.tron.protos.Protocol.Account;
 import com.liang.sangong.trx.tron.protos.Protocol.Transaction;
 import com.liang.sangong.trx.tron.protos.Protocol.Transaction.Contract;
 import io.grpc.ManagedChannelBuilder;
 import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,13 +45,13 @@ public class TransferService {
 
   private static final Logger logger = LoggerFactory.getLogger(TransferService.class);
 
-  private static final String ip = "47.75.211.242";
-
   private WalletBlockingStub walletStub;
 
   private TrxSolidityHttp trxSolidityHttp;
 
   private Map<String, TransactionInfo> transactionInfoMap = new ConcurrentHashMap<>();
+
+  private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
   @Autowired
   private TransactionInfoService transactionInfoService;
@@ -52,21 +59,38 @@ public class TransferService {
   @PostConstruct
   public void init() {
     walletStub = WalletGrpc
-        .newBlockingStub(ManagedChannelBuilder.forTarget(ip + ":50051")
-            .usePlaintext(true)
-            .build());
+        .newBlockingStub(ManagedChannelBuilder.forTarget(SystemState.FULLNODE_IP + ":50051")
+            .usePlaintext(true).build());
     trxSolidityHttp = new TrxSolidityHttp();
+    scheduledExecutorService
+        .scheduleWithFixedDelay(new QueryAndUpdateTask(), 2, 2, TimeUnit.MINUTES);
+  }
+
+  public boolean updateStub(String ip) {
+    try {
+      walletStub = WalletGrpc
+          .newBlockingStub(ManagedChannelBuilder.forTarget(ip + ":50051")
+              .usePlaintext(true).build());
+      return true;
+    } catch (Exception e) {
+      logger.error("", e);
+    }
+    return false;
   }
 
   public boolean transferTrx(String pkey, long amount, long userId) {
     try {
       Wallet.setAddressPreFixByte(Wallet.ADD_PRE_FIX_BYTE_MAINNET);
+      if (amount <= 0 || queryTrx(pkey) < amount) {
+        return false;
+      }
       BigInteger priK = new BigInteger(pkey, 16);
       ECKey myKey = ECKey.fromPrivate(priK);
       TransferContract.Builder builder = TransferContract.newBuilder();
       builder.setAmount(amount * 1000000);
       builder.setOwnerAddress(ByteString.copyFrom(myKey.getAddress()));
-      builder.setToAddress(ByteString.copyFrom(Wallet.decodeFromBase58Check(Constants.TO_ADDRESS)));
+      builder.setToAddress(ByteString.
+          copyFrom(Wallet.decodeFromBase58Check(SystemState.TO_ADDRESS)));
       TransactionExtention transactionExtention = walletStub.createTransaction2(builder.build());
       Transaction transaction = sign(transactionExtention.getTransaction(), myKey);
       Return returns = walletStub.broadcastTransaction(transaction);
@@ -81,6 +105,21 @@ public class TransferService {
       logger.error("", e);
     }
     return false;
+  }
+
+  public long queryTrx(String pkey) {
+    try {
+      Wallet.setAddressPreFixByte(Wallet.ADD_PRE_FIX_BYTE_MAINNET);
+      BigInteger priK = new BigInteger(pkey, 16);
+      ECKey myKey = ECKey.fromPrivate(priK);
+      Account account = Account.newBuilder().setAddress(ByteString.copyFrom(myKey.getAddress()))
+          .build();
+      account = walletStub.getAccount(account);
+      return account == null ? 0 : account.getBalance();
+    } catch (Exception e) {
+      logger.error("", e);
+    }
+    return 0;
   }
 
   public Transaction createTransfer(String meAddress, String toAddress, long amount) {
@@ -138,12 +177,42 @@ public class TransferService {
 
     @Override
     protected String getApiHost() {
-      return "http:" + ip + ":8091";
+      return "http:" + SystemState.FULLNODE_IP + ":8091";
     }
 
     @Override
     protected String getSignKey() {
       return null;
+    }
+  }
+
+  private class QueryAndUpdateTask implements Runnable {
+
+    public QueryAndUpdateTask() {
+      List<TransactionInfo> transactionInfoList = transactionInfoService.queryInit();
+      for (TransactionInfo transactionInfo : transactionInfoList) {
+        transactionInfoMap.put(transactionInfo.getTxId(), transactionInfo);
+      }
+    }
+
+    @Override
+    public void run() {
+      for (Iterator<Entry<String, TransactionInfo>> iterator = transactionInfoMap.entrySet()
+          .iterator(); iterator.hasNext(); ) {
+        Entry<String, TransactionInfo> entry = iterator.next();
+        try {
+          if (trxSolidityHttp.getTransactionInfo(entry.getKey())) {
+            transactionInfoService.update(entry.getValue().setState(TxState.success.code));
+            iterator.remove();
+          } else if (System.currentTimeMillis() - entry.getValue().getCreateTime()
+              > SystemState.TX_TIME_OUT) {
+            transactionInfoService.update(entry.getValue().setState(TxState.fail.code));
+            iterator.remove();
+          }
+        } catch (Exception e) {
+          logger.error("", e);
+        }
+      }
     }
   }
 

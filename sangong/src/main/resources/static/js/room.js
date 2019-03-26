@@ -165,3 +165,11 @@ function createRoom(){
   getRequest("/v1/door/create-room",1000,function(data){
   });
 }
+
+function queryTx(){
+  var pk = document.getElementById('pk').value;
+  getRequest("/v1/door/query-trx?pk="+pk,2000,function(data){
+    var data = JSON.parse(data);
+    document.getElementById('trxBalance').innerText = "余额："+data.data.value/1000000;
+  });
+}

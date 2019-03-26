@@ -5,6 +5,7 @@ import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
+import com.liang.sangong.common.Constants;
 import com.liang.sangong.controller.GameWebSocket;
 import com.liang.sangong.core.PeoplePlay;
 import com.liang.sangong.core.Room;
@@ -45,6 +46,9 @@ public class MessageAction {
 
   @Autowired
   private RoomService roomService;
+
+  @Autowired
+  private TransferAction transferAction;
 
   public String action(String message, MessageType messageType) {
     if (messageType == null) {
@@ -197,8 +201,19 @@ public class MessageAction {
         if (userInfo == null) {
           return ErrorMessage.build("请登录");
         }
-        boolean result = userService
-            .incrCoin(userInfo.getId(), PeopleType.TRX, rechargeMessage.getCoin());
+        if (rechargeMessage.getCoin() < Constants.MIN_PLAY_COIN) {
+          return ErrorMessage.build("充值金额必须不小于：" + Constants.MIN_PLAY_COIN);
+        }
+        boolean result = false;
+        if (rechargeMessage.getPeopleType() == PeopleType.TRX) {
+          result = transferAction.recharge(rechargeMessage, userInfo.getId());
+        } else if (rechargeMessage.getPeopleType() == PeopleType.JI_FEN) {
+//          result = userService.incrCoin(userInfo.getId(), rechargeMessage.getPeopleType(),
+//              rechargeMessage.getCoin());
+          return ErrorMessage.build("目前暂不支持！");
+        } else {
+          return ErrorMessage.build("充值失败！");
+        }
         if (result) {
           PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
           if (peoplePlay == null) {

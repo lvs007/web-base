@@ -16,6 +16,7 @@ import com.liang.sangong.core.RoomPool;
 import com.liang.sangong.core.RoomService;
 import com.liang.sangong.message.in.GetRoomMessage;
 import com.liang.sangong.service.UserService;
+import com.liang.sangong.trx.tron.TransferService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,9 @@ public class DoorController {
 
   @Autowired
   private PropertiesManager propertiesManager;
+
+  @Autowired
+  private TransferService transferService;
 
   @PcLogin
   public String door(ModelMap modelMap) {
@@ -132,6 +136,12 @@ public class DoorController {
       return peopleInfoList;
     }
     return ResponseUtils.ErrorResponse();
+  }
+
+  @PcLogin
+  @ResponseBody
+  public Object queryTrx(String pk) {
+    return transferService.queryTrx(pk);
   }
 
   @PcLogin

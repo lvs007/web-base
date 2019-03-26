@@ -1,5 +1,7 @@
 package com.liang.sangong.bo;
 
+import com.liang.common.exception.NotSupportException;
+
 public class PeopleInfo {
 
   private long id;
@@ -23,10 +25,19 @@ public class PeopleInfo {
   }
 
   public enum PeopleType {
-    TRX(1);
+    TRX(1), JI_FEN(2);
 
     PeopleType(int code) {
       this.code = code;
+    }
+
+    public static PeopleType getType(int code) {
+      for (PeopleType peopleType : values()) {
+        if (code == peopleType.code) {
+          return peopleType;
+        }
+      }
+      throw NotSupportException.throwException("不支持的类型");
     }
 
     public int code;

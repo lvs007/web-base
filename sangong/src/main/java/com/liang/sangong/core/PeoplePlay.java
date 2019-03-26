@@ -10,7 +10,6 @@ import com.liang.sangong.common.ThreadUtils;
 import com.liang.sangong.core.Room.TableState;
 import com.liang.sangong.core.Rule.ResultType;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class PeoplePlay {
@@ -23,7 +22,7 @@ public class PeoplePlay {
   private transient Room room;
   private long playCoin;
   private GameType gameType = GameType.ZIDONG;
-  private PeopleType peopleType = PeopleType.TRX;
+  private PeopleType peopleType;
   private int site;//座位
   private ResultType resultType;
   private int dianshu;
@@ -38,6 +37,7 @@ public class PeoplePlay {
 
   public PeoplePlay(PeopleInfo peopleInfo) {
     this.peopleInfo = peopleInfo;
+    this.peopleType = PeopleType.getType(peopleInfo.getType());
   }
 
   public boolean isCanBegin() {
