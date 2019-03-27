@@ -208,9 +208,9 @@ public class MessageAction {
         if (rechargeMessage.getPeopleType() == PeopleType.TRX) {
           result = transferAction.recharge(rechargeMessage, userInfo.getId());
         } else if (rechargeMessage.getPeopleType() == PeopleType.JI_FEN) {
-//          result = userService.incrCoin(userInfo.getId(), rechargeMessage.getPeopleType(),
-//              rechargeMessage.getCoin());
-          return ErrorMessage.build("目前暂不支持！");
+          result = userService.incrCoin(userInfo.getId(), rechargeMessage.getPeopleType(),
+              rechargeMessage.getCoin());
+//          return ErrorMessage.build("目前暂不支持！");
         }
         if (result) {
           PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
