@@ -188,7 +188,7 @@ function createPeopleType(){
   input.type = "hidden";
   input.name = "peopleType";
   input.value = getPeopleType();
-  // append key-value to form
+  return input;
 }
 
 function getPeopleType(){
