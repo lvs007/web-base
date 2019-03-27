@@ -145,4 +145,16 @@ public class PeopleInfo {
     this.update_time = update_time;
     return this;
   }
+
+  @Override
+  public String toString() {
+    return "PeopleInfo{" +
+        "id=" + id +
+        ", userId=" + userId +
+        ", name='" + name + '\'' +
+        ", coin=" + coin +
+        ", type=" + type +
+        ", state=" + state +
+        '}';
+  }
 }

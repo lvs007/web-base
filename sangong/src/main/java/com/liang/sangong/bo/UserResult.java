@@ -4,6 +4,8 @@ public class UserResult {
 
   private long id;
   private long userId;
+  private String roomId;
+  private int type;
   private int result;
   private String poke;
   private long coin;
@@ -70,6 +72,24 @@ public class UserResult {
 
   public UserResult setCreateTime(long createTime) {
     this.createTime = createTime;
+    return this;
+  }
+
+  public String getRoomId() {
+    return roomId;
+  }
+
+  public UserResult setRoomId(String roomId) {
+    this.roomId = roomId;
+    return this;
+  }
+
+  public int getType() {
+    return type;
+  }
+
+  public UserResult setType(int type) {
+    this.type = type;
     return this;
   }
 
