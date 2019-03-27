@@ -202,6 +202,8 @@ function peopleTypeChange(){
   getRequest("/v1/door/change-people-type?peopleType="+peopleType,1000,function(data){
     var data = JSON.parse(data);
     if(data.success){
+      document.getElementById('name').innerText=data.data.name;
+      document.getElementById('coinShow').innerText=data.data.coin;
       alert("切换成功");
     }else{
       alert("切换失败");

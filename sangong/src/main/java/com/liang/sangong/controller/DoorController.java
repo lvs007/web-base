@@ -159,9 +159,9 @@ public class DoorController {
     if (peoplePlay != null) {
       return ResponseUtils.ErrorResponse();
     }
-    userService.setPeopleInfo(userInfo, type);
+    PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, type);
     peopleTypeMap.put(userInfo.getId(), type);
-    return ResponseUtils.SuccessResponse();
+    return peopleInfo;
   }
 
   @PcLogin
