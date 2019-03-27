@@ -211,8 +211,6 @@ public class MessageAction {
 //          result = userService.incrCoin(userInfo.getId(), rechargeMessage.getPeopleType(),
 //              rechargeMessage.getCoin());
           return ErrorMessage.build("目前暂不支持！");
-        } else {
-          return ErrorMessage.build("充值失败！");
         }
         if (result) {
           PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());

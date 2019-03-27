@@ -139,6 +139,12 @@
             objSelect.options[i].selected = false;
           }
         }
+      }else if(message.messageType == "error"){
+        if(message.reason == "success"){
+
+        }else{
+          alert(message.reason);
+        }
       }
        /* ]]> */
     }
