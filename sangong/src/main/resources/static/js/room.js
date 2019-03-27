@@ -88,7 +88,8 @@ function begin(){
 function recharge(){
     var token = getToken("nb_token");
     var coin = document.getElementById('coin').value;
-    var str = {"messageType":"recharge", "coin":coin, "token":token, "peopleType":"TRX"}
+    var peopleType = getPeopleType();
+    var str = {"messageType":"recharge", "coin":coin, "token":token, "peopleType":peopleType}
     var strJson = JSON.stringify(str)
     websocket.send(strJson);
     closeDialog('recharge');
@@ -157,12 +158,55 @@ function logOut(){
 }
 
 function quickJoin(){
-  getRequest("/v1/door/quick-join",1000,function(data){
-  });
+  var form = document.getElementById('quickForm');
+  var coin = document.getElementById('coinShow').innerText;
+  if(coin < 10){
+    alert("金币不足，请充值。进入房间最小额度是：10TRX。");
+    return;
+  }
+  var input = createPeopleType();
+  form.appendChild(input);
+  form.submit();
+  document.body.removeChild(input);
 }
 
 function createRoom(){
-  getRequest("/v1/door/create-room",1000,function(data){
+  var form = document.getElementById('createForm');
+  var coin = document.getElementById('coinShow').innerText;
+  if(coin < 10000){
+    alert("金币不足，请充值。创建房间的最小额度是：10000TRX。");
+    return;
+  }
+  var input = createPeopleType();
+  form.appendChild(input);
+  form.submit();
+  document.body.removeChild(input);
+}
+
+function createPeopleType(){
+  var input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "peopleType";
+  input.value = getPeopleType();
+  // append key-value to form
+  form.appendChild(input);
+}
+
+function getPeopleType(){
+  var obj=document.getElementById('peopleType');
+  var index=obj.selectedIndex; //序号，取当前选中选项的序号
+  return obj.options[index].value;
+}
+
+function peopleTypeChange(){
+  var peopleType = getPeopleType();
+  getRequest("/v1/door/change-people-type?peopleType="+peopleType,1000,function(data){
+    var data = JSON.parse(data);
+    if(data.success){
+      alert("切换成功");
+    }else{
+      alert("切换失败");
+    }
   });
 }
 

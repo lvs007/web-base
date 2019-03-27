@@ -17,15 +17,15 @@
 <body>
 
 <div id="inviteNameWindow" class="white_content">
-  <table>
+  <table style="width:100%">
     <tr>
-      <td><input id="inviteName" name="name" value="" type="text"/></td>
+      <td style="width:30%"><span>用户名：</span></td>
+      <td><input id="inviteName" name="name" value="" type="text" style="width:97%"/></td>
     </tr>
     <tr>
-      <td>
+      <td colspan="2" align="right">
         <button onclick="closeDialog('inviteNameWindow')">取消</button>
-      </td>
-      <td>
+        <span></span>
         <button onclick="invite()">确认</button>
       </td>
     </tr>

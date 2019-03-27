@@ -20,6 +20,8 @@ import com.liang.sangong.trx.tron.TransferService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class DoorController {
+
+  private static final Map<Long, PeopleType> peopleTypeMap = new ConcurrentHashMap<>();
 
   @Autowired
   private UserService userService;
@@ -113,10 +117,9 @@ public class DoorController {
   }
 
   @PcLogin
-  public String getDating(@RequestParam(name = "peopleType", required = false,
-      defaultValue = "TRX") String type, ModelMap modelMap) {
+  public String getDating(ModelMap modelMap) {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    PeopleType peopleType = PeopleType.valueOf(type);
+    PeopleType peopleType = peopleTypeMap.get(userInfo.getId());
     peopleType = peopleType == null ? PeopleType.TRX : peopleType;
     PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, peopleType);
     modelMap.put("peopleInfo", peopleInfo);
@@ -142,6 +145,23 @@ public class DoorController {
   @ResponseBody
   public Object queryTrx(String pk) {
     return transferService.queryTrx(pk);
+  }
+
+  @PcLogin
+  @ResponseBody
+  public Object changePeopleType(String peopleType) {
+    PeopleType type = PeopleType.valueOf(peopleType);
+    if (type == null) {
+      return ResponseUtils.ErrorResponse();
+    }
+    UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
+    PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
+    if (peoplePlay != null) {
+      return ResponseUtils.ErrorResponse();
+    }
+    userService.setPeopleInfo(userInfo, type);
+    peopleTypeMap.put(userInfo.getId(), type);
+    return ResponseUtils.SuccessResponse();
   }
 
   @PcLogin

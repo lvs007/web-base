@@ -4,12 +4,17 @@ import com.liang.common.util.LockUtils;
 import com.liang.dao.jdbc.common.SearchFilter.Operator;
 import com.liang.dao.jdbc.common.SqlPath;
 import com.liang.mvc.filter.UserInfo;
+import com.liang.sangong.bo.GameResult;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.bo.PeopleInfo.UserState;
+import com.liang.sangong.bo.UserResult;
 import com.liang.sangong.core.PeoplePlay;
 import com.liang.sangong.core.RoomPool;
+import com.liang.sangong.dao.DataStatisticsDao;
+import com.liang.sangong.dao.GameResultDao;
 import com.liang.sangong.dao.UserDao;
+import com.liang.sangong.dao.UserResultDao;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,15 @@ public class UserService {
 
   @Autowired
   private RoomPool roomPool;
+
+  @Autowired
+  private UserResultDao userResultDao;
+
+  @Autowired
+  private GameResultDao gameResultDao;
+
+  @Autowired
+  private DataStatisticsDao dataStatisticsDao;
 
   @Transactional
   public PeopleInfo setPeopleInfo(UserInfo userInfo, PeopleType peopleType) {
@@ -118,6 +132,23 @@ public class UserService {
   public PeopleInfo findUser(String name, int type) {
     return userDao.findOne(SqlPath.where("name", Operator.EQ, name).
         and("type", Operator.EQ, type));
+  }
+
+  @Transactional
+  public boolean insertUserResult(UserResult userResult) {
+    userResult.setCreateTime(System.currentTimeMillis());
+    return userResultDao.insert(userResult);
+  }
+
+  @Transactional
+  public boolean insertGameResult(GameResult gameResult) {
+    gameResult.setCreateTime(System.currentTimeMillis());
+    return gameResultDao.insert(gameResult);
+  }
+
+  @Transactional
+  public boolean insertOrUpdateDataStatistics() {
+    return false;
   }
 
 }

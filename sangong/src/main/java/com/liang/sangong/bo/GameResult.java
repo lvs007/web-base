@@ -33,4 +33,10 @@ public class GameResult {
     this.createTime = createTime;
     return this;
   }
+
+  public static GameResult build(String roomId, String userPoke) {
+    GameResult gameResult = new GameResult();
+    return gameResult.setRoomId(roomId).setUserPoke(userPoke)
+        .setCreateTime(System.currentTimeMillis());
+  }
 }

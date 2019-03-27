@@ -1,12 +1,26 @@
 table{
     width:500px;
-    font-weight: bold;
     border: 1px solid #000;
     border-collapse:collapse;
-    font-size:20px;
-    text-align:center;
+    font-size:16px;
+    text-align:left;
     margin: 0 auto;
 }
+
+th{
+background-color: rgb(81, 130, 187);
+color: #fff;
+border-bottom-width: 0;
+}
+
 td{
-    border: 1px solid #000000;
+    border: 0px solid #000000;
+    color: #090909a1;
+}
+
+/* Heading and Column Style */
+tr{
+border-width: 1px;
+border-style: solid;
+border-color: rgb(81, 130, 187);
 }

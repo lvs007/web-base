@@ -10,20 +10,22 @@ CREATE TABLE `people_info` (
 `create_time` BIGINT NULL COMMENT '创建时间',
 `update_time` BIGINT NULL COMMENT '更新时间',
  PRIMARY KEY (`id`),
- KEY (`user_id`),
- KEY (`name`)
+ UNIQUE KEY `user_type` (`user_id`,`type`),
+ UNIQUE KEY `name_type` (`name`,`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '用户信息';
 
 DROP TABLE IF EXISTS `user_result`;
 CREATE TABLE `user_result` (
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `user_id` BIGINT NOT NULL COMMENT '用户id',
+`room_id` VARCHAR(128) NULL COMMENT '房间id',
+`type` INT NOT NULL COMMENT '账户类型',
 `poke` VARCHAR(128) NULL COMMENT '用户的牌',
 `coin` BIGINT NOT NULL COMMENT '金币',
 `result` INT NOT NULL COMMENT '输赢',
 `create_time` BIGINT NULL COMMENT '创建时间',
  PRIMARY KEY (`id`),
- KEY (`user_id`)
+ UNIQUE KEY `user_type` (`user_id`,`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '用户游戏结果';
 
 DROP TABLE IF EXISTS `game_result`;
@@ -33,7 +35,7 @@ CREATE TABLE `game_result` (
 `user_poke` VARCHAR(512) NULL COMMENT '每局游戏的牌',
 `create_time` BIGINT NULL COMMENT '创建时间',
  PRIMARY KEY (`id`),
- KEY (`room_id`)
+ INDEX room_id(`room_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '游戏结果';
 
 DROP TABLE IF EXISTS `data_statistics`;
@@ -44,7 +46,7 @@ CREATE TABLE `data_statistics` (
 `win_count` BIGINT NOT NULL COMMENT '赢的局数',
 `create_time` BIGINT NULL COMMENT '创建时间',
  PRIMARY KEY (`id`),
- KEY (`user_id`)
+ INDEX user_id(`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '用户结果统计';
 
 DROP TABLE IF EXISTS `transaction_info`;
@@ -57,6 +59,6 @@ CREATE TABLE `transaction_info` (
 `create_time` BIGINT NULL COMMENT '创建时间',
 `update_time` BIGINT NULL COMMENT '更新时间',
  PRIMARY KEY (`id`),
- KEY (`user_id`),
- KEY (`tx_id`)
+ INDEX user_id(`user_id`),
+ INDEX tx_id(`tx_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '交易信息表';

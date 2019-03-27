@@ -222,7 +222,8 @@ public class MessageAction {
           PeopleInfo peopleInfo = peoplePlay.getPeopleInfo();
           ReturnRechargeMessage returnRechargeMessage = new ReturnRechargeMessage()
               .setCoin(peopleInfo.getCoin())
-              .setName(peopleInfo.getName());
+              .setName(peopleInfo.getName())
+              .setPeopleType(peoplePlay.getPeopleType().name());
           GameWebSocket.webSocketMap.get(userInfo.getId())
               .sendMessage(returnRechargeMessage.toString());
           return ErrorMessage.notReturn();

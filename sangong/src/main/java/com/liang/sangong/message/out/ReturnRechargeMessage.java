@@ -6,6 +6,7 @@ public class ReturnRechargeMessage extends Message {
 
   private String name;
   private long coin;
+  private String peopleType;
 
   public ReturnRechargeMessage() {
     super(MessageType.returnRecharge);
@@ -26,6 +27,15 @@ public class ReturnRechargeMessage extends Message {
 
   public ReturnRechargeMessage setCoin(long coin) {
     this.coin = coin;
+    return this;
+  }
+
+  public String getPeopleType() {
+    return peopleType;
+  }
+
+  public ReturnRechargeMessage setPeopleType(String peopleType) {
+    this.peopleType = peopleType;
     return this;
   }
 }

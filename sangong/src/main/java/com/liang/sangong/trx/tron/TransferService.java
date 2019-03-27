@@ -8,10 +8,12 @@ import com.liang.common.http.api.BaseApi;
 import com.liang.common.http.api.exception.ApiException;
 import com.liang.common.http.api.exception.HttpException;
 import com.liang.common.http.api.exception.InternalException;
+import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.bo.TransactionInfo;
 import com.liang.sangong.bo.TransactionInfo.TxState;
 import com.liang.sangong.common.SystemState;
 import com.liang.sangong.service.TransactionInfoService;
+import com.liang.sangong.service.UserService;
 import com.liang.sangong.trx.tron.api.GrpcAPI.Return;
 import com.liang.sangong.trx.tron.api.GrpcAPI.TransactionExtention;
 import com.liang.sangong.trx.tron.api.WalletGrpc;
@@ -55,6 +57,9 @@ public class TransferService {
 
   @Autowired
   private TransactionInfoService transactionInfoService;
+
+  @Autowired
+  private UserService userService;
 
   @PostConstruct
   public void init() {
@@ -203,6 +208,8 @@ public class TransferService {
         try {
           if (trxSolidityHttp.getTransactionInfo(entry.getKey())) {
             transactionInfoService.update(entry.getValue().setState(TxState.success.code));
+            userService.incrCoin(entry.getValue().getUserId(), PeopleType.TRX,
+                entry.getValue().getAmount());
             iterator.remove();
           } else if (System.currentTimeMillis() - entry.getValue().getCreateTime()
               > SystemState.TX_TIME_OUT) {

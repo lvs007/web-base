@@ -1,5 +1,6 @@
 package com.liang.sangong.bo;
 
+import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class PokesBo {
 
     private PokeType pokerType;
     private int value;
+
+    public Poke() {
+    }
 
     public Poke(PokeType pokerType, int value) {
       this.pokerType = pokerType;
@@ -68,10 +72,7 @@ public class PokesBo {
 
     @Override
     public String toString() {
-      return "Poke{" +
-          "pokerType=" + pokerType +
-          ", value=" + value +
-          '}';
+      return JSON.toJSONString(this);
     }
   }
 

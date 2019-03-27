@@ -1,8 +1,10 @@
 package com.liang.sangong.core;
 
 import com.liang.mvc.filter.UserInfo;
+import com.liang.sangong.bo.GameResult;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
+import com.liang.sangong.bo.UserResult;
 import com.liang.sangong.common.Constants;
 import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.Room.RoomType;
@@ -155,6 +157,8 @@ public class RoomService {
           coin += zhuangjia.getPeopleInfo().getCoin();
           decrCoin = zhuangjia.getPeopleInfo().getCoin();
         }
+        userService.insertUserResult(UserResult.build(-decrCoin,
+            peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getCurrentPoke().toString()));
         userService.decrCoin(peoplePlay.getPeopleInfo().getUserId(),
             peoplePlay.getPeopleType(), decrCoin);
         iterator.remove();
@@ -165,21 +169,28 @@ public class RoomService {
       allCoin += peoplePlay.getPlayCoin();
     }
     for (PeoplePlay peoplePlay : comparePeoples) {
+      long value = peoplePlay.getPlayCoin();
       if (allCoin > coin) {
-        long value = (peoplePlay.getPlayCoin() / allCoin) * coin;
-        userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
-            value);
-      } else {
-        userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
-            peoplePlay.getPlayCoin());
+        value = (peoplePlay.getPlayCoin() / allCoin) * coin;
       }
+      userService.insertUserResult(UserResult.build(value, peoplePlay.getPeopleInfo().getUserId(),
+          peoplePlay.getCurrentPoke().toString()));
+      userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
+          value);
     }
+    long zhuangjiaWin = 0;
     if (allCoin >= coin) {
       userService.decrCoin(zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getPeopleType(),
           zhuangjia.getPeopleInfo().getCoin());
+      zhuangjiaWin = -zhuangjia.getPeopleInfo().getCoin();
     } else {
       userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
+      zhuangjiaWin = coin - allCoin - zhuangjia.getPeopleInfo().getCoin();
     }
+    userService.insertUserResult(UserResult.build(zhuangjiaWin,
+        zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getCurrentPoke().toString()));
+    userService
+        .insertGameResult(GameResult.build(room.getRoomId(), room.getPeoplePlayList().toString()));
   }
 
   private PeoplePlay winner(List<PeoplePlay> peoplePlayList) {

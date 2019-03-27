@@ -9,6 +9,16 @@ public class UserResult {
   private long coin;
   private long createTime;
 
+  public enum ResultEnum {
+    win(0), fail(1), ping(2);
+
+    ResultEnum(int code) {
+      this.code = code;
+    }
+
+    public int code;
+  }
+
   public long getId() {
     return id;
   }
@@ -61,6 +71,20 @@ public class UserResult {
   public UserResult setCreateTime(long createTime) {
     this.createTime = createTime;
     return this;
+  }
+
+  public static UserResult build(long coin, long userId, String poke) {
+    UserResult userResult = new UserResult();
+    ResultEnum resultEnum;
+    if (coin > 0) {
+      resultEnum = ResultEnum.win;
+    } else if (coin < 0) {
+      coin = -coin;
+      resultEnum = ResultEnum.fail;
+    } else {
+      resultEnum = ResultEnum.ping;
+    }
+    return userResult.setCoin(coin).setPoke(poke).setUserId(userId).setResult(resultEnum.code);
   }
 
 }
