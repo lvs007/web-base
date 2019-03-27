@@ -97,12 +97,16 @@ public class Room {
   }
 
   public void compare() {
-    if (gameType == GameType.ZIDONG) {
-      //固定金额，赢者通吃
-      roomService.zidong(this);
-    } else {
-      //如果庄家的钱不够当前下注的用户金额，则按比例分配，如果庄家赢则按比例收取玩家的钱，如果玩家赢
-      roomService.zhuangjia(this);
+    try {
+      if (gameType == GameType.ZIDONG) {
+        //固定金额，赢者通吃
+        roomService.zidong(this);
+      } else {
+        //如果庄家的钱不够当前下注的用户金额，则按比例分配，如果庄家赢则按比例收取玩家的钱，如果玩家赢
+        roomService.zhuangjia(this);
+      }
+    } catch (Exception e){
+        e.printStackTrace();
     }
   }
 

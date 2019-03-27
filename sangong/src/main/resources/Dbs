@@ -25,14 +25,14 @@ CREATE TABLE `user_result` (
 `result` INT NOT NULL COMMENT '输赢',
 `create_time` BIGINT NULL COMMENT '创建时间',
  PRIMARY KEY (`id`),
- UNIQUE KEY `user_type` (`user_id`,`type`)
+ INDEX `user_type` (`user_id`,`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '用户游戏结果';
 
 DROP TABLE IF EXISTS `game_result`;
 CREATE TABLE `game_result` (
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `room_id` VARCHAR(128) NULL COMMENT '房间id',
-`user_poke` VARCHAR(512) NULL COMMENT '每局游戏的牌',
+`user_poke` VARCHAR(1024) NULL COMMENT '每局游戏的牌',
 `create_time` BIGINT NULL COMMENT '创建时间',
  PRIMARY KEY (`id`),
  INDEX room_id(`room_id`)

@@ -157,8 +157,8 @@ public class RoomService {
           coin += zhuangjia.getPeopleInfo().getCoin();
           decrCoin = zhuangjia.getPeopleInfo().getCoin();
         }
-        userService.insertUserResult(UserResult.build(-decrCoin,
-            peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getCurrentPoke().toString()));
+        userService.insertUserResult(UserResult.build(-decrCoin, peoplePlay.getPeopleInfo().getUserId(),
+                peoplePlay.getCurrentPoke().toString(), room.getRoomId(), peoplePlay.getPeopleType().code));
         userService.decrCoin(peoplePlay.getPeopleInfo().getUserId(),
             peoplePlay.getPeopleType(), decrCoin);
         iterator.remove();
@@ -174,7 +174,7 @@ public class RoomService {
         value = (peoplePlay.getPlayCoin() / allCoin) * coin;
       }
       userService.insertUserResult(UserResult.build(value, peoplePlay.getPeopleInfo().getUserId(),
-          peoplePlay.getCurrentPoke().toString()));
+          peoplePlay.getCurrentPoke().toString(), room.getRoomId(), peoplePlay.getPeopleType().code));
       userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
           value);
     }
@@ -187,8 +187,8 @@ public class RoomService {
       userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
       zhuangjiaWin = coin - allCoin - zhuangjia.getPeopleInfo().getCoin();
     }
-    userService.insertUserResult(UserResult.build(zhuangjiaWin,
-        zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getCurrentPoke().toString()));
+    userService.insertUserResult(UserResult.build(zhuangjiaWin, zhuangjia.getPeopleInfo().getUserId(),
+            zhuangjia.getCurrentPoke().toString(), room.getRoomId(), zhuangjia.getPeopleType().code));
     userService
         .insertGameResult(GameResult.build(room.getRoomId(), room.getPeoplePlayList().toString()));
   }

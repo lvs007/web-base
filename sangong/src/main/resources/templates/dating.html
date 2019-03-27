@@ -133,7 +133,7 @@
         document.getElementById('coinShow').innerText=message.coin;
         var objSelect=document.getElementById('peopleType');
         for (var i = 0; i < objSelect.options.length; i++) {
-          if (objSelect.options[i].text == message.peopleType) {
+          if (objSelect.options[i].value == message.peopleType) {
             objSelect.options[i].selected = true;
           }else{
             objSelect.options[i].selected = false;

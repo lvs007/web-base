@@ -98,9 +98,9 @@ public class Rule {
       } else if (dianshu1 < dianshu2) {
         return peoplePlay2;
       } else if (pokeList1.get(0).compareTo(pokeList2.get(0)) > 0) {
-        return peoplePlay1;
-      } else {
         return peoplePlay2;
+      } else {
+        return peoplePlay1;
       }
     }
     if (resultType1.code < resultType2.code) {

@@ -93,7 +93,7 @@ public class UserResult {
     return this;
   }
 
-  public static UserResult build(long coin, long userId, String poke) {
+  public static UserResult build(long coin, long userId, String poke, String roomId, int type) {
     UserResult userResult = new UserResult();
     ResultEnum resultEnum;
     if (coin > 0) {
@@ -104,7 +104,8 @@ public class UserResult {
     } else {
       resultEnum = ResultEnum.ping;
     }
-    return userResult.setCoin(coin).setPoke(poke).setUserId(userId).setResult(resultEnum.code);
+    return userResult.setCoin(coin).setPoke(poke).setUserId(userId).setResult(resultEnum.code)
+            .setRoomId(roomId).setType(type);
   }
 
 }
