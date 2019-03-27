@@ -189,7 +189,6 @@ function createPeopleType(){
   input.name = "peopleType";
   input.value = getPeopleType();
   // append key-value to form
-  form.appendChild(input);
 }
 
 function getPeopleType(){
