@@ -8,4 +8,5 @@ public class SystemState {
   public static String TO_ADDRESS = "TSEAHHGX2RhAHsy8R2pEo6Hthx5NDK2BW4";//for test
   public static String FULLNODE_IP = "47.75.211.242";
   public static long TX_TIME_OUT = 10 * 60 * 1000L;
+  public static int RATE = 10;
 }

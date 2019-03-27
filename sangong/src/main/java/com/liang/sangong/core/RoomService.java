@@ -6,6 +6,7 @@ import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.bo.UserResult;
 import com.liang.sangong.common.Constants;
+import com.liang.sangong.common.SystemState;
 import com.liang.sangong.core.PeoplePlay.GameType;
 import com.liang.sangong.core.Room.RoomType;
 import com.liang.sangong.message.action.ComeInMessageAction;
@@ -173,6 +174,7 @@ public class RoomService {
       if (allCoin > coin) {
         value = (peoplePlay.getPlayCoin() / allCoin) * coin;
       }
+      value = (long) (value * (1 - (double)SystemState.RATE/100));
       userService.insertUserResult(UserResult.build(value, peoplePlay.getPeopleInfo().getUserId(),
           peoplePlay.getCurrentPoke().toString(), room.getRoomId(), peoplePlay.getPeopleType().code));
       userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
@@ -184,8 +186,13 @@ public class RoomService {
           zhuangjia.getPeopleInfo().getCoin());
       zhuangjiaWin = -zhuangjia.getPeopleInfo().getCoin();
     } else {
-      userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
-      zhuangjiaWin = coin - allCoin - zhuangjia.getPeopleInfo().getCoin();
+        zhuangjiaWin = coin - allCoin - zhuangjia.getPeopleInfo().getCoin();
+        if (zhuangjiaWin > 0){
+            zhuangjiaWin = (long) (zhuangjiaWin * (1 - (double)SystemState.RATE/100));
+            userService.incrCoin(zhuangjia.getPeopleInfo().getUserId(),zhuangjia.getPeopleType(),zhuangjiaWin);
+        } else {
+            userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
+        }
     }
     userService.insertUserResult(UserResult.build(zhuangjiaWin, zhuangjia.getPeopleInfo().getUserId(),
             zhuangjia.getCurrentPoke().toString(), room.getRoomId(), zhuangjia.getPeopleType().code));
