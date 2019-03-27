@@ -213,15 +213,12 @@ public class MessageAction {
 //          return ErrorMessage.build("目前暂不支持！");
         }
         if (result) {
-          PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
-          if (peoplePlay == null) {
-            return ErrorMessage.build("请加入游戏");
-          }
-          PeopleInfo peopleInfo = peoplePlay.getPeopleInfo();
+          PeopleInfo peopleInfo = userService
+              .findUser(userInfo.getId(), rechargeMessage.getPeopleType().code);
           ReturnRechargeMessage returnRechargeMessage = new ReturnRechargeMessage()
               .setCoin(peopleInfo.getCoin())
               .setName(peopleInfo.getName())
-              .setPeopleType(peoplePlay.getPeopleType().name());
+              .setPeopleType(PeopleType.getType(peopleInfo.getType()).name());
           GameWebSocket.webSocketMap.get(userInfo.getId())
               .sendMessage(returnRechargeMessage.toString());
           return ErrorMessage.notReturn();
