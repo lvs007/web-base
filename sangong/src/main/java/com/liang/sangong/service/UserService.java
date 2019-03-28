@@ -4,17 +4,20 @@ import com.liang.common.util.LockUtils;
 import com.liang.dao.jdbc.common.SearchFilter.Operator;
 import com.liang.dao.jdbc.common.SqlPath;
 import com.liang.mvc.filter.UserInfo;
+import com.liang.sangong.bo.DataStatistics;
 import com.liang.sangong.bo.GameResult;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.bo.PeopleInfo.UserState;
 import com.liang.sangong.bo.UserResult;
+import com.liang.sangong.bo.UserResult.ResultEnum;
 import com.liang.sangong.core.PeoplePlay;
 import com.liang.sangong.core.RoomPool;
 import com.liang.sangong.dao.DataStatisticsDao;
 import com.liang.sangong.dao.GameResultDao;
 import com.liang.sangong.dao.UserDao;
 import com.liang.sangong.dao.UserResultDao;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -137,6 +140,7 @@ public class UserService {
   @Transactional
   public boolean insertUserResult(UserResult userResult) {
     userResult.setCreateTime(System.currentTimeMillis());
+    insertOrUpdateDataStatistics(userResult);
     return userResultDao.insert(userResult);
   }
 
@@ -147,8 +151,46 @@ public class UserService {
   }
 
   @Transactional
-  public boolean insertOrUpdateDataStatistics() {
-    return false;
+  public boolean insertOrUpdateDataStatistics(UserResult userResult) {
+    DataStatistics dataStatistics = dataStatisticsDao.findOne(SqlPath.where("user_id",
+        Operator.EQ, userResult.getUserId()).and("type", Operator.EQ, userResult.getType()));
+    if (dataStatistics == null) {
+      dataStatistics = new DataStatistics();
+      dataStatistics.setCreateTime(System.currentTimeMillis())
+          .setUpdateTime(System.currentTimeMillis()).setUserId(userResult.getUserId())
+          .setType(userResult.getType()).setShuAmount(0).setShuCount(0).setWinAmount(0)
+          .setWinCount(0);
+      if (userResult.getResult() == ResultEnum.fail.code) {
+        dataStatistics.setShuAmount(userResult.getCoin()).setShuCount(1);
+      } else if (userResult.getResult() == ResultEnum.win.code) {
+        dataStatistics.setWinAmount(userResult.getCoin()).setWinCount(1);
+      }
+      return dataStatisticsDao.insert(dataStatistics);
+    } else {
+      if (userResult.getResult() == ResultEnum.fail.code) {
+        dataStatisticsDao.updateData(userResult.getUserId(), userResult.getType(),
+            userResult.getCoin(), false);
+      } else if (userResult.getResult() == ResultEnum.win.code) {
+        dataStatisticsDao.updateData(userResult.getUserId(), userResult.getType(),
+            userResult.getCoin(), true);
+      }
+      return true;
+    }
+  }
+
+  @Transactional
+  public boolean insertOrUpdateDataStatistics(DataStatistics dataStatistics) {
+    if (dataStatistics.isNews()) {
+      dataStatisticsDao.insert(dataStatistics);
+      dataStatistics.setNews(false);
+    } else {
+      dataStatisticsDao.update(dataStatistics);
+    }
+    return true;
+  }
+
+  public List<DataStatistics> queryStatistics(long userId) {
+    return dataStatisticsDao.findAll(SqlPath.where("user_id", Operator.EQ, userId));
   }
 
 }

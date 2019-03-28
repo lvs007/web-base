@@ -30,6 +30,9 @@ public class RoomService {
   @Autowired
   private ComeInMessageAction comeInMessageAction;
 
+  @Autowired
+  private CounterManager counterManager;
+
   public Room createRoom(UserInfo userInfo, PeopleType peopleType, RoomType roomType) {
     if (peopleType == null) {
       return null;
@@ -158,8 +161,10 @@ public class RoomService {
           coin += zhuangjia.getPeopleInfo().getCoin();
           decrCoin = zhuangjia.getPeopleInfo().getCoin();
         }
-        userService.insertUserResult(UserResult.build(-decrCoin, peoplePlay.getPeopleInfo().getUserId(),
-                peoplePlay.getCurrentPoke().toString(), room.getRoomId(), peoplePlay.getPeopleType().code));
+        userService.insertUserResult(UserResult.build(-decrCoin,
+            peoplePlay.getPeopleInfo().getUserId(),
+            peoplePlay.getCurrentPoke().toString(), room.getRoomId(),
+            peoplePlay.getPeopleType().code));
         userService.decrCoin(peoplePlay.getPeopleInfo().getUserId(),
             peoplePlay.getPeopleType(), decrCoin);
         iterator.remove();
@@ -174,9 +179,15 @@ public class RoomService {
       if (allCoin > coin) {
         value = (peoplePlay.getPlayCoin() / allCoin) * coin;
       }
-      value = (long) (value * (1 - (double)SystemState.RATE/100));
-      userService.insertUserResult(UserResult.build(value, peoplePlay.getPeopleInfo().getUserId(),
-          peoplePlay.getCurrentPoke().toString(), room.getRoomId(), peoplePlay.getPeopleType().code));
+      long tmp = (long) (value * (1 - (double) SystemState.RATE / 100));
+      if (tmp > 0) {
+        counterManager.incr(peoplePlay.getPeopleType(), value - tmp);
+        value = tmp;
+      }
+      UserResult userResult = UserResult.build(value, peoplePlay.getPeopleInfo().getUserId(),
+          peoplePlay.getCurrentPoke().toString(), room.getRoomId(),
+          peoplePlay.getPeopleType().code);
+      userService.insertUserResult(userResult);
       userService.incrCoin(peoplePlay.getPeopleInfo().getUserId(), peoplePlay.getPeopleType(),
           value);
     }
@@ -186,18 +197,24 @@ public class RoomService {
           zhuangjia.getPeopleInfo().getCoin());
       zhuangjiaWin = -zhuangjia.getPeopleInfo().getCoin();
     } else {
-        zhuangjiaWin = coin - allCoin - zhuangjia.getPeopleInfo().getCoin();
-        if (zhuangjiaWin > 0){
-            zhuangjiaWin = (long) (zhuangjiaWin * (1 - (double)SystemState.RATE/100));
-            userService.incrCoin(zhuangjia.getPeopleInfo().getUserId(),zhuangjia.getPeopleType(),zhuangjiaWin);
-        } else {
-            userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
+      zhuangjiaWin = coin - allCoin - zhuangjia.getPeopleInfo().getCoin();
+      if (zhuangjiaWin > 0) {
+        long tmp = (long) (zhuangjiaWin * (1 - (double) SystemState.RATE / 100));
+        if (tmp > 0) {
+          counterManager.incr(zhuangjia.getPeopleType(), zhuangjiaWin - tmp);
+          zhuangjiaWin = tmp;
         }
+        userService.incrCoin(zhuangjia.getPeopleInfo().getUserId(), zhuangjia.getPeopleType(),
+            zhuangjiaWin);
+      } else {
+        userService.updatePeopleInfo(zhuangjia.getPeopleInfo().setCoin(coin - allCoin));
+      }
     }
-    userService.insertUserResult(UserResult.build(zhuangjiaWin, zhuangjia.getPeopleInfo().getUserId(),
-            zhuangjia.getCurrentPoke().toString(), room.getRoomId(), zhuangjia.getPeopleType().code));
-    userService
-        .insertGameResult(GameResult.build(room.getRoomId(), room.getPeoplePlayList().toString()));
+    UserResult userResult = UserResult.build(zhuangjiaWin, zhuangjia.getPeopleInfo().getUserId(),
+        zhuangjia.getCurrentPoke().toString(), room.getRoomId(), zhuangjia.getPeopleType().code);
+    userService.insertUserResult(userResult);
+    userService.insertGameResult(GameResult.build(room.getRoomId(),
+        room.getPeoplePlayList().toString()));
   }
 
   private PeoplePlay winner(List<PeoplePlay> peoplePlayList) {

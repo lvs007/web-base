@@ -7,6 +7,7 @@ import com.liang.mvc.commons.ResponseUtils;
 import com.liang.mvc.commons.SpringContextHolder;
 import com.liang.mvc.filter.LoginUtils;
 import com.liang.mvc.filter.UserInfo;
+import com.liang.sangong.bo.DataStatistics;
 import com.liang.sangong.bo.PeopleInfo;
 import com.liang.sangong.bo.PeopleInfo.PeopleType;
 import com.liang.sangong.core.PeoplePlay;
@@ -122,7 +123,9 @@ public class DoorController {
     PeopleType peopleType = peopleTypeMap.get(userInfo.getId());
     peopleType = peopleType == null ? PeopleType.TRX : peopleType;
     PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, peopleType);
+    List<DataStatistics> dataStatistics = userService.queryStatistics(userInfo.getId());
     modelMap.put("peopleInfo", peopleInfo);
+    modelMap.put("dataStatistics", dataStatistics);
     return "dating";
   }
 

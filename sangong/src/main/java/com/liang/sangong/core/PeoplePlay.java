@@ -280,13 +280,9 @@ public class PeoplePlay {
         "peopleInfo=" + peopleInfo +
         ", currentPoke=" + currentPoke +
         ", isZhuangjia=" + isZhuangjia +
-        ", state=" + state +
-        ", room=" + room +
         ", playCoin=" + playCoin +
         ", gameType=" + gameType +
         ", peopleType=" + peopleType +
-        ", site=" + site +
-        ", beforePoke=" + beforePoke +
         '}';
   }
 }

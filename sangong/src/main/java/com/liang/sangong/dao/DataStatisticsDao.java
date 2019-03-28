@@ -5,4 +5,5 @@ import com.liang.sangong.bo.DataStatistics;
 
 public interface DataStatisticsDao extends BaseDao<DataStatistics> {
 
+  boolean updateData(long userId, int type, long amount, boolean shuOrYing);
 }

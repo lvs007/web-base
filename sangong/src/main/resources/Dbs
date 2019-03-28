@@ -42,11 +42,15 @@ DROP TABLE IF EXISTS `data_statistics`;
 CREATE TABLE `data_statistics` (
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `user_id` BIGINT NOT NULL COMMENT '用户id',
+`type` INT NOT NULL COMMENT '账户类型',
 `shu_count` BIGINT NOT NULL COMMENT '输的局数',
+`shu_amount` BIGINT NOT NULL COMMENT '输的金额',
 `win_count` BIGINT NOT NULL COMMENT '赢的局数',
+`win_amount` BIGINT NOT NULL COMMENT '赢的金额',
 `create_time` BIGINT NULL COMMENT '创建时间',
+`update_time` BIGINT NULL COMMENT '更新时间',
  PRIMARY KEY (`id`),
- INDEX user_id(`user_id`)
+ INDEX user_id(`user_id`,`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '用户结果统计';
 
 DROP TABLE IF EXISTS `transaction_info`;
