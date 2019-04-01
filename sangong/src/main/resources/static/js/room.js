@@ -204,7 +204,6 @@ function peopleTypeChange(){
     if(data.success){
       document.getElementById('name').innerText=data.data.name;
       document.getElementById('coinShow').innerText=data.data.coin;
-      alert("切换成功");
     }else{
       alert("切换失败");
     }

@@ -64,3 +64,24 @@
     border-left: 0px;
     border-top: 0px;
 }
+
+.datingMainDiv{
+  background-image: url('/static/datingnew.png');
+  background-size: 100% 100%;
+  /*background-size: cover;*/
+  /*background-size: contain;*/
+  margin: 0 auto;
+}
+
+div{
+  vertical-align:bottom;
+  display:block;
+}
+img{
+  vertical-align:bottom;
+  display:block;
+}
+body{
+  margin:0px;
+  padding:0px;
+}

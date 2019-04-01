@@ -6,6 +6,11 @@
 <head>
   <title>learn Resources</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta http-equiv="pragma" content="no-cache" />
   <link rel="stylesheet" href="../static/css/windows.css" th:href="@{/static/css/windows.css}"/>
   <link rel="stylesheet" href="../static/css/buttons.css" th:href="@{/static/css/buttons.css}"/>
   <link rel="stylesheet" href="../static/css/table.css" th:href="@{/static/css/table.css}"/>
@@ -44,185 +49,224 @@
   <span id="userName" hidden="hidden" th:text="${userInfo.userName}"></span>
 </div>
 
-<div style="background:url(/static/head.png);height:25px;width:984px;margin: 0 auto;">
-  <div style="float: right;width:6.6%;height:100%;" id="leaveDiv">
-    <button style="background-image: url('/static/button.png');" onclick="leave()">离开房间</button>
+<div id="head" style="display: flex;flex-wrap: wrap;">
+  <div id="headLeft" style="background:url(/static/head.png);margin: 0 auto;display:none;"></div>
+  <div id="headDiv" style="background:url(/static/head.png);margin: 0 auto;">
+    <div style="float: right;width:65px;height:100%;" id="leaveDiv">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="leave()">离开房间</button>
+    </div>
+    <div style="float: right;width:10px;height:100%;">
+    </div>
+    <div style="float: right;width:65px;height:100%;" id="inviteDiv">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="openDialog('inviteNameWindow')">邀请玩家</button>
+    </div>
+    <div style="float: right;width:10px;height:100%;">
+    </div>
+    <div style="float: right;width:65px;height:100%;" id="beginDiv">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="begin()">开始游戏</button>
+    </div>
+    <div style="float: right;width:10px;height:100%;">
+    </div>
+    <div style="float: right;width:65px;height:100%;display:none;" id="unzuozhuangDiv">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="unzuozhuang()">取消坐庄</button>
+    </div>
+    <div style="float: right;width:40px;height:100%;" id="zuozhuangDiv">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="zuozhuang()">坐庄</button>
+    </div>
+    <div style="float: right;width:65px;height:100%;display:none;" id="unconfirmDiv">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="unconfirmGame()">取消下注</button>
+    </div>
+    <div style="float: right;width:10px;height:100%;">
+    </div>
+    <div style="float: right;width:40px;height:100%;display:none;" id="tiren">
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="tirenWindow()">踢人</button>
+    </div>
+    <div style="float: right;width:185px;height:100%;" id="confirmDiv">
+      <button class="button button-primary button-circle button-small" onclick="jian('coin')"><i class="fa fa-plus">-</i></button>
+      <input id="coin" name="coin" value="10" type="text" oninput="value=value.replace(/[^\d]/g,'')" style="width:70px;"/>
+      <button class="button button-primary button-circle button-small" onclick="jia('coin')"><i class="fa fa-plus">+</i></button>
+      <button style="background-image: url('/static/button.png');outline:none;height:100%;" onclick="confirmGame()">下注</button>
+    </div>
   </div>
-  <div style="float: right;width:1%;height:100%;">
-  </div>
-  <div style="float: right;width:6.6%;height:100%;" id="inviteDiv">
-    <button style="background-image: url('/static/button.png');" onclick="openDialog('inviteNameWindow')">邀请玩家</button>
-  </div>
-  <div style="float: right;width:1%;height:100%;">
-  </div>
-  <div style="float: right;width:6.6%;height:100%;" id="beginDiv">
-    <button style="background-image: url('/static/button.png');" onclick="begin()">开始游戏</button>
-  </div>
-  <div style="float: right;width:1%;height:100%;">
-  </div>
-  <div style="float: right;width:6.6%;height:100%;display:none;" id="unzuozhuangDiv">
-    <button style="background-image: url('/static/button.png');" onclick="unzuozhuang()">取消坐庄</button>
-  </div>
-  <div style="float: right;width:4.1%;height:100%;" id="zuozhuangDiv">
-    <button style="background-image: url('/static/button.png');" onclick="zuozhuang()">坐庄</button>
-  </div>
-  <div style="float: right;width:6.6%;height:100%;display:none;" id="unconfirmDiv">
-    <button style="background-image: url('/static/button.png');" onclick="unconfirmGame()">取消下注</button>
-  </div>
-  <div style="float: right;width:1%;height:100%;">
-  </div>
-  <div style="float: right;width:4.1%;height:100%;display:none;" id="tiren">
-    <button style="background-image: url('/static/button.png');" onclick="tirenWindow()">踢人</button>
-  </div>
-  <div style="float: right;width:18.5%;height:100%;" id="confirmDiv">
-    <button class="button button-primary button-circle button-small" onclick="jian('coin')"><i class="fa fa-plus">-</i></button>
-    <input id="coin" name="coin" value="10" type="text" oninput="value=value.replace(/[^\d]/g,'')" style="width:70px;"/>
-    <button class="button button-primary button-circle button-small" onclick="jia('coin')"><i class="fa fa-plus">+</i></button>
-    <button style="background-image: url('/static/button.png');" onclick="confirmGame()">下注</button>
-  </div>
+  <div id="headRight" style="background:url(/static/head.png);margin: 0 auto;display:none;"></div>
 </div>
-<div style="background:url(/static/room5.png);top:3%;height:709px;width:984px;margin: 0 auto;" id="main">
-  <div id="line1" style="position:relative;top:8.2%;width:100%;height:15%;">
-    <div style="position:relative;float:left;width:4%;height:100%;"></div>
-    <div id="people0" style="position:relative;float:left;width:20%;height:100%;">
-      <div style="float: left;width:70%;height:50%;">
-        <span id="name0" style="color:#becdd4;">姓名：</span>
-        <br/>
-        <span id="coin0" style="color:#bdaa35;">金币：</span>
-        <br/>
-        <span id="paycoin0" style="color:#fff200;"></span>
+<div id="body" style="display: flex;flex-wrap: wrap;">
+  <div id="mainLeft" style="background:url(/static/head.png);margin: 0 auto;display:none;"></div>
+  <div style="background-image: url('/static/room5.png');background-size: 100% 100%;margin: 0 auto;" id="main">
+    <div style="position:relative;width:100%;height:7.6%;">
+    </div>
+    <div id="line1" style="position:relative;width:100%;height:15%;">
+      <div style="position:relative;float:left;width:4%;height:100%;"></div>
+      <div id="people0" style="position:relative;float:left;width:20%;height:100%;">
+        <div style="float: left;width:70%;height:100%;">
+          <div style="width:100%;height:25%;">
+            <span id="name0" style="color:#becdd4;">姓名：</span>
+          </div>
+          <div style="width:100%;height:25%;">
+            <span id="coin0" style="color:#bdaa35;">金币：</span>
+          </div>
+          <div style="width:100%;height:50%;">
+            <span id="paycoin0" style="color:#fff200;"></span>
+          </div>
+        </div>
+        <div style="float: left;width:30%;height:100%;">
+          <span id="confirm0" style="color:#fff200;"></span>
+          <br/>
+          <span id="zuozhuang0" style="color:#fff200;"></span>
+        </div>
       </div>
-      <div style="float: left;width:30%;height:50%;">
-        <span id="confirm0" style="color:#fff200;"></span>
-        <br/>
-        <span id="zuozhuang0" style="color:#fff200;"></span>
+      <div style="position: relative;float:left;width:54%;height:100%;">
+      </div>
+      <div id="people5" style="position:relative;float:left;width:20%;height:100%;">
+        <div style="float: left;width:30%;height:100%;">
+          <span id="confirm5" style="color:#fff200;"></span>
+          <br/>
+          <span id="zuozhuang5" style="color:#fff200;"></span>
+        </div>
+        <div style="float: left;width:70%;height:100%;">
+          <div style="width:100%;height:25%;">
+            <span id="name5" style="color:#becdd4;">姓名：</span>
+          </div>
+          <div style="width:100%;height:25%;">
+            <span id="coin5" style="color:#bdaa35;">金币：</span>
+          </div>
+          <div style="width:100%;height:50%;">
+            <span id="paycoin5" style="color:#fff200;"></span>
+          </div>
+        </div>
+      </div>
+      <div style="position: relative;float:left;width:1.5%;height:100%;">
       </div>
     </div>
-    <div style="position: relative;float:left;width:54%;height:100%;">
-    </div>
-    <div id="people5" style="position:relative;float:left;width:20%;height:100%;">
-      <div style="float: left;width:30%;height:100%;">
-        <span id="confirm5" style="color:#fff200;"></span>
-        <br/>
-        <span id="zuozhuang5" style="color:#fff200;"></span>
+    <div id="pokeLine1" style="position:relative;width:100%;height:22%;">
+      <div style="position: relative;float:left;width:14.5%;height:100%;"></div>
+      <div id="people0Poke" style="position: relative;float:left;width:16.5%;height:100%;">
       </div>
-      <div style="float: left;width:70%;height:100%;">
-        <span id="name5" style="color:#becdd4;">姓名：</span>
-        <br/>
-        <span id="coin5" style="color:#bdaa35;">金币：</span>
-        <br/>
-        <span id="paycoin5" style="color:#fff200;"></span>
+      <div style="position: relative;float:left;width:38.5%;height:100%;"></div>
+      <div id="people5Poke" style="position: relative;float:left;width:16.5%;height:100%;">
+      </div>
+      <div style="position: relative;float:left;width:14%;height:100%;"></div>
+    </div>
+    <div style="position:relative;width:100%;height:3%;">
+    </div>
+    <div id="pokeLine2" style="position:relative;width:100%;height:22%;">
+      <div style="position: relative;float:left;width:16.5%;height:100%;"></div>
+      <div id="people1Poke" style="position: relative;float:left;width:16.5%;height:100%;">
+      </div>
+      <div id="people2Poke" style="position: relative;float:left;width:16.5%;height:100%;">
+      </div>
+      <div id="people3Poke" style="position: relative;float:left;width:16.5%;height:100%;">
+      </div>
+      <div id="people4Poke" style="position: relative;float:left;width:16.5%;height:100%;">
       </div>
     </div>
-    <div style="position: relative;float:left;width:1.5%;height:100%;">
+    <div style="position:relative;width:100%;height:6.7%;">
+    </div>
+    <div id="line2" style="position:relative;width:100%;height:12.2%;">
+      <div style="position:relative;float:left;width:4%;height:100%;"></div>
+      <div id="people1" style="position:relative;float:left;width:20%;height:100%;">
+        <div style="float: left;width:70%;height:100%;">
+          <div style="width:100%;height:25%;">
+            <span id="name1" style="color:#becdd4;">姓名：</span>
+          </div>
+          <div style="width:100%;height:25%;">
+            <span id="coin1" style="color:#bdaa35;">金币：</span>
+          </div>
+          <div style="width:100%;height:50%;">
+            <span id="paycoin1" style="color:#fff200;"></span>
+          </div>
+        </div>
+        <div style="float: left;width:30%;height:100%;">
+          <span id="confirm1" style="color:#fff200;"></span>
+          <br/>
+          <span id="zuozhuang1" style="color:#fff200;"></span>
+        </div>
+      </div>
+      <div style="position:relative;float:left;width:54%;height:100%;"></div>
+      <div id="people4" style="position:relative;float:left;width:20%;height:100%;">
+        <div style="float: left;width:30%;height:100%;">
+          <span id="confirm4" style="color:#fff200;"></span>
+          <br/>
+          <span id="zuozhuang4" style="color:#fff200;"></span>
+        </div>
+        <div style="float: left;width:70%;height:100%;">
+          <div style="width:100%;height:25%;">
+            <span id="name4" style="color:#becdd4;">姓名：</span>
+          </div>
+          <div style="width:100%;height:25%;">
+            <span id="coin4" style="color:#bdaa35;">金币：</span>
+          </div>
+          <div style="width:100%;height:50%;">
+            <span id="paycoin4" style="color:#fff200;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="line3" style="position:relative;width:100%;height:11.5%;">
+      <div style="position:relative;float:left;width:27.5%;height:100%;"></div>
+      <div id="people2" style="position:relative;float:left;width:20%;height:100%;">
+        <div style="float: left;width:70%;height:100%;">
+          <div style="width:100%;height:25%;">
+            <span id="name2" style="color:#becdd4;">姓名：</span>
+          </div>
+          <div style="width:100%;height:25%;">
+            <span id="coin2" style="color:#bdaa35;">金币：</span>
+          </div>
+          <div style="width:100%;height:50%;">
+            <span id="paycoin2" style="color:#fff200;"></span>
+          </div>
+        </div>
+        <div style="float: left;width:30%;height:100%;">
+          <span id="confirm2" style="color:#fff200;"></span>
+          <br/>
+          <span id="zuozhuang2" style="color:#fff200;"></span>
+        </div>
+      </div>
+      <div style="position:relative;float:left;width:12.6%;height:100%;"></div>
+      <div id="people3" style="position:relative;float:left;width:20%;height:100%;">
+        <div style="float: left;width:70%;height:100%;">
+          <div style="width:100%;height:25%;">
+            <span id="name3" style="color:#becdd4;">姓名：</span>
+          </div>
+          <div style="width:100%;height:25%;">
+            <span id="coin3" style="color:#bdaa35;">金币：</span>
+          </div>
+          <div style="width:100%;height:50%;">
+            <span id="paycoin3" style="color:#fff200;"></span>
+          </div>
+        </div>
+        <div style="float: left;width:30%;height:100%;">
+          <span id="confirm3" style="color:#fff200;"></span>
+          <br/>
+          <span id="zuozhuang3" style="color:#fff200;"></span>
+        </div>
+      </div>
     </div>
   </div>
-  <div id="pokeLine1" style="position:relative;top:8%;width:100%;height:21%;">
-    <div style="position: relative;float:left;width:14.5%;height:100%;"></div>
-    <div id="people0Poke" style="position: relative;float:left;width:16.5%;height:100%;">
-    </div>
-    <div style="position: relative;float:left;width:38.5%;height:100%;"></div>
-    <div id="people5Poke" style="position: relative;float:left;width:16.5%;height:100%;">
-    </div>
-    <div style="position: relative;float:left;width:14%;height:100%;"></div>
-  </div>
-  <div id="pokeLine2" style="position:relative;top:12%;width:100%;height:21%;">
-    <div style="position: relative;float:left;width:16.5%;height:100%;"></div>
-    <div id="people1Poke" style="position: relative;float:left;width:16.5%;height:100%;">
-    </div>
-    <div id="people2Poke" style="position: relative;float:left;width:16.5%;height:100%;">
-    </div>
-    <div id="people3Poke" style="position: relative;float:left;width:16.5%;height:100%;">
-    </div>
-    <div id="people4Poke" style="position: relative;float:left;width:16.5%;height:100%;">
-    </div>
-  </div>
-  <div id="line2" style="position:relative;top:19.7%;width:100%;height:25%;">
-    <div style="position:relative;float:left;width:4%;height:100%;"></div>
-    <div id="people1" style="position:relative;float:left;width:20%;height:100%;">
-      <div style="float: left;width:70%;height:100%;">
-        <span id="name1" style="color:#becdd4;">姓名：</span>
-        <br/>
-        <span id="coin1" style="color:#bdaa35;">金币：</span>
-        <br/>
-        <span id="paycoin1" style="color:#fff200;"></span>
-      </div>
-      <div style="float: left;width:30%;height:100%;">
-        <span id="confirm1" style="color:#fff200;"></span>
-        <br/>
-        <span id="zuozhuang1" style="color:#fff200;"></span>
-      </div>
-    </div>
-    <div style="position:relative;float:left;width:54%;height:100%;"></div>
-    <div id="people4" style="position:relative;float:left;width:20%;height:100%;">
-      <div style="float: left;width:30%;height:100%;">
-        <span id="confirm4" style="color:#fff200;"></span>
-        <br/>
-        <span id="zuozhuang4" style="color:#fff200;"></span>
-      </div>
-      <div style="float: left;width:70%;height:100%;">
-        <span id="name4" style="color:#becdd4;">姓名：</span>
-        <br/>
-        <span id="coin4" style="color:#bdaa35;">金币：</span>
-        <br/>
-        <span id="paycoin4" style="color:#fff200;"></span>
-      </div>
-    </div>
-  </div>
-  <div id="line3" style="position:relative;top:7%;width:100%;height:25%;">
-    <div style="position:relative;float:left;width:27.5%;height:100%;"></div>
-    <div id="people2" style="position:relative;float:left;width:20%;height:100%;">
-      <div style="float: left;width:70%;height:100%;">
-        <span id="name2" style="color:#becdd4;">姓名：</span>
-        <br/>
-        <span id="coin2" style="color:#bdaa35;">金币：</span>
-        <br/>
-        <span id="paycoin2" style="color:#fff200;"></span>
-      </div>
-      <div style="float: left;width:30%;height:100%;">
-        <span id="confirm2" style="color:#fff200;"></span>
-        <br/>
-        <span id="zuozhuang2" style="color:#fff200;"></span>
-      </div>
-    </div>
-    <div style="position:relative;float:left;width:12.6%;height:100%;"></div>
-    <div id="people3" style="position:relative;float:left;width:20%;height:100%;">
-      <div style="float: left;width:70%;height:100%;">
-        <span id="name3" style="color:#becdd4;">姓名：</span>
-        <br/>
-        <span id="coin3" style="color:#bdaa35;">金币：</span>
-        <br/>
-        <span id="paycoin3" style="color:#fff200;"></span>
-      </div>
-      <div style="float: left;width:30%;height:100%;">
-        <span id="confirm3" style="color:#fff200;"></span>
-        <br/>
-        <span id="zuozhuang3" style="color:#fff200;"></span>
-      </div>
-    </div>
-  </div>
+  <div id="mainRight" style="background:url(/static/head.png);margin: 0 auto;display:none;"></div>
 </div>
-
-<div id="winner0" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
-  <img id="winnerimg0" src="" style="width:50px;height:50px;display:none"/>
-</div>
-<div id="winner1" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
-  <img id="winnerimg1" src="" style="width:50px;height:50px;display:none"/>
-</div>
-<div id="winner2" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
-  <img id="winnerimg2" src="" style="width:50px;height:50px;display:none"/>
-</div>
-<div id="winner3" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
-  <img id="winnerimg3" src="" style="width:50px;height:50px;display:none"/>
-</div>
-<div id="winner4" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
-  <img id="winnerimg4" src="" style="width:50px;height:50px;display:none"/>
-</div>
-<div id="winner5" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">
-  <img id="winnerimg5" src="" style="width:50px;height:50px;display:none"/>
-</div>
+<div id="mainBottom" style="background:url(/static/head.png);margin: 0 auto;display:none;"></div>
+<!--<div id="winner0" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">-->
+  <!--<img id="winnerimg0" src="" style="width:50px;height:50px;display:none"/>-->
+<!--</div>-->
+<!--<div id="winner1" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">-->
+  <!--<img id="winnerimg1" src="" style="width:50px;height:50px;display:none"/>-->
+<!--</div>-->
+<!--<div id="winner2" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">-->
+  <!--<img id="winnerimg2" src="" style="width:50px;height:50px;display:none"/>-->
+<!--</div>-->
+<!--<div id="winner3" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">-->
+  <!--<img id="winnerimg3" src="" style="width:50px;height:50px;display:none"/>-->
+<!--</div>-->
+<!--<div id="winner4" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">-->
+  <!--<img id="winnerimg4" src="" style="width:50px;height:50px;display:none"/>-->
+<!--</div>-->
+<!--<div id="winner5" style="position: absolute;left: 10.5%;top: 8%;width:50px;height:50px;">-->
+  <!--<img id="winnerimg5" src="" style="width:50px;height:50px;display:none"/>-->
+<!--</div>-->
 </body>
 
+</html>
 <script type="text/javascript">
     <!--document.getElementById('main').style.cssText="height:"+findWindowHeight()+"px;";-->
 
@@ -358,18 +402,17 @@
             if(pokeList && pokeList.length>0){
               for(var k = 0; k < pokeList.length; k++){
                  var div = document.createElement("div");
-                 var img = document.createElement("img");
+                 var img = "";
                  if(pokeList[k].pokerType == "FANGP"){
-                  img.src="/static/pk/fangkuai_"+pokeList[k].value+".jpg";
+                  img="/static/pk/fangkuai_"+pokeList[k].value+".jpg";
                  }else if(pokeList[k].pokerType == "MEIH"){
-                  img.src="/static/pk/meihua_"+pokeList[k].value+".jpg";
+                  img="/static/pk/meihua_"+pokeList[k].value+".jpg";
                  }else if(pokeList[k].pokerType == "HONGT"){
-                  img.src="/static/pk/hongtao_"+pokeList[k].value+".jpg";
+                  img="/static/pk/hongtao_"+pokeList[k].value+".jpg";
                  }else if(pokeList[k].pokerType == "HEIT"){
-                  img.src="/static/pk/heitao_"+pokeList[k].value+".jpg";
+                  img="/static/pk/heitao_"+pokeList[k].value+".jpg";
                  }
-                 div.style.cssText="width:200px;height:200px;position: absolute;left: "+15*k+"%;";
-                 div.appendChild(img);
+                 div.style.cssText = "background-image: url('"+img+"');background-size: 100% 100%;margin: 0 auto;height:100%;width:50%;position: absolute;left: "+15*k+"%;";
                  div.style.display="none";//隐藏
                  showPokeTimeout(div,k);
                  mainDiv.appendChild(div);
@@ -422,6 +465,7 @@
         img.style.display="none";
         var mainDiv = document.getElementById('people'+index+'Poke');
         mainDiv.innerHTML = "";//删除div内容
+        mainDiv.style.cssText = "";
         document.getElementById('paycoin'+index).innerText="";
         document.getElementById('confirm'+index).innerText="";
       },5100);
@@ -469,5 +513,60 @@
       }
     }
 
+    window.onload = function(){
+     /* <![CDATA[ */
+      var winHeight = 0;
+      var winWidth = 0;
+      if (window.innerHeight){
+        winHeight = window.innerHeight;
+      }else if ((document.body) && (document.body.clientHeight)){
+        winHeight = document.body.clientHeight;
+      }
+      if (window.innerWidth){
+        winWidth = window.innerWidth;
+      }else if((document.body) && (document.body.clientWidth)){
+        winWidth = document.body.clientWidth;
+      }
+
+      if(winWidth > 1024){
+        var w = 984;
+        var h = 709;
+        var wb = (winWidth - w)/2;
+        var hb = winHeight - h - 25;
+        document.getElementById('headLeft').style.cssText += 'height: '+25+'px;'+'width:'+wb+'px;';
+        document.getElementById('headRight').style.cssText += 'height: '+25+'px;'+'width:'+wb+'px;';
+        document.getElementById('mainLeft').style.cssText += 'height: '+h+'px;'+'width:'+wb+'px;';
+        document.getElementById('mainRight').style.cssText += 'height: '+h+'px;'+'width:'+wb+'px;';
+        document.getElementById('mainBottom').style.cssText += 'height: '+hb+'px;'+'width:'+winWidth+'px;';
+        document.getElementById('headDiv').style.cssText += 'height: '+25+'px;'+'width:'+w+'px;';
+        document.getElementById('main').style.cssText += 'height: '+h+'px;'+'width:'+w+'px;';
+        //;display:inline
+        document.getElementById('headLeft').style.display="";//显示
+        document.getElementById('headRight').style.display="";//显示
+        document.getElementById('mainLeft').style.display="";//显示
+        document.getElementById('mainRight').style.display="";//显示
+        document.getElementById('mainBottom').style.display="";//显示
+      }else{
+        document.getElementById('headDiv').style.cssText += 'height: '+25+'px;'+'width:'+winWidth+'px;';
+        document.getElementById('main').style.cssText += 'height: '+(winHeight-25)+'px;'+'width:'+winWidth+'px;';
+        //
+        document.getElementById('headLeft').style.display="none";//隐藏
+        document.getElementById('headRight').style.display="none";//隐藏
+        document.getElementById('mainLeft').style.display="none";//隐藏
+        document.getElementById('mainRight').style.display="none";//隐藏
+        document.getElementById('mainBottom').style.display="none";//隐藏
+      }
+
+     if (screen.width <1024){
+      document.styleSheets[0].addRule("body","font-size:12px;");
+     }else if (screen.width ==1024){
+      document.styleSheets[0].addRule("body","font-size:14px;");
+     }else if (screen.width >1024){
+      document.styleSheets[0].addRule("body","font-size:16px;");
+     }else{
+      document.styleSheets[0].addRule("body","font-size:16px;");
+     }
+     /* ]]> */
+    }
+
 </script>
-</html>
