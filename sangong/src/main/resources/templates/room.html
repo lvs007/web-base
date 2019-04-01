@@ -111,16 +111,18 @@
         </div>
         <div style="float: left;width:30%;height:100%;">
           <span id="confirm0" style="color:#fff200;"></span>
-          <br/>
           <span id="zuozhuang0" style="color:#fff200;"></span>
+          <br/>
+          <span id="result0" style="color:#fff200;"></span>
         </div>
       </div>
       <div style="position: relative;float:left;width:54%;height:100%;">
       </div>
       <div id="people5" style="position:relative;float:left;width:20%;height:100%;">
         <div style="float: left;width:30%;height:100%;">
-          <span id="confirm5" style="color:#fff200;"></span>
+          <span id="result5" style="color:#fff200;"></span>
           <br/>
+          <span id="confirm5" style="color:#fff200;"></span>
           <span id="zuozhuang5" style="color:#fff200;"></span>
         </div>
         <div style="float: left;width:70%;height:100%;">
@@ -178,15 +180,17 @@
         </div>
         <div style="float: left;width:30%;height:100%;">
           <span id="confirm1" style="color:#fff200;"></span>
-          <br/>
           <span id="zuozhuang1" style="color:#fff200;"></span>
+          <br/>
+          <span id="result1" style="color:#fff200;"></span>
         </div>
       </div>
       <div style="position:relative;float:left;width:54%;height:100%;"></div>
       <div id="people4" style="position:relative;float:left;width:20%;height:100%;">
         <div style="float: left;width:30%;height:100%;">
-          <span id="confirm4" style="color:#fff200;"></span>
+          <span id="result4" style="color:#fff200;"></span>
           <br/>
+          <span id="confirm4" style="color:#fff200;"></span>
           <span id="zuozhuang4" style="color:#fff200;"></span>
         </div>
         <div style="float: left;width:70%;height:100%;">
@@ -218,8 +222,9 @@
         </div>
         <div style="float: left;width:30%;height:100%;">
           <span id="confirm2" style="color:#fff200;"></span>
-          <br/>
           <span id="zuozhuang2" style="color:#fff200;"></span>
+          <br/>
+          <span id="result2" style="color:#fff200;"></span>
         </div>
       </div>
       <div style="position:relative;float:left;width:12.6%;height:100%;"></div>
@@ -237,8 +242,9 @@
         </div>
         <div style="float: left;width:30%;height:100%;">
           <span id="confirm3" style="color:#fff200;"></span>
-          <br/>
           <span id="zuozhuang3" style="color:#fff200;"></span>
+          <br/>
+          <span id="result3" style="color:#fff200;"></span>
         </div>
       </div>
     </div>
@@ -266,7 +272,6 @@
 <!--</div>-->
 </body>
 
-</html>
 <script type="text/javascript">
     <!--document.getElementById('main').style.cssText="height:"+findWindowHeight()+"px;";-->
 
@@ -348,15 +353,17 @@
           document.getElementById('coin'+i).innerText="金币："+peoplePlayList[i].peopleInfo.coin;
           if(peoplePlayList[i].zhuangjia){
             document.getElementById('zuozhuang'+i).innerText="庄家";
-            document.getElementById('confirm'+i).innerText="";
+            document.getElementById('zuozhuang'+i).style.display="";//显示
+            document.getElementById('confirm'+i).style.display="none";//隐藏
             document.getElementById('paycoin'+i).innerText="";
           }else if(peoplePlayList[i].state == "CONFIRM"){
-            document.getElementById('zuozhuang'+i).innerText="";
+            document.getElementById('zuozhuang'+i).style.display="none";//隐藏
+            document.getElementById('confirm'+i).style.display="";//显示
             document.getElementById('confirm'+i).innerText="准备";
             document.getElementById('paycoin'+i).innerText="下注金额："+peoplePlayList[i].playCoin;
           }else{
-            document.getElementById('zuozhuang'+i).innerText="";
-            document.getElementById('confirm'+i).innerText="";
+            document.getElementById('zuozhuang'+i).style.display="none";//隐藏
+            document.getElementById('confirm'+i).style.display="none";//隐藏
             document.getElementById('paycoin'+i).innerText="";
           }
           //控制组件的显示
@@ -435,39 +442,36 @@
 
     function gameOverTimeout(index,winner,peoplePlay,haveZhuangjia){
       setTimeout(function() {
-        var div = document.getElementById('winner'+index);
-        var img = document.getElementById("winnerimg"+index);
+        var span = document.getElementById('result'+index);
+        span.style.cssText += "font-size:24px";
         if(peoplePlay.gameType == "ZIDONG"){
           if(winner){
-            img.src="/static/ying.png";
+            span.innerText="赢";
           }else{
-            img.src="/static/shu.png";
+            span.innerText="输";
           }
         }else{
         //ZHIZHUN(1), SANTIAO(2), SANGONG(3), DIANSHU(4);
           if(peoplePlay.resultType == "ZHIZHUN"){
-            img.src="/static/result/zhizhun.png";
+            span.innerText="至尊";
           }else if(peoplePlay.resultType == "SANTIAO"){
-            img.src="/static/result/santiao.png";
+            span.innerText="三条";
           }else if(peoplePlay.resultType == "SANGONG"){
-            img.src="/static/result/sangong.png";
+            span.innerText="三公";
           }else{
-            img.src="/static/result/dianshu_"+peoplePlay.dianshu+".png";
+            span.innerText=peoplePlay.dianshu+"点";
           }
         }
-        img.style.display="block";
         document.getElementById('coin'+index).innerText="金币："+peoplePlay.peopleInfo.coin;
         showComponent(peoplePlay,haveZhuangjia);
       }, 2100);
       //hidden
       setTimeout(function() {
-        var img = document.getElementById("winnerimg"+index);
-        img.style.display="none";
         var mainDiv = document.getElementById('people'+index+'Poke');
         mainDiv.innerHTML = "";//删除div内容
-        mainDiv.style.cssText = "";
         document.getElementById('paycoin'+index).innerText="";
         document.getElementById('confirm'+index).innerText="";
+        document.getElementById('result'+index).innerText="";
       },5100);
     }
 
@@ -570,3 +574,4 @@
     }
 
 </script>
+</html>
