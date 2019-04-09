@@ -158,10 +158,6 @@ public class DoorController {
       return ResponseUtils.ErrorResponse();
     }
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    PeoplePlay peoplePlay = roomPool.getPeople(userInfo.getId());
-    if (peoplePlay != null) {
-      return ResponseUtils.ErrorResponse();
-    }
     PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, type);
     peopleTypeMap.put(userInfo.getId(), type);
     return peopleInfo;
