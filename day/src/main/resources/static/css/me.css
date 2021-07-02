@@ -1,0 +1,180 @@
+/*me css*/
+@charset "utf-8";
+
+.ax-div-middle {
+	text-align: center; /*让div内部文字居中*/
+	background-color: #fff;
+	border-radius: 20px;
+	width: 800px;
+	height: 400px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.ax-valign { display: table; width: 100%; height: 100%; }
+.ax-valign > div { display: table-cell; width: 100%; height: 100%; }
+.ax-valign.ax-bottom > div { vertical-align: bottom; }
+
+.ax-footer-right ul li span{float:right;}
+
+.ax-h2 {
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+    color: #37517e;
+    text-align:center;
+}
+/*
+section {
+  padding: 60px 0;
+  overflow: hidden;
+}
+*/
+
+.section-bg {
+  background-color: #f3f5fa;
+}
+
+.section-title {
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.section-title h2 {
+  font-size: 32px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+  color: #37517e;
+}
+
+.section-title h2::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 120px;
+  height: 1px;
+  background: #ddd;
+  bottom: 1px;
+  left: calc(50% - 60px);
+}
+
+.section-title h2::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: #47b2e4;
+  bottom: 0;
+  left: calc(50% - 20px);
+}
+
+.section-title p {
+  margin-bottom: 0;
+}
+
+.div-split-m15 {
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.div-split-m15 li {
+  padding: 0.6em 0 0.6em 0;
+}
+
+.ax-grid {
+       margin: 0 auto;
+   }
+   .ax-grid-inner {
+       margin: auto 0;
+   }
+   .ax-grid-block {
+       padding: 0;
+   }
+
+
+
+/*--------------------------------------------------------------
+# Skills
+--------------------------------------------------------------*/
+.skills .content h3 {
+  font-weight: 700;
+  font-size: 32px;
+  color: #37517e;
+  font-family: "Poppins", sans-serif;
+}
+
+.skills .content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.skills .content ul li {
+  padding-bottom: 10px;
+}
+
+.skills .content ul i {
+  font-size: 20px;
+  padding-right: 4px;
+  color: #47b2e4;
+}
+
+.skills .content p:last-child {
+  margin-bottom: 0;
+}
+
+.skills .progress {
+  height: 50px;
+  display: block;
+  background: none;
+}
+
+.skills .progress .skill {
+  /*
+  padding: 10px 0;
+    margin: 0 0 6px 0;
+  */
+  text-transform: uppercase;
+  display: block;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  color: #37517e;
+}
+
+.skills .progress .skill .val {
+  float: right;
+  font-style: normal;
+}
+
+.skills .progress-bar-wrap {
+  background: #e8edf5;
+}
+
+.skills .progress-bar {
+  width: 1px;
+  height: 10px;
+  transition: .9s;
+  background-color: #4668a2;
+}
+
+.font-italic { font-style: italic !important; }
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+main {
+  width:80%;
+  margin:14px auto;
+}

@@ -86,6 +86,9 @@ function begin(){
 }
 
 function recharge(){
+    if(login()){
+      return;
+    }
     var token = getToken("nb_token");
     var coin = document.getElementById('coin').value;
     var peopleType = getPeopleType();
@@ -158,6 +161,9 @@ function logOut(){
 }
 
 function quickJoin(){
+  if(login()){
+    return;
+  }
   var form = document.getElementById('quickForm');
   var coin = document.getElementById('coinShow').innerText;
   if(coin < 10){
@@ -171,6 +177,9 @@ function quickJoin(){
 }
 
 function createRoom(){
+  if(login()){
+    return;
+  }
   var form = document.getElementById('createForm');
   var coin = document.getElementById('coinShow').innerText;
   if(coin < 10000){
@@ -216,4 +225,14 @@ function queryTx(){
     var data = JSON.parse(data);
     document.getElementById('trxBalance').innerText = "余额："+data.data.value/1000000;
   });
+}
+
+function login(){
+  var token = getToken("nb_token");
+  if(token == null || "null" == token || "NULL" == token || "" == token){
+    getRequest("/v1/door/login-Page",1000,function(data){
+      });
+    return true;
+  }
+  return false;
 }

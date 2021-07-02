@@ -48,16 +48,16 @@
       <div style="float: left;width:15%;height:100%;"></div>
       <div style="float: left;width:60%;height:100%;">
         <span id="xingmingName" style="color:#becdd4;" th:text="姓名："></span>
-        <span id="name" style="color:#becdd4;" th:text="${peopleInfo.name}"></span>
+        <span id="name" style="color:#becdd4;" th:text="${peopleInfo != null} ? ${peopleInfo.name}"></span>
         <br/>
         <span id="jinbiName" style="color:#bdaa35;" th:text="金币："></span>
-        <span id="coinShow" style="color:#bdaa35;" th:text="${peopleInfo.coin}"></span>
+        <span id="coinShow" style="color:#bdaa35;" th:text="${peopleInfo != null} ? ${peopleInfo.coin}"></span>
       </div>
       <div style="float: left;width:25%;height:100%;">
         <span style="color:#becdd4;">当前玩家类型：</span>
         <select id="peopleType" onchange="peopleTypeChange()">
-          <option value="TRX" th:selected="${peopleInfo.type==1}">TRX</option>
-          <option value="JI_FEN" th:selected="${peopleInfo.type==2}">金币</option>
+          <option value="TRX" th:selected="${peopleInfo != null and peopleInfo.type==1}">TRX</option>
+          <option value="JI_FEN" th:selected="${peopleInfo != null and peopleInfo.type==2}">金币</option>
         </select>
       </div>
     </div>

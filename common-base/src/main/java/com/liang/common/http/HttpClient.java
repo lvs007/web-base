@@ -280,7 +280,7 @@ public class HttpClient {
             builder.url(url);
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug("httpGet,url=" + builder.build().urlString());
+//            LOG.debug("httpGet,url=" + builder.build().urlString());
         }
         return httpClient.newCall(builder.build()).execute();
     }

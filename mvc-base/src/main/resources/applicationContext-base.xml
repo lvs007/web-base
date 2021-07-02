@@ -15,7 +15,7 @@
 
     <bean id="idealRequestMappingConfiguration"
           class="com.liang.mvc.handler.mapping.IdealRequestMappingConfiguration">
-        <property name="packagePattern" value="^com.liang.controller.?"/>
+        <property name="packagePattern" value="^com.*.[controller|api].?"/>
         <property name="packageReplacement" value="/v1/"/>
         <property name="requestMethodPatterns">
             <map>

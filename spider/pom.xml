@@ -41,7 +41,22 @@
             <artifactId>jsoup</artifactId>
             <version>1.11.3</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j -->
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.madgag.spongycastle</groupId>
+            <artifactId>core</artifactId>
+            <version>1.58.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.madgag.spongycastle</groupId>
+            <artifactId>prov</artifactId>
+            <version>1.58.0.0</version>
+        </dependency>
 
     </dependencies>
 

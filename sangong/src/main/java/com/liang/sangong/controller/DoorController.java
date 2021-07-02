@@ -50,7 +50,6 @@ public class DoorController {
   @Autowired
   private TransferService transferService;
 
-  @PcLogin
   public String door(ModelMap modelMap) {
     return "redirect:/v1/door/get-dating";
   }
@@ -117,15 +116,16 @@ public class DoorController {
     }
   }
 
-  @PcLogin
   public String getDating(ModelMap modelMap) {
     UserInfo userInfo = LoginUtils.getCurrentUser(SpringContextHolder.getRequest());
-    PeopleType peopleType = peopleTypeMap.get(userInfo.getId());
-    peopleType = peopleType == null ? PeopleType.TRX : peopleType;
-    PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, peopleType);
-    List<DataStatistics> dataStatistics = userService.queryStatistics(userInfo.getId());
-    modelMap.put("peopleInfo", peopleInfo);
-    modelMap.put("dataStatistics", dataStatistics);
+    if (userInfo != null) {
+      PeopleType peopleType = peopleTypeMap.get(userInfo.getId());
+      peopleType = peopleType == null ? PeopleType.TRX : peopleType;
+      PeopleInfo peopleInfo = userService.setPeopleInfo(userInfo, peopleType);
+      List<DataStatistics> dataStatistics = userService.queryStatistics(userInfo.getId());
+      modelMap.put("peopleInfo", peopleInfo);
+      modelMap.put("dataStatistics", dataStatistics);
+    }
     return "dating";
   }
 
@@ -177,6 +177,15 @@ public class DoorController {
       return "redirect:" + loginUrl;
     }
     return "redirect:/v1/door/get-dating";
+  }
+
+  public String loginPage() {
+    String loginUrl = propertiesManager.getString("account.login.url",
+        "http://127.0.0.1:9091/v1/pc-login/login-page");
+    String datingUrl = propertiesManager.getString("dating.url",
+        "http://127.0.0.1:9095/v1/door/get-dating");
+    loginUrl += "?callBackUrl=" + Encodes.urlEncode(datingUrl);
+    return "redirect:" + loginUrl;
   }
 
   public String error(String message, ModelMap modelMap) {
