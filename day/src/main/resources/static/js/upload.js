@@ -66,8 +66,8 @@ function getRequest( url, time, callback ){
 
 // backend.js
 const ipfs = "https://ipfs.io/ipfs/";
-const local = "http://daynft.org/ipfs/"
-const ipAddr = "daynft.org";//"api.btfs.trongrid.io";
+const local = "http://gateway.daynft.org/ipfs/"
+const ipAddr = "ipfs.daynft.org";//"api.btfs.trongrid.io";
 const ipPort = "80";//"443";
 const gatePort = "80";
 let url = "";
