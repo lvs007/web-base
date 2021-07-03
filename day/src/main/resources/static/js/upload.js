@@ -66,10 +66,10 @@ function getRequest( url, time, callback ){
 
 // backend.js
 const ipfs = "https://ipfs.io/ipfs/";
-const local = "http://127.0.0.1:8080/ipfs/"
-const ipAddr = "127.0.0.1";//"api.btfs.trongrid.io";
-const ipPort = "5001";//"443";
-const gatePort = "8080";
+const local = "http://daynft.org:6002/ipfs/"
+const ipAddr = "daynft.org";//"api.btfs.trongrid.io";
+const ipPort = "6001";//"443";
+const gatePort = "6002";
 let url = "";
 async function addFile(file) {
     const ipfs = window.IpfsHttpClient.create({host:ipAddr, port:ipPort, protocol:'http'});
