@@ -8943,7 +8943,7 @@ textarea.ax-check-ad:focus {
   display: none;
 }
 .ax-header {
-  background-color: #fff;
+  /*background-color: #fff;*/
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
   transition: all 0.1s linear;
   position: fixed;

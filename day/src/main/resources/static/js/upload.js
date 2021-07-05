@@ -149,7 +149,7 @@ async function createNft() {
         document.getElementById("tab-vedio").className = "ax-item";
         var obj = document.getElementById('tab-img');
         obj.className += ' ax-active';
-        querycontract(0);
+        imgNft(0);
       }
   }
 }

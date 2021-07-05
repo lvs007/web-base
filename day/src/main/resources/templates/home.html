@@ -4,33 +4,39 @@
   <meta charset="UTF-8"/>
   <title>Home</title>
   <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
-  <link href="https://src.axui.cn/src/css/ax.css" rel="stylesheet" type="text/css" />
-  <link href="https://src.axui.cn/src/css/ax-response.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
+<!--  <script type="text/javascript" th:src="@{/static/js/nav.js}"></script>-->
+<!--  <script type="text/javascript" src="backend.js?2019.06.03.v2"> </script>-->
+  <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>
+<!--  <script th:src="@{/static/plugins/jquery.validate/jquery.validate.min.js}" type="text/javascript"></script>-->
 
 </head>
-<body class="ax-admin">
+<!--style="background-image:url(/static/images/backg.jpg); background-size:cover;"-->
+<body>
 <!--<nav class="ax-flex-col">-->
 <!--  ...-->
 <!--</nav>-->
 
 <header class="ax-header">
-  <div class="ax-row">
-    <a href="###" class="ax-open ax-iconfont ax-icon-menu"></a>
-    <a href="###" class="ax-open ax-iconfont ax-icon-cart"></a>
-    <span class="ax-open"></span>
+  <nav>
+  <div class="ax-row" style="background-color: #37517e;">
     <div class="ax-col">
-      <a href="###" class="ax-logo"><img src="https://src.axui.cn/examples/images/ax-logo.png" /></a>
+      <a href="###" class="ax-logo"><img src="/static/images/logo.png" /></a>
     </div>
-    <div class="ax-nav ax-scrollnav-h" id="article-nav02">
-      <div class="ax-item" id="h1"><a href="#ax-scrollnav-1" class="ax-text ax-scrollnav-link" onclick="select('h1')">首页</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h2"><a href="#ax-scrollnav-2" class="ax-text ax-scrollnav-link" onclick="select('h2')">特点</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h3"><a href="#ax-scrollnav-3" class="ax-text ax-scrollnav-link" onclick="select('h3')">代币</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h4"><a href="#ax-scrollnav-4" class="ax-text ax-scrollnav-link" onclick="select('h4')">路线图</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h5"><a href="#ax-scrollnav-5" class="ax-text ax-scrollnav-link" onclick="select('h5')">新闻</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h6"><a href="#ax-scrollnav-6" class="ax-text ax-scrollnav-link" onclick="select('h6')">团队</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h7"><a href="#ax-scrollnav-7" class="ax-text ax-scrollnav-link" onclick="select('h7')">问题</a><span class="ax-line"></span></div>
-      <div class="ax-item" id="h8"><a href="#ax-scrollnav-8" class="ax-text ax-scrollnav-link" onclick="select('h8')">联系方式</a><span class="ax-line"></span></div>
-      <div class="ax-item ax-grade"><a href="###" class="ax-text">服务<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
+    <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
+      <div class="ax-item">
+        <li class="ax-scrollnav-item" data-section="scrollnav"><a href="#scrollnav" class="ax-text ax-scrollnav-link" style="color:#fff">首页</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">特点</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">代币</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">路线图</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">新闻</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">团队</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">问题</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">联系方式</a><span class="ax-line"></span></li>
+      </div>
+      <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">服务<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
         <ul class="ax-outer">
           <!--class="ax-selected"-->
           <li><a href="/v1/mint/mint">Mint服务</a></li>
@@ -38,104 +44,284 @@
           <li><a href="###">短视频服务</a></li>
         </ul>
       </div>
-
+<!--      <div class="ax-item" data-section="scrollnav-2"><a href="#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">新闻动态</a><span class="ax-line"></span></div>-->
+<!--      <div class="ax-item" data-section="scrollnav-3"><a href="#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">产品中心</a><span class="ax-line"></span></div>-->
+<!--      <div class="ax-item" data-section="scrollnav-4"><a href="#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">关于</a><span class="ax-line"></span></div>-->
       <span class="ax-btns">
-<!--        <a href="###" class="ax-iconfont ax-icon-question-o-fill"><span class="ax-dot"></span></a>-->
-<!--        <a href="/v1/mint/mint" class="ax-tag ax-info">Mint服务</a>-->
-<!--        <a href="###" class="ax-iconfont ax-icon-person-fill"></a>-->
         <button type="button" class="ax-btn ax-sm ax-longest" id="address-home"></button>
       </span>
 
     </div>
-    <a href="###" class="ax-open ax-iconfont ax-icon-bell-fill"><span class="ax-badge">2</span></a>
-    <a href="###" class="ax-open ax-iconfont ax-icon-person"><span class="ax-dot"></span></a>
-    <a href="###" class="ax-open ax-iconfont ax-icon-search"></a>
   </div>
+  </nav>
 </header>
 <div class="ax-space-header"></div>
+<section class="section">
+  <div class="ax-row ax-split toppage">
+    <div class="ax-col-12 div-split-m15 hero">
+      <h1>NFT intelligent management platform</h1>
+      <h2>Accessible, Secure, Transparent</h2>
 
-<!--main-->
-<main id="article02">
-<!--  <p th:text="${window.tronWeb.address}">address</p>-->
-  <div id="ax-scrollnav-1">
-    <h2 style="text-align:center">特点</h2>
-    <p>
-      Diagon Alley NFT intelligent management platform is committed to becoming the most professional decentralized NFT management platform in the world.
-      The final product is a trustless, transparent, and well-incentive platform for NFT production, trading, auctions and other operations.
-      It will publish its own chains, and will provide cross-chain services for NFTs on different chains.
-      Based on Substrate development, combined with Polkadot’s cross-chain ecology, it introduces unlimited possibilities for NFT transactions.
-      The Diagon Alley NFT intelligent service platform is committed to exploring user needs, expanding the scale of the NFT field, reducing user thresholds, and enabling users to conduct large-scale transactions safely and at low cost.
-      It is the responsibility of the building to expand and accumulate the NFT user pool.
-    </p>
-
-  </div>
-  <div class="ax-padding" id="ax-scrollnav-2">
-    <div class="ax-grid ax-space-xxl ax-split">
-      <ul class="ax-grid-inner">
-        <li class="ax-grid-block ax-col-12">
-          <div class="ax-card-block">
-            <div class="ax-img">
-              <a href="###" class="ax-figure" style="background-image:url(https://src.axui.cn/examples/images/image-7.jpg),url(https://src.axui.cn/src/images/loading.gif);"></a>
-            </div>
-            <div class="ax-title">
-              <a href="###" class="ax-ell-title">欧洲最长屋桥盛不下千年传奇</a>
-            </div>
-            <div class="ax-des ax-ell-2-des">
-              埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。
-            </div>
-            <div class="ax-keywords">
-              关键字：<span class="ax-child">威尼斯</span><span class="ax-child">暴雨</span><span class="ax-child">最高纪录</span>
-            </div>
-            <div class="ax-view">
-              <div class="ax-flex-row">
-                <div class="ax-flex-block">
-                  <a href="###" class="ax-heads ax-align-left-center"><span class="" style="background-image:url(https://src.axui.cn/examples/images/head01.jpg)"></span><span class="" style="background-image:url(https://src.axui.cn/examples/images/head02.jpg)"></span><span class="" style="background-image:url(https://src.axui.cn/examples/images/head03.jpg)"></span><i>共56人查阅</i></a>
-                </div>
-                3天前发布
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <a href="###" class="ax-btn ax-primary ax-round">White paper</a>
+    </div>
+    <div class="ax-col-12 div-split-m15">
+      <img class="img-common" src="/static/images/hero.png"/>
     </div>
   </div>
-  <div id="ax-scrollnav-3">
-    <p>nihao</p>
-  </div>
-  <footer>
-    ...
-  </footer>
-</main>
-<!--<div class="ax-scrollnav-v" id="ax-scrollnav-1">-->
-<!--  <a href="##" class="ax-close ax-iconfont ax-icon-arrow-right"></a>-->
-<!--</div>-->
+</section>
+<main>
+  <div id="article1">
+    <section id="scrollnav-1" class="section-bg content1 section1">
+      <div class="section-title">
+        <h2>
+          特点
+        </h2>
+        <p>
+          Diagon Alley NFT intelligent management platform is committed to becoming the most professional decentralized NFT management platform in the world.
+          The final product is a trustless, transparent, and well-incentive platform for NFT production, trading, auctions and other operations.
+          It will publish its own chains, and will provide cross-chain services for NFTs on different chains.
+          Based on Substrate development, combined with Polkadot’s cross-chain ecology, it introduces unlimited possibilities for NFT transactions.
+          The Diagon Alley NFT intelligent service platform is committed to exploring user needs, expanding the scale of the NFT field, reducing user thresholds, and enabling users to conduct large-scale transactions safely and at low cost.
+          It is the responsibility of the building to expand and accumulate the NFT user pool.
+        </p>
+      </div>
+      <div class="ax-grid ax-space-md">
+<!--        ax-grid-inner-->
+        <ul class="">
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box ax-radius">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">Magic Hamper</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                Magic Hamper tokens can be used to obtain a magic hamper.
+                Users can collect cards of interest (or valuable) by purchasing different series of magic hamper, art auction function, game character image auction function, and so on.
+              </div>
+            </div>
+          </li>
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box  ax-radius">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">NFT Mining</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                In the current Magic Hamper Token mining, the tokens (MH) obtained in the early stage of the Magic Hamper need to be obtained in the form of platform currency DAY mining.
+                When DAY mining is over, all subsequent MH tokens are mined through MH tokens and NFT magic hamper cards, which are divided into 3 years.
+                Each NFT mining cycle is one month, and a total of 10 million MH tokens will be mined. Each account is only allowed to use one NFT Magic Hamper Card for mining.
+              </div>
+            </div>
+          </li>
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box  ax-radius">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">NFT Management</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                The current management of NFT mainly includes: NFT production, NFT trading, and NFT auction.
+              </div>
+            </div>
+          </li>
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box  ax-radius">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">Short Video Service</div>
+                    <div class="ax-des">The Great China</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                Each short video will be mapped to become an NFT, and the content of the short video will be stored on BT, which is completely decentralized storage. Each video will correspond to a unique NFT. The user has full ownership of this NFT. The value generated by this NFT belongs to the user and is not subject to exploitation and control by centralized platforms.
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
 
+    </section>
+    <section id="scrollnav-2" class="content2 section2">
+      <div class="section-title">
+        <h2>
+          Token
+        </h2>
+      </div>
+      <div class="ax-row ax-split">
+        <div class="ax-col div-split-m15">
+          <p>
+            DAY is the platform token circulating on the platform. In the future, after the main network of the platform is launched, it will serve as the circulating token of the main network. The governance of the main network needs to be carried out through DAY.
+          </p>
+          <ul>
+            <li>
+              <span class="ax-iconfont ax-icon-right-o-fill"></span>
+              MH creation mining only supports DAY, MH tokens are Magic Hamper tokens, and Magic Hamper purchases only support MH tokens.
+            </li>
+            <li>
+              <span class="ax-iconfont ax-icon-right-o-fill"></span>
+              DAY is the designated token for NFT production, and the platform supports the majority of users to make NFTs, and trade and auction works.
+            </li>
+            <li>
+              <span class="ax-iconfont ax-icon-right-o-fill"></span>
+              DAY, as the designated token platform for the auction of artworks, also supports the auction of artworks by ordinary users, and DAY is the designated auction token.
+            </li>
+          </ul>
+        </div>
+        <div class="ax-col div-split-m15">
+          <ul>
+            <li>
+              <span class="ax-iconfont ax-icon-right-o-fill"></span>
+              Game animation derivatives only support DAY to purchase future games and animations, which is also the direction for the platform to enter.
+            </li>
+            <li>
+              <span class="ax-iconfont ax-icon-right-o-fill"></span>
+              Cross-chain support platform will use a unique cross-chain protocol and mainstream public chains such as Ethereum, TRON, Bitcoin, and Polkadot to cross-chain after the main-net goes online.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="ax-row ax-split skills">
+        <div class="ax-col-115 div-split-m15">
+          <img src="/static/images/token.png" class="img-fluid" alt=""/>
+        </div>
+        <div class="ax-col-115 div-split-m15 content">
+          <h3>TOKEN DISTRIBUTION</h3>
+          <p class="font-italic">
+            blah blah blah...
+          </p>
+          <div class="skills-content">
+            <div class="progress">
+              <span class="skill">Mining <i class="val">60%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                </div>
+              </div>
+            </div>
+            <div class="progress">
+              <span class="skill">Community Incentive &amp; Airdrop <i class="val">10%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                </div>
+              </div>
+            </div>
+            <div class="progress">
+              <span class="skill"> Early Community <i class="val">10%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                </div>
+              </div>
+            </div>
+            <div class="progress">
+              <span class="skill"> Business &amp; Media Partnership <i class="val">10%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                </div>
+              </div>
+            </div>
+            <div class="progress">
+              <span class="skill"> Team <i class="val">10%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <section id="scrollnav-3" class="content3">
+      <div class="section-title">
+        <h2>
+          Roadmap
+        </h2>
+      </div>
+    </section>
+    <section id="scrollnav-4" class="content4">
+      <div class="section-title">
+        <h2>
+          News
+        </h2>
+      </div>
+    </section>
+    <section id="scrollnav-5" class="content5">
+      <div class="section-title">
+        <h2>
+          Team
+        </h2>
+      </div>
+    </section>
+    <section id="scrollnav-6" class="content6">
+      <div class="section-title">
+        <h2>
+          FAQ
+        </h2>
+      </div>
+    </section>
+    <section id="scrollnav-7" class="content7 section7">
+      <div class="section-title">
+        <h2>
+          Contact
+        </h2>
+      </div>
+
+      <div class="ax-row ax-split">
+<!--        <div class="ax-col ax-copyright">-->
+<!--          <a href="###" class="ax-logo"><img src="/static/images/logo.png" style="height: 50px;"/></a>-->
+<!--        </div>-->
+        <div class="ax-col ax-copyright">
+          <a href="###">DAYNFT</a>版权所有　Copyright © 2021 DAY Finance 为您提供丝滑般的用户体验
+        </div>
+        <div class="ax-operate">
+          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
+          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
+          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
+          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+  <div class="ax-clear"></div>
+
+</main>
+
+<!--ax-valign ax-bottom-->
 
 <script src="https://src.axui.cn/src/js/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="https://src.axui.cn/src/js/ax.min.js" type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
-<script >
-    $("#article-nav02").sticky({ topSpacing: 0 ,widthFromWrapper:false,zIndex:2});
-    var article02 = document.querySelector('#article02');
-    var articlenav02 = document.querySelector('#article-nav02');
-    scrollnav.init(article02, {
-        insertTarget:articlenav02,
-        subSections:'',
-    });
-
-    function select(select) {
-      document.querySelector('#h1').classList.remove("ax-selected");
-      document.querySelector('#h2').classList.remove("ax-selected");
-      document.querySelector('#h3').classList.remove("ax-selected");
-      document.querySelector('#h4').classList.remove("ax-selected");
-      document.querySelector('#' + select).classList.add("ax-selected");
-    }
-
-</script>
+<script src='https://src.axui.cn/src/plugins/hc-sticky/hc-sticky.min.js'></script>
 
 <script type="text/javascript">
-  window.onload = function() {
+window.onload = function() {
+/* <![CDATA[ */
   if (!window.tronWeb) {
     const HttpProvider = TronWeb.providers.HttpProvider;
     const fullNode = new HttpProvider('https://api.trongrid.io');
@@ -150,15 +336,75 @@
 
     window.tronWeb = tronWeb;
   }
-  if (window.tronWeb) {
+  if (window.tronWeb && window.tronWeb.defaultAddress) {
     var char = "***";
     var str = window.tronWeb.defaultAddress.base58;
+    if(str && str.length>8){
     str = str.substring(0, 8) + char + str.substring(str.length - 8);
+    }else{
+    str = "";
+    }
     document.getElementById('address-home').innerText=str;
   }
+/* ]]> */
 };
 
 </script>
 
 </body>
+<style>
+  header,footer{
+<!--    height:60px;-->
+    background-color: rgba(0,0,0,.04);
+    z-index: 2;
+  }
+  main{
+   width:80%;
+   margin:0px auto;
+
+  }
+  .left{
+      width:calc(100% - 214px);
+      background-color: rgba(0,0,0,.04);
+      float: left;
+  }
+  .right{
+    width:200px;
+    background-color: rgba(0,0,0,.04);
+      float: right;
+
+  }
+   section{
+        height:700px;
+        background-color: rgba(0,0,0,.04);
+        margin:10px;
+        padding: 60px 0;
+        overflow: hidden;
+    }
+
+    .section{
+        height:600px;
+        background-color: rgb(55 81 126);
+        margin:0px;
+    }
+   .section1{
+        height:750px;
+        background-color: rgba(0,0,0,.04);
+        margin: 0px;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+    .section2{
+        height:850px;
+        background-color: rgba(0,0,0,.04);
+        margin:10px;
+    }
+    .section7{
+        height:150px;
+        background-color: rgba(0,0,0,0);
+        margin:10px;
+    }
+</style>
+<script type="text/javascript" src="/static/js/nav.js"></script>
+<script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
 </html>
