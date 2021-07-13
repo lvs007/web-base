@@ -174,10 +174,6 @@ section {
   max-width: 100%;
   height: auto;
 }
-main {
-  width:80%;
-  margin:14px auto;
-}
 
 .toppage {
   width: 80%;
@@ -209,3 +205,50 @@ main {
     font-size: 24px;
     font-family: "Jost", sans-serif;
 }
+/*section*/
+
+.section{
+    height:calc(100vh - 120px);
+    background-color: rgb(55 81 126);
+    margin:0px;
+}
+.section1{
+    height:750px;
+    background-color: rgba(0,0,0,.04);
+    margin: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.section2{
+    height:850px;
+    background-color: rgba(0,0,0,.04);
+    margin:10px;
+}
+.section3{
+    height:350px;
+    background-color: rgba(0,0,0,.04);
+    margin:10px;
+}
+.section7{
+    height:150px;
+    background-color: rgba(0,0,0,0);
+    margin:10px;
+}
+.box-man {
+  margin: 10px;
+}
+.box-faq {
+  margin-left: calc(10%);
+  margin-right: calc(10%);
+}
+
+html{height:100%;}
+body{min-height:100%;margin:0;padding:0;position:relative;}
+
+/*header{background-color: #ffe4c4;}*/
+main{
+  width:80%;
+  margin:14px auto;
+  padding-bottom:100px;
+}/* main的padding-bottom值要等于或大于footer的height值 background-color: #bdb76b; background-color: #ffc0cb;*/
+footer{position:relative;bottom:0;width:80%;height:100px;left: 10%;}
