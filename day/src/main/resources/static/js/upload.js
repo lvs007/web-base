@@ -66,10 +66,16 @@ function getRequest( url, time, callback ){
 
 // backend.js
 const ipfs = "https://ipfs.io/ipfs/";
-const local = "http://gateway.daynft.org/ipfs/"
-const ipAddr = "ipfs.daynft.org";//"api.btfs.trongrid.io";
-const ipPort = "80";//"443";
-const gatePort = "80";
+/*main network*/
+//const local = "http://gateway.daynft.org/ipfs/"
+//const ipAddr = "ipfs.daynft.org";//"api.btfs.trongrid.io";
+//const ipPort = "80";//"443";
+//const gatePort = "80";
+/*local*/
+const local = "http://127.0.0.1:8080/ipfs/"
+const ipAddr = "127.0.0.1";//"api.btfs.trongrid.io";
+const ipPort = "5001";//"443";
+const gatePort = "8080";
 let url = "";
 async function addFile(file) {
     const ipfs = window.IpfsHttpClient.create({host:ipAddr, port:ipPort, protocol:'http'});
@@ -101,8 +107,9 @@ async function addFile(file) {
     }
 }
 
-const imgContractAdd = "TTib3zwRnzv8mrSucRN2Go1Znds14QKsbR";
-const vedioContractAdd = "TGq8WWKifjFTgEoGCPVyCVH4vRnqHvRXeg";
+const imgContractAdd = "TXkC8kZK779GzPvxHLLyJmjXVn6sJWCYTh";
+const vedioContractAdd = "TBHSiLb9rLvx4Po6JzWK8LkPSj9bxdZou8";
+const tokenContractAdd = "TDFsqpgihK6kHJ7uh5Mmyu54UQ8D1fXTkV";
 async function createNft() {
   if(!validCreateNft()){
     return;
@@ -127,18 +134,36 @@ async function createNft() {
   parameter[3].value = title;
   parameter[4] = {type:'string',value:'keyword'};
   parameter[4].value = keyword;
-//  var parameter = [{type:'address',value:'TGQVLckg1gDZS5wUwPTrPgRG4U8MKC4jcP'},
-//                  {type:'string',value:'+url+'},
-//                  {type:'string',value:\'desc\'},
-//                  {type:'string',value:\'title\'},
-//                  {type:'string',value:\'keyword\'}];
   var issuerAddress = window.tronWeb.defaultAddress.hex;
   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
-      var tronweb = window.tronWeb;
+      //valid token approve
+      let userAdress = window.tronWeb.defaultAddress.base58;
+      let instance = await tronWeb.contract().at(tokenContractAdd);
+      let number = await instance.allowance(userAdress,contractAddress).call();
+      if(number < 10000000000000000000){
+        try {
+            var parameter1 = [{type:'address',value:''},{type:'uint256',value:'1000000000000000000000000000'}]
+            parameter1[0].value = tronWeb.address.fromHex(contractAddress);
+            var tx = await tronWeb.transactionBuilder.triggerSmartContract(tokenContractAdd,"approve(address,uint256)", {},parameter1,issuerAddress);
+            var signedTx = await tronWeb.trx.sign(tx.transaction);
+            var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
+
+//            let res = await instance.approve(contractAddress,'1000000000000000000000000000').send({
+//                feeLimit:100000000,
+//                callValue:0,
+//                shouldPollResponse:true
+//            });
+          } catch (error) {
+              console.log(error);
+              alert('approve失败，请重试！');
+              return;
+          }
+      }
+      //
       var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,functions, {},parameter,issuerAddress);
-//          var tx = await tronweb.transactionBuilder.sendTrx('TN9RRaXkCFtTXRso2GdTZxSxxwufzxLQPP', 10, 'TTSFjEG3Lu9WkHdp4JrWYhbGP6K1REqnGQ')
-      var signedTx = await tronweb.trx.sign(tx.transaction);
-      var broastTx = await tronweb.trx.sendRawTransaction(signedTx);
+//          var tx = await tronWeb.transactionBuilder.sendTrx('TN9RRaXkCFtTXRso2GdTZxSxxwufzxLQPP', 10, 'TTSFjEG3Lu9WkHdp4JrWYhbGP6K1REqnGQ')
+      var signedTx = await tronWeb.trx.sign(tx.transaction);
+      var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
       console.log(broastTx);
       if(keyword == "短视频"){
         document.getElementById("tab-img").className = "ax-item";
@@ -157,6 +182,31 @@ async function createNft() {
 async function imgNft(pageNum){
   querycontract(pageNum,imgContractAdd,1);
 }
+
+//async function isApprove(tokenContractAdd,contractAdd){
+//  let userAdress = window.tronWeb.defaultAddress.base58;
+//  let instance = await tronWeb.contract().at(tokenContractAdd);
+//  let number = await instance.allowance(userAdress,contractAdd).call();
+//  if(number < 10000000000000000000){
+//    return false;
+//  }
+//  return true;
+//}
+//
+//async function approve(tokenContractAdd,contractAdd){
+//  try {
+//    let instance = await tronWeb.contract().at(tokenContractAdd);
+//    let res = await instance.approve(contractAdd,1000000000000000000000000000).send({
+//        feeLimit:100000000,
+//        callValue:0,
+//        shouldPollResponse:true
+//    });
+//    return true;
+//  } catch (error) {
+//      console.log(error);
+//  }
+//  return false;
+//}
 
 async function querycontract(pageNum,contractAdd,type){
   var tmp = pageNum;
