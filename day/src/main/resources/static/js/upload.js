@@ -1,3 +1,4 @@
+document.write("<script type='text/javascript' src='/static/js/bignumber.js'></script>");
 /*
 * @url: url link
 * @action: "get", "post"
@@ -107,9 +108,10 @@ async function addFile(file) {
     }
 }
 
-const imgContractAdd = "TXkC8kZK779GzPvxHLLyJmjXVn6sJWCYTh";
+const imgContractAdd = "TYffZfNPsTsYnDZPx9Rho3VgJC9SKuksfY";
 const vedioContractAdd = "TBHSiLb9rLvx4Po6JzWK8LkPSj9bxdZou8";
 const tokenContractAdd = "TDFsqpgihK6kHJ7uh5Mmyu54UQ8D1fXTkV";
+const decimals = 1000000000000000000;
 async function createNft() {
   if(!validCreateNft()){
     return;
@@ -121,7 +123,7 @@ async function createNft() {
   if(keyword == "短视频"){
     contractAddress = window.tronWeb.address.toHex(vedioContractAdd);
   }
-  var functions = "create(address,string,string,string,string)";
+  var functions = "create(address,string,string,string)";
   var options = "100000000";
   var parameter=new Array();
   parameter[0] = {type:'address',value:'address'};
@@ -132,8 +134,6 @@ async function createNft() {
   parameter[2].value = desc;
   parameter[3] = {type:'string',value:'title'};
   parameter[3].value = title;
-  parameter[4] = {type:'string',value:'keyword'};
-  parameter[4].value = keyword;
   var issuerAddress = window.tronWeb.defaultAddress.hex;
   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
       //valid token approve
@@ -180,7 +180,27 @@ async function createNft() {
 }
 
 async function imgNft(pageNum){
-  querycontract(pageNum,imgContractAdd,1);
+  document.getElementById("user-sell-img").className = "";
+  document.getElementById("user-pm-img").className = "";
+  var obj = document.getElementById('all-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,imgContractAdd,1,0);
+}
+
+async function usersellquery(pageNum){
+  document.getElementById("all-img").className = "";
+  document.getElementById("user-pm-img").className = "";
+  var obj = document.getElementById('user-sell-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,imgContractAdd,1,1);
+}
+
+async function userpmquery(pageNum){
+  document.getElementById("all-img").className = "";
+  document.getElementById("user-sell-img").className = "";
+  var obj = document.getElementById('user-pm-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,imgContractAdd,1,2);
 }
 
 //async function isApprove(tokenContractAdd,contractAdd){
@@ -208,7 +228,7 @@ async function imgNft(pageNum){
 //  return false;
 //}
 
-async function querycontract(pageNum,contractAdd,type){
+async function querycontract(pageNum,contractAdd,type,select){
   var tmp = pageNum;
   if(pageNum <= 0){
     pageNum = 1;
@@ -218,7 +238,14 @@ async function querycontract(pageNum,contractAdd,type){
   var pageNo = 9;
   let userAdress = window.tronWeb.defaultAddress.base58;
   let instance = await tronWeb.contract().at(contractAdd);
-  let number = await instance.balanceOf(userAdress).call();
+  let number;
+  if(select == 0){
+    number = await instance.balanceOf(userAdress).call();
+  }else if(select == 1){
+    number = await instance.usersellingnum().call();
+  }else if(select == 2){
+    number = await instance.userpmingnum().call();
+  }
   var count = parseInt(number, 10);
   if(count <= 0){
     document.getElementById('pt-list').innerHTML="";
@@ -240,18 +267,31 @@ async function querycontract(pageNum,contractAdd,type){
     index[j] = i;
     j++;
   }
-  let result = await instance.tokensOfOwnerByIndexs(userAdress,index).call();
+  let result;
+  if(select == 0){
+    result = await instance.tokensOfOwnerByIndexs(userAdress,index).call();
+  }else if(select == 1){
+    result = await instance.queryuserselling(index).call();
+  }else if(select == 2){
+    result = await instance.queryuserpm(index).call();
+  }
   document.getElementById('pt-list').innerHTML="";
   if(type == 1) {
-    setImg(result);
-    setPageSplit(count,totalPage,tmp,'imgNft');
+    setImg(result,select);
+    if(select == 0){
+      setPageSplit(count,totalPage,tmp,'imgNft');
+    }else if(select == 1){
+      setPageSplit(count,totalPage,tmp,'usersellquery');
+    }else if(select == 2){
+      setPageSplit(count,totalPage,tmp,'userpmquery');
+    }
   } else {
-    setVedio(result);
+    setVedio(result,select);
     setPageSplit(count,totalPage,tmp,'vedioNft');
   }
 }
 
-function setImg(result) {
+function setImg(result,select) {
     var context = "";
     var col = 3;
     var length = result.ids.length;
@@ -259,7 +299,6 @@ function setImg(result) {
     var url = "https://src.axui.cn/examples/images/image-7.jpg";
     var title = "欧洲最长屋桥盛不下千年传奇";
     var desc = "埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。";
-    var keyword = "威尼斯";
     var time = "3天前发布";
     for(var k = 0, i = 0; k < line; k++) {
       context += '<ul class="ax-grid-inner">';
@@ -267,8 +306,27 @@ function setImg(result) {
         url = result.urls[i];
         title = result.titles[i];
         desc = result.descs[i];
-        keyword = result.keyworks[i];
-        time = new Date(parseInt(result.times[i], 10) * 1000);
+        time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
+        var button = "";
+        if(select ==0){
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">卖出NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">拍卖NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">转给他人</a>';
+        }else if(select ==1){
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">取消卖出</a>';
+        }else if(select ==2){
+          var endtime = tronWeb.toDecimal(result.endtimes[i]);
+          var count = result.counts[i];
+          var finaluser = tronWeb.address.fromHex(result.finalusers[i]);
+          var finalprice = result.finalprices[i]/decimals;
+          if(count > 0 && endtime < Date.parse(new Date())/1000){
+            button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">取消拍卖</a>';
+          }else if(count > 0){
+            button = 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count;
+          }else{
+            button = "Number of bids: "+count;
+          }
+        }
         context += '<li class="ax-grid-block ax-col-8">'+
           '<div class="ax-card-block" style="background-color: floralwhite;">'+
             '<div class="ax-img">'+
@@ -282,8 +340,12 @@ function setImg(result) {
             '</div>'+
             '<div class="ax-keywords">'+
               '<div class="ax-flex-row">'+
-              '<span class="ax-child">' + keyword + '.</span>'+
                 time +
+              '</div>'+
+            '</div>'+
+            '<div class="ax-keywords">'+
+              '<div class="ax-flex-row">'+
+                button +
               '</div>'+
             '</div>'+
           '</div>'+
@@ -292,7 +354,138 @@ function setImg(result) {
       context += '</ul>';
     }
     document.getElementById('pt-list').innerHTML=context;
+    for(var k = 0; k < length; k++) {
+        initPop(result.ids[k]);
+    }
+}
 
+var currentTokenId = -1;
+function initPop(id) {
+  $('#sell-'+id).axPopup({
+    url:'#pop-sell-w',
+    width:400,
+    padding:false,
+  });
+  $('#pm-'+id).axPopup({
+    url:'#pop-pm-w',
+    width:600,
+    padding:false,
+  });
+  $('#trans-'+id).axPopup({
+    url:'#pop-zr-w',
+    width:600,
+    padding:false,
+  });
+  $('#sell-'+id).on('click',function(e){
+  //s.replace(/[^0-9]/ig,"");
+    console.log(this.id);
+    currentTokenId = this.id.replace(/[^0-9]/ig,"");
+  });
+  $('#pm-'+id).on('click',function(e){
+    console.log(this.id);
+    currentTokenId = this.id.replace(/[^0-9]/ig,"");
+  });
+  $('#trans-'+id).on('click',function(e){
+    console.log(this.id);
+    currentTokenId = this.id.replace(/[^0-9]/ig,"");
+  });
+
+}
+
+async function sell() {
+  try{
+    var price = new BigNumber(document.getElementById('price').value);
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    var lock = await instance.lockmap(currentTokenId).call();
+    if(lock){
+      alert('Already set, please cancel and set again');
+      return;
+    }
+    price = price.multipliedBy(decimals).toFixed();
+    let res = await instance.addMarket(currentTokenId,price).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function pm() {
+  try{
+    var minprice = new BigNumber(document.getElementById('minprice').value);
+    var mincall = new BigNumber(document.getElementById('mincall').value);
+    var time = Date.parse(document.getElementById('endtime').value) / 1000;
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    var lock = await instance.lockmap(currentTokenId).call();
+    if(lock){
+      alert('Already set, please cancel and set again');
+      return;
+    }
+    mincall = mincall.multipliedBy(decimals).toFixed();
+    minprice = minprice.multipliedBy(decimals).toFixed();
+    let res = await instance.addPMMarket(currentTokenId,minprice,time,mincall).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function transfer() {
+  try{
+    var toAddress = document.getElementById('toAddress').value;
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    let res = await instance.transfer(toAddress,currentTokenId).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+    alert('Send success');
+  } catch (error) {
+    console.log(error);
+    alert('Send fail');
+  }
+}
+
+async function cancelsell(tokenId) {
+  try{
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    let res = await instance.cancel(tokenId).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+    alert('Cancel success');
+    usersellquery(1);
+  } catch (error) {
+    console.log(error);
+    alert('Cancel fail');
+  }
+}
+
+async function cancelpm(tokenId) {
+  try{
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    let res = await instance.receive(tokenId).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+    alert('Cancel success');
+    userpmquery(1);
+  } catch (error) {
+    console.log(error);
+    alert('Cancel fail');
+  }
 }
 
 function setPageSplit(total,totalPage,currentPage,onclickFun){
@@ -337,10 +530,10 @@ function getRadioBoxValue(radioName) {
 }
 
 async function vedioNft(pageNum){
-  querycontract(pageNum,vedioContractAdd,2);
+  querycontract(pageNum,vedioContractAdd,2,0);
 }
 
-function setVedio(result) {
+function setVedio(result,type) {
     var context = "";
     var col = 3;
     var length = result.ids.length;
@@ -348,7 +541,6 @@ function setVedio(result) {
     var url = "https://src.axui.cn/examples/images/image-7.jpg";
     var title = "欧洲最长屋桥盛不下千年传奇";
     var desc = "埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。";
-    var keyword = "威尼斯";
     var time = "3天前发布";
     for(var k = 0, i = 0; k < line; k++) {
       context += '<ul class="ax-grid-inner">';
@@ -356,8 +548,17 @@ function setVedio(result) {
         url = result.urls[i];
         title = result.titles[i];
         desc = result.descs[i];
-        keyword = result.keyworks[i];
         time = new Date(parseInt(result.times[i], 10) * 1000);
+        var button;
+        if(type ==0){
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">卖出NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">拍卖NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">转给他人</a>';
+        }else if(type ==1){
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">取消卖出</a>';
+        }else if(type ==2){
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">取消拍卖</a>';
+        }
         context += '<li class="ax-grid-block ax-col-8">'+
           '<div class="ax-card-block" style="background-color: floralwhite;">'+
             '<div class="ax-videojs">'+
@@ -373,7 +574,6 @@ function setVedio(result) {
             '</div>'+
             '<div class="ax-keywords">'+
               '<div class="ax-flex-row">'+
-              '<span class="ax-child">' + keyword + '.</span>'+
                 time +
               '</div>'+
             '</div>'+
@@ -383,5 +583,4 @@ function setVedio(result) {
       context += '</ul>';
     }
     document.getElementById('pt-list').innerHTML=context;
-
 }
