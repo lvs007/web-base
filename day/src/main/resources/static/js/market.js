@@ -3,15 +3,15 @@ document.write("<script type='text/javascript' src='/static/js/bignumber.js'></s
 // backend.js
 const ipfs = "https://ipfs.io/ipfs/";
 /*main network*/
-//const local = "http://gateway.daynft.org/ipfs/"
-//const ipAddr = "ipfs.daynft.org";//"api.btfs.trongrid.io";
-//const ipPort = "80";//"443";
-//const gatePort = "80";
+const local = "http://gateway.daynft.org/ipfs/"
+const ipAddr = "ipfs.daynft.org";//"api.btfs.trongrid.io";
+const ipPort = "80";//"443";
+const gatePort = "80";
 /*local*/
-const local = "http://127.0.0.1:8080/ipfs/"
-const ipAddr = "127.0.0.1";//"api.btfs.trongrid.io";
-const ipPort = "5001";//"443";
-const gatePort = "8080";
+//const local = "http://127.0.0.1:8080/ipfs/"
+//const ipAddr = "127.0.0.1";//"api.btfs.trongrid.io";
+//const ipPort = "5001";//"443";
+//const gatePort = "8080";
 
 const imgContractAdd = "TYffZfNPsTsYnDZPx9Rho3VgJC9SKuksfY";
 const vedioContractAdd = "TBHSiLb9rLvx4Po6JzWK8LkPSj9bxdZou8";
@@ -30,6 +30,16 @@ async function pmquery(pageNum){
   var obj = document.getElementById('pm-img');
   obj.className = 'ax-active';
   querycontract(pageNum,imgContractAdd,1,2);
+}
+
+async function getimgpminfo(tokenId){
+  try{
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    var result = await instance.getpmdesc(tokenId).call();
+
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function querycontract(pageNum,contractAdd,type,select){
