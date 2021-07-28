@@ -1,4 +1,4 @@
-document.write("<script type='text/javascript' src='/static/js/bignumber.js'></script>");
+document.write("<script type='text/javascript' src='/static/js/common.js'></script>");
 /*
 * @url: url link
 * @action: "get", "post"
@@ -65,18 +65,6 @@ function getRequest( url, time, callback ){
     request.send( null );
 }
 
-// backend.js
-const ipfs = "https://ipfs.io/ipfs/";
-/*main network*/
-const local = "http://gateway.daynft.org/ipfs/"
-const ipAddr = "ipfs.daynft.org";//"api.btfs.trongrid.io";
-const ipPort = "80";//"443";
-const gatePort = "80";
-/*local*/
-//const local = "http://127.0.0.1:8080/ipfs/"
-//const ipAddr = "127.0.0.1";//"api.btfs.trongrid.io";
-//const ipPort = "5001";//"443";
-//const gatePort = "8080";
 let url = "";
 async function addFile(file) {
     const ipfs = window.IpfsHttpClient.create({host:ipAddr, port:ipPort, protocol:'http'});
@@ -108,10 +96,6 @@ async function addFile(file) {
     }
 }
 
-const imgContractAdd = "TYffZfNPsTsYnDZPx9Rho3VgJC9SKuksfY";
-const vedioContractAdd = "TBHSiLb9rLvx4Po6JzWK8LkPSj9bxdZou8";
-const tokenContractAdd = "TDFsqpgihK6kHJ7uh5Mmyu54UQ8D1fXTkV";
-const decimals = 1000000000000000000;
 async function createNft() {
   if(!validCreateNft()){
     return;
@@ -169,14 +153,50 @@ async function createNft() {
         document.getElementById("tab-img").className = "ax-item";
         var vedio = document.getElementById('tab-vedio');
         vedio.className += ' ax-active';
-        vedioNft(0);
+        vedioNft(1);
       }else{
         document.getElementById("tab-vedio").className = "ax-item";
         var obj = document.getElementById('tab-img');
         obj.className += ' ax-active';
-        imgNft(0);
+        imgNft(1);
       }
   }
+}
+
+async function tag(value){
+  var context = "";
+  if(value == 1){
+    context = '<div class="ax-break-xs"></div>'+
+                 '<div class="ax-item ax-flex-row">'+
+                   '<span class="ax-head">类型</span>'+
+                   '<div class="ax-flex-block">'+
+                     '<div class="ax-text">'+
+                       '<a id="all-img" href="###" class="ax-active" onclick="imgNft(1)">全部</a>'+
+                       '<a id="user-sell-img" href="###" onclick="usersellquery(1)">一口价</a>'+
+                       '<a id="user-pm-img" href="###" onclick="userpmquery(1)">拍卖中</a>'+
+                       '<input id="search-img-id" class="ax-round ax-sm" type="number" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search" onclick="getNftinfo()">Search</a>'+
+                     '</div>'+
+                   '</div>'+
+                 '</div>';
+    document.getElementById('type-filter').innerHTML=context;
+    imgNft(1);
+  }else {
+    context = '<div class="ax-break-xs"></div>'+
+                   '<div class="ax-item ax-flex-row">'+
+                     '<span class="ax-head">类型</span>'+
+                     '<div class="ax-flex-block">'+
+                       '<div class="ax-text">'+
+                         '<a id="all-img" href="###" class="ax-active" onclick="vedioNft(1)">全部</a>'+
+                         '<a id="user-sell-img" href="###" onclick="uservideosellquery(1)">一口价</a>'+
+                         '<a id="user-pm-img" href="###" onclick="uservideopmquery(1)">拍卖中</a>'+
+                         '<input id="search-img-id" class="ax-round ax-sm" type="number" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search" onclick="getNftinfo()">Search</a>'+
+                       '</div>'+
+                     '</div>'+
+                   '</div>';
+    document.getElementById('type-filter').innerHTML=context;
+    vedioNft(1);
+  }
+//  document.getElementById('type-filter').innerHTML=context;
 }
 
 async function imgNft(pageNum){
@@ -201,6 +221,22 @@ async function userpmquery(pageNum){
   var obj = document.getElementById('user-pm-img');
   obj.className = 'ax-active';
   querycontract(pageNum,imgContractAdd,1,2);
+}
+
+async function uservideosellquery(pageNum){
+  document.getElementById("all-img").className = "";
+  document.getElementById("user-pm-img").className = "";
+  var obj = document.getElementById('user-sell-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,vedioContractAdd,2,1);
+}
+
+async function uservideopmquery(pageNum){
+  document.getElementById("all-img").className = "";
+  document.getElementById("user-sell-img").className = "";
+  var obj = document.getElementById('user-pm-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,vedioContractAdd,2,2);
 }
 
 //async function isApprove(tokenContractAdd,contractAdd){
@@ -292,6 +328,10 @@ async function querycontract(pageNum,contractAdd,type,select){
 }
 
 function setImg(result,select) {
+  setContext(result,1,select);
+}
+
+function setContext(result,type,select) {
     var context = "";
     var col = 3;
     var length = result.ids.length;
@@ -308,29 +348,62 @@ function setImg(result,select) {
         desc = result.descs[i];
         time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
         var button = "";
+        var liupai = "";
         if(select ==0){
           button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">卖出NFT</a>' +
                    '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">拍卖NFT</a>' +
                    '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">转给他人</a>';
         }else if(select ==1){
-          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">取消卖出</a>';
+          price = new BigNumber(tronWeb.toDecimal(result.prices[i])).div(decimals).toFixed();
+          button = '<span class="ax-child">Price: ' + price + ' DAY. </span>'+
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">取消卖出</a>';
         }else if(select ==2){
           var endtime = tronWeb.toDecimal(result.endtimes[i]);
           var count = result.counts[i];
           var finaluser = tronWeb.address.fromHex(result.finalusers[i]);
-          var finalprice = result.finalprices[i]/decimals;
-          if(count > 0 && endtime < Date.parse(new Date())/1000){
-            button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">取消拍卖</a>';
+          var finalprice = new BigNumber(tronWeb.toDecimal(result.finalprices[i])).div(decimals).toFixed();
+          var minprice = new BigNumber(tronWeb.toDecimal(result.minprices[i])).div(decimals).toFixed();
+          var mincall = new BigNumber(tronWeb.toDecimal(result.mincalls[i])).div(decimals).toFixed();
+          button = '<div class="ax-flex-row">' +
+                      '<span class="ax-child">Minimum Bid: ' + minprice + ' DAY</span>'+
+                               '</div><div class="ax-flex-row">' +
+                               '<span class="ax-child">Minimum Markup:  ' + mincall + ' DAY</span>'+
+                               '</div><div class="ax-flex-row">' +
+                               '<span class="ax-child">End Time: ' + new Date(parseInt(endtime, 10) * 1000).toUTCString() + '</span>'+
+                               '</div>';
+          if(count <= 0 && endtime < Date.parse(new Date())/1000){
+            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">取消拍卖</a>';
+            liupai = '<div class="wYin-fail">' +
+                       '<p>流拍</p>' +
+                     '</div>';
+          }else if(count > 0 && endtime < Date.parse(new Date())/1000){
+            button += 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count+
+                      '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">转移给拍卖者</a>';
+            liupai = '<div class="wYin-success">' +
+                       '<p>成功</p>' +
+                     '</div>';
           }else if(count > 0){
-            button = 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count;
-          }else{
-            button = "Number of bids: "+count;
+            button += 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count;
           }
+        }
+        var typeContext = "";
+        if(type == 1){
+          typeContext = '<div class="ax-img">'+
+                          '<a target="_blank" href="' + ipfs + url + '" class="ax-figure" style="background-image:url(' + ipfs + url + '),url(' + local + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+                        '</div>';
+        }else{
+          typeContext = '<div class="ax-videojs">'+
+                            '<video id="videojs01" class="video-js" controls preload="auto" height="200">'+
+                                '<source src="' + ipfs + url + '"/>'+
+                            '</video>'+
+                        '</div>';
         }
         context += '<li class="ax-grid-block ax-col-8">'+
           '<div class="ax-card-block" style="background-color: floralwhite;">'+
-            '<div class="ax-img">'+
-              '<a target="_blank" href="' + ipfs + url + '" class="ax-figure" style="background-image:url(' + ipfs + url + '),url(' + local + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+            typeContext +
+            liupai +
+            '<div class="ax-title">'+
+              '<a href="###" class="ax-ell-title"> NFT ID：'+result.ids[i] + '</a>'+
             '</div>'+
             '<div class="ax-title">'+
               '<a href="###" class="ax-ell-title">' + title + '</a>'+
@@ -344,9 +417,9 @@ function setImg(result,select) {
               '</div>'+
             '</div>'+
             '<div class="ax-keywords">'+
-              '<div class="ax-flex-row">'+
+//              '<div class="ax-flex-row">'+
                 button +
-              '</div>'+
+//              '</div>'+
             '</div>'+
           '</div>'+
         '</li>';
@@ -355,27 +428,46 @@ function setImg(result,select) {
     }
     document.getElementById('pt-list').innerHTML=context;
     for(var k = 0; k < length; k++) {
-        initPop(result.ids[k]);
+        initPop(result.ids[k],type);
     }
 }
 
 var currentTokenId = -1;
-function initPop(id) {
-  $('#sell-'+id).axPopup({
-    url:'#pop-sell-w',
-    width:400,
-    padding:false,
-  });
-  $('#pm-'+id).axPopup({
-    url:'#pop-pm-w',
-    width:600,
-    padding:false,
-  });
-  $('#trans-'+id).axPopup({
-    url:'#pop-zr-w',
-    width:600,
-    padding:false,
-  });
+function initPop(id,type) {
+  if(type == 1){
+    $('#sell-'+id).axPopup({
+      url:'#pop-sell-w',
+      width:400,
+      padding:false,
+    });
+    $('#pm-'+id).axPopup({
+      url:'#pop-pm-w',
+      width:600,
+      padding:false,
+    });
+    $('#trans-'+id).axPopup({
+      url:'#pop-zr-w',
+      width:600,
+      padding:false,
+    });
+  }else{
+    $('#sell-'+id).axPopup({
+      url:'#pop-sell-w-v',
+      width:400,
+      padding:false,
+    });
+    $('#pm-'+id).axPopup({
+      url:'#pop-pm-w-v',
+      width:600,
+      padding:false,
+    });
+    $('#trans-'+id).axPopup({
+      url:'#pop-zr-w-v',
+      width:600,
+      padding:false,
+    });
+  }
+
   $('#sell-'+id).on('click',function(e){
   //s.replace(/[^0-9]/ig,"");
     console.log(this.id);
@@ -391,11 +483,18 @@ function initPop(id) {
   });
 
 }
-
-async function sell() {
+//todo: 设置type区分img和video
+async function sell(type) {
   try{
-    var price = new BigNumber(document.getElementById('price').value);
-    let instance = await tronWeb.contract().at(imgContractAdd);
+    var price;
+    let instance;
+    if(type == 1){
+      price = new BigNumber(document.getElementById('price').value);
+      instance = await tronWeb.contract().at(imgContractAdd);
+    }else{
+      price = new BigNumber(document.getElementById('price-v').value);
+      instance = await tronWeb.contract().at(vedioContractAdd);
+    }
     var lock = await instance.lockmap(currentTokenId).call();
     if(lock){
       alert('Already set, please cancel and set again');
@@ -413,12 +512,23 @@ async function sell() {
   }
 }
 
-async function pm() {
+async function pm(type) {
   try{
-    var minprice = new BigNumber(document.getElementById('minprice').value);
-    var mincall = new BigNumber(document.getElementById('mincall').value);
-    var time = Date.parse(document.getElementById('endtime').value) / 1000;
-    let instance = await tronWeb.contract().at(imgContractAdd);
+    var minprice;
+    var mincall;
+    var time;
+    let instance;
+    if(type == 1){
+      minprice = new BigNumber(document.getElementById('minprice').value);
+      mincall = new BigNumber(document.getElementById('mincall').value);
+      time = Date.parse(document.getElementById('endtime').value) / 1000;
+      instance = await tronWeb.contract().at(imgContractAdd);
+    }else{
+      minprice = new BigNumber(document.getElementById('minprice-v').value);
+      mincall = new BigNumber(document.getElementById('mincall-v').value);
+      time = Date.parse(document.getElementById('endtime-v').value) / 1000;
+      instance = await tronWeb.contract().at(vedioContractAdd);
+    }
     var lock = await instance.lockmap(currentTokenId).call();
     if(lock){
       alert('Already set, please cancel and set again');
@@ -437,10 +547,17 @@ async function pm() {
   }
 }
 
-async function transfer() {
+async function transfer(type) {
   try{
-    var toAddress = document.getElementById('toAddress').value;
-    let instance = await tronWeb.contract().at(imgContractAdd);
+    var toAddress;
+    let instance;
+    if(type == 1){
+      toAddress = document.getElementById('toAddress').value;
+      instance = await tronWeb.contract().at(imgContractAdd);
+    }else{
+      toAddress = document.getElementById('toAddress-v').value;
+      instance = await tronWeb.contract().at(vedioContractAdd);
+    }
     let res = await instance.transfer(toAddress,currentTokenId).send({
         feeLimit:100000000,
         callValue:0,
@@ -448,6 +565,7 @@ async function transfer() {
     });
     console.log(res);
     alert('Send success');
+    imgNft(1);
   } catch (error) {
     console.log(error);
     alert('Send fail');
@@ -489,6 +607,9 @@ async function cancelpm(tokenId) {
 }
 
 function setPageSplit(total,totalPage,currentPage,onclickFun){
+  if(totalPage <= 1){
+    return;
+  }
   var context = '<a class="ax-total">共'+total+'条</a>'+
                 '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">首页</a>'+
                 '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">上一页</a>'+
@@ -530,57 +651,84 @@ function getRadioBoxValue(radioName) {
 }
 
 async function vedioNft(pageNum){
+  document.getElementById("user-sell-img").className = "";
+  document.getElementById("user-pm-img").className = "";
+  var obj = document.getElementById('all-img');
+  obj.className = 'ax-active';
   querycontract(pageNum,vedioContractAdd,2,0);
 }
 
-function setVedio(result,type) {
-    var context = "";
-    var col = 3;
-    var length = result.ids.length;
-    var line = Math.ceil(length / col);
-    var url = "https://src.axui.cn/examples/images/image-7.jpg";
-    var title = "欧洲最长屋桥盛不下千年传奇";
-    var desc = "埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。";
-    var time = "3天前发布";
-    for(var k = 0, i = 0; k < line; k++) {
-      context += '<ul class="ax-grid-inner">';
-      for(var j = 0; j < col && i < length; j++,i++) {
-        url = result.urls[i];
-        title = result.titles[i];
-        desc = result.descs[i];
-        time = new Date(parseInt(result.times[i], 10) * 1000);
-        var button;
-        if(type ==0){
-          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">卖出NFT</a>' +
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">拍卖NFT</a>' +
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">转给他人</a>';
-        }else if(type ==1){
-          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">取消卖出</a>';
-        }else if(type ==2){
-          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">取消拍卖</a>';
-        }
-        context += '<li class="ax-grid-block ax-col-8">'+
-          '<div class="ax-card-block" style="background-color: floralwhite;">'+
-            '<div class="ax-videojs">'+
-                '<video id="videojs01" class="video-js" controls preload="auto" height="200">'+
-                    '<source src="' + ipfs + url + '"/>'+
-                '</video>'+
-            '</div>'+
-            '<div class="ax-title">'+
-              '<a href="###" class="ax-ell-title">' + title + '</a>'+
-            '</div>'+
-            '<div class="ax-des ax-ell-2-des">'+
-              desc +
-            '</div>'+
-            '<div class="ax-keywords">'+
-              '<div class="ax-flex-row">'+
-                time +
-              '</div>'+
-            '</div>'+
-          '</div>'+
-        '</li>';
-      }
-      context += '</ul>';
+function setVedio(result,select) {
+  setContext(result,2,select);
+}
+
+
+async function getNftinfo(){
+  try{
+    var tokenId = document.getElementById('search-img-id').value;
+    let instance;
+    var isImg = true;
+    if(document.getElementById("tab-img").className.includes('ax-active')){
+      instance = await tronWeb.contract().at(imgContractAdd);
+    }else{
+      isImg = false;
+      instance = await tronWeb.contract().at(vedioContractAdd);
     }
-    document.getElementById('pt-list').innerHTML=context;
+    var result;
+    if(document.getElementById("user-sell-img").className == 'ax-active'){
+      result = await instance.getselldesc(tokenId).call();
+      var r = new Object();
+      r.ids = new Array(result.id);
+      r.urls = new Array(result.url);
+      r.descs = new Array(result.desc);
+      r.titles = new Array(result.title);
+      r.times = new Array(result.time);
+      r.prices = new Array(result.price);
+      r.sells = new Array(result.sell);
+      if(isImg){
+        setImg(r,1);
+      }else{
+        setVedio(r,1);
+      }
+    }else if(document.getElementById("user-pm-img").className == 'ax-active'){
+      result = await instance.getpmdesc(tokenId).call();
+      var r = new Object();
+      r.ids = new Array(result.param2[0]);
+      r.urls = new Array(result.param1[0]);
+      r.descs = new Array(result.param1[1]);
+      r.titles = new Array(result.param1[2]);
+      r.times = new Array(result.param2[1]);
+      r.minprices = new Array(result.param2[2]);
+      r.finalprices = new Array(result.param2[3]);
+      r.mincalls = new Array(result.param2[4]);
+      r.endtimes = new Array(result.param2[5]);
+      r.finalusers = new Array(result.finaluser);
+      r.counts = new Array(result.param2[6]);
+      r.states = new Array(result.param2[7]);
+      if(isImg){
+        setImg(r,2);
+      }else{
+        setVedio(r,2);
+      }
+    }else{
+      result = await instance.getselldesc(tokenId).call();
+      var r = new Object();
+      r.ids = new Array(result.id);
+      r.urls = new Array(result.url);
+      r.descs = new Array(result.desc);
+      r.titles = new Array(result.title);
+      r.times = new Array(result.time);
+      r.prices = new Array(result.price);
+      r.sells = new Array(result.sell);
+      if(isImg){
+        setImg(r,0);
+      }else{
+        setVedio(r,0);
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+    alert(error.message);
+  }
 }

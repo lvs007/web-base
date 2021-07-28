@@ -33,10 +33,10 @@
         <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">服务<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
           <ul class="ax-outer">
             <!--class="ax-selected"-->
-            <li><a href="/v1/mint/mint">挖矿</a></li>
+            <li><a href="###">挖矿</a></li>
             <li><a href="/v1/create/createnft">NFT制作</a></li>
             <li><a href="/v1/market/market">NFT市场</a></li>
-            <li><a href="###">短视频</a></li>
+            <li><a href="/v1/video-view/view">短视频</a></li>
           </ul>
         </div>
         <span class="ax-btns">
@@ -54,23 +54,14 @@
 <div class="ax-padding">
   <div class="ax-tab">
     <div class="ax-menu-page ax-tab-nav">
-      <a id="tab-img" href="###" class="ax-item" onclick="imgNft(1)"><i class="ax-iconfont ax-icon-image"></i>图片NFT</a>
-      <a id="tab-vedio" href="###" class="ax-item" onclick="vedioNft(1)"><i class="ax-iconfont ax-icon-video"></i>短视频NFT</a>
+      <a id="tab-img" href="###" class="ax-item" onclick="tag(1)"><i class="ax-iconfont ax-icon-image"></i>图片NFT</a>
+      <a id="tab-vedio" href="###" class="ax-item" onclick="tag(2)"><i class="ax-iconfont ax-icon-video"></i>短视频NFT</a>
     </div>
   </div>
 
   <div class="ax-break-md"></div>
-  <div class="ax-filter ax-border">
-    <div class="ax-break-xs"></div>
-    <div class="ax-item ax-flex-row">
-      <span class="ax-head">类型</span>
-      <div class="ax-flex-block">
-        <div class="ax-text">
-          <a id="sell-img" class="ax-active" href="###" onclick="imgNft(1)">一口价</a>
-          <a id="pm-img" href="###" onclick="pmquery(1)">拍卖中</a>
-        </div>
-      </div>
-    </div>
+  <div class="ax-filter ax-border" id="type-filter">
+
   </div>
   <div class="ax-break-xs"></div>
   <div class="ax-grid ax-space-xxl ax-split-3" id="all-pt-list">
@@ -105,25 +96,51 @@
   <div class="ax-row ax-operate">
     <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="bid()">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="bid(1)">确定</a>
   </div>
 </div>
+
+<!--video setting-->
+<div id="pop-bid-w-v" style="display: none;background-color: floralwhite;">
+  <div class="ax-window-title" style="background-color: floralwhite;">Price Setting</div>
+  <div class="ax-break-line"></div>
+  <!--  <div class="ax-padding">-->
+  <div class="ax-form-group">
+    <div class="ax-flex-row">
+      <div class="ax-window-label">Bid：</div>
+      <div class="ax-flex-block">
+        <div class="ax-row">
+          <div class="ax-col ax-col-1">
+            <input id="bidprice-v" class="ax-form-input ax-round ax-sm" type="number" style="width:250px"/>
+            <span>DAY</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  </div>-->
+  <div class="ax-break-line"></div>
+  <div class="ax-row ax-operate">
+    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <span class="ax-gutter-line"></span>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="bid(2)">确定</a>
+  </div>
+</div>
+
 <!--ax-valign ax-bottom-->
 <footer>
   <div class="ax-padding">
-    <section id="scrollnav-7" class="content7 section7">
-      <div class="ax-row ax-split">
-        <div class="ax-col ax-copyright">
-          <a href="###">DAYNFT</a>版权所有　Copyright © 2021 DAY Finance 为您提供丝滑般的用户体验
-        </div>
-        <div class="ax-operate">
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
-        </div>
+    <div class="ax-row ax-split">
+      <div class="ax-col ax-copyright">
+        <a href="###">DAYNFT</a>版权所有　Copyright © 2021 DAY Finance 为您提供丝滑般的用户体验
       </div>
-    </section>
+      <div class="ax-operate">
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -159,7 +176,7 @@ window.onload = function() {
     str = "";
     }
     document.getElementById('address-home').innerText=str;
-    imgNft(1);
+    tag(1);
   }
 /* ]]> */
 };

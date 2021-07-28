@@ -7,13 +7,11 @@
   <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" th:src="@{/static/js/eth.js}"></script>
+  <script type="text/javascript" th:src="@{/static/js/view.js}"></script>
+  <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>
 
 </head>
 <body>
-<!--<nav class="ax-flex-col">-->
-<!--  ...-->
-<!--</nav>-->
 
 <header class="ax-header">
   <nav>
@@ -51,43 +49,56 @@
 <div class="ax-space-header"></div>
 
 <!--main-->
+
 <main>
-<!--  <p th:text="${window.tronWeb.address}">address</p>-->
-  <div class="ax-padding ax-div-middle">
-<!--    <div class="ax-grid ax-space-xxl ax-split">-->
-<!--      <ul class="ax-grid-inner">-->
-<!--        <li class="ax-grid-block ax-col-12">-->
-          <div class="ax-card-block" style="">
-            <div class="ax-row ax-split">
-              <div class="ax-col ax-card-block" style="text-align:center">
-                <section class="demo-section-border ">
-                  DAY 矿池
-                </section>
-                <div class="ax-form-input">
-                  <span></span>
-                  <input class="ax-round ax-sm" type="text" style="width:260px"/>
-                </div>
-              </div>
-
-              <div class="ax-col ax-card-block" style="text-align:center">
-                <section class="demo-section-border">
-                  DAY + NFT 矿池
-                </section>
-                <div class="ax-form-input">
-                  <input class="ax-round ax-sm" type="text" style="width:260px"/>
-                </div>
-              </div>
-            </div>
-
-          </div>
-<!--        </li>-->
-<!--      </ul>-->
+<div class="ax-padding wrapper-mark">
+<!--  <div class="ax-tab">-->
+<!--    <div class="ax-menu-page ax-tab-nav">-->
+<!--      <a id="tab-img" href="###" class="ax-item" onclick="imgNft(1)"><i class="ax-iconfont ax-icon-image"></i>图片NFT</a>-->
+<!--      <a id="tab-vedio" href="###" class="ax-item" onclick="vedioNft(1)"><i class="ax-iconfont ax-icon-video"></i>短视频NFT</a>-->
 <!--    </div>-->
-  </div>
+<!--  </div>-->
 
+<!--  <div class="ax-break-md"></div>-->
+<!--  <div class="ax-filter ax-border">-->
+<!--    <div class="ax-break-xs"></div>-->
+<!--    <div class="ax-item ax-flex-row">-->
+<!--      <span class="ax-head">类型</span>-->
+<!--      <div class="ax-flex-block">-->
+<!--        <div class="ax-text">-->
+<!--          <a id="sell-img" class="ax-active" href="###" onclick="imgNft(1)">一口价</a>-->
+<!--          <a id="pm-img" href="###" onclick="pmquery(1)">拍卖中</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="ax-break-xs"></div>-->
+  <div class="ax-item ax-flex-row ax-search-box">
+    <span class="ax-head">搜索</span><div class="ax-flex-block">
+    <div class="ax-text">
+      <input class="ax-round ax-sm" type="text" placeholder="关键字搜索" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search">Search</a>
+    </div>
+  </div>
+  </div>
+  <div class="ax-break-md"></div>
+  <div class="ax-break-line"></div>
+  <div class="ax-break-xs"></div>
+  <div class="ax-grid ax-space-xxl ax-split-3" id="all-pt-list">
+
+  </div>
+  <div class="ax-pagination" id="all-page-split">
+
+  </div>
+</div>
+  <div class="push"></div>
 </main>
 
-<footer style="position: absolute;">
+<!--ax-valign ax-bottom-->
+<!--<div class="wrapper">-->
+<!--  &lt;!&ndash; content &ndash;&gt;-->
+<!--  <div class="push"></div>-->
+<!--</div>-->
+<footer>
   <div class="ax-padding">
     <div class="ax-row ax-split">
       <div class="ax-col ax-copyright">
@@ -109,7 +120,9 @@
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
 
 <script type="text/javascript">
-  window.onload = function() {
+
+window.onload = function() {
+/* <![CDATA[ */
   if (!window.tronWeb) {
     const HttpProvider = TronWeb.providers.HttpProvider;
     const fullNode = new HttpProvider('https://api.trongrid.io');
@@ -124,33 +137,19 @@
 
     window.tronWeb = tronWeb;
   }
-  if (window.tronWeb) {
+  if (window.tronWeb && window.tronWeb.defaultAddress) {
     var char = "***";
     var str = window.tronWeb.defaultAddress.base58;
+    if(str && str.length>8){
     str = str.substring(0, 8) + char + str.substring(str.length - 8);
+    }else{
+    str = "";
+    }
     document.getElementById('address-home').innerText=str;
+    vedioNft(1);
   }
-
-<!--/* <![CDATA[ */-->
-<!--  var winHeight = 0;-->
-<!--  var winWidth = 0;-->
-<!--  if (window.innerHeight){-->
-<!--    winHeight = window.innerHeight;-->
-<!--  }else if ((document.body) && (document.body.clientHeight)){-->
-<!--    winHeight = document.body.clientHeight;-->
-<!--  }-->
-<!--  if (window.innerWidth){-->
-<!--    winWidth = window.innerWidth;-->
-<!--  }else if((document.body) && (document.body.clientWidth)){-->
-<!--    winWidth = document.body.clientWidth;-->
-<!--  }-->
-<!--  var top = (winHeight - 400) / 2;-->
-<!--  var left = (winWidth - 800) / 2;-->
-<!--  document.getElementById('mint-div').style.cssText += 'top: '+top+'px;'+'left:'+left+'px;';-->
-<!--  /* ]]> */-->
+/* ]]> */
 };
-
-
 
 </script>
 

@@ -250,9 +250,54 @@ main{
   width:80%;
   margin:14px auto;
   padding-bottom:100px;
+  min-height:100%;
+  margin-bottom: -100px; /* 等于footer的高度 */
 }/* main的padding-bottom值要等于或大于footer的height值 background-color: #bdb76b; background-color: #ffc0cb;*/
-footer{position:relative;bottom:0;width:80%;height:100px;left: 10%;}
+footer{
+  position:relative;
+  bottom:0;
+  width:80%;
+  height:100px;
+  left: 10%;
+}
+.push {
+  height: 100px;
+}
 
 .ax-window-label {
 padding-left: 14px;
+}
+
+div.tYin{
+    opacity: 0.2;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+div.wYin-fail{
+    font-size: 18px;
+    opacity: 0.5;
+    position: absolute;
+    right: 0;
+    bottom: 3px;
+    border: 2px solid;
+    border-radius: 100px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+div.wYin-success{
+    font-size: 18px;
+    position: absolute;
+    right: 0;
+    bottom: 3px;
+    border: 2px solid;
+    border-radius: 100px;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    color: crimson;
+}
+div.tYin img{
+    width: 100px;
 }

@@ -7,7 +7,7 @@ import org.springframework.ui.ModelMap;
 public class VideoView {
 
   public String view(ModelMap modelMap) {
-    return "view";
+    return "videoview";
   }
 
 }
