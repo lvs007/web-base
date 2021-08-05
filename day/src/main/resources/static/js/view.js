@@ -41,12 +41,16 @@ function setPageSplit(total,totalPage,currentPage,onclickFun){
   if(totalPage <= 1){
     return;
   }
-  var context = '<a class="ax-total">共'+total+'条</a>'+
-                '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">首页</a>'+
-                '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">上一页</a>'+
-                '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">下一页</a>'+
-                '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">尾页</a>';
+  var context = '<a class="ax-total">Total:'+total+'</a>'+
+                '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">First</a>'+
+                '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">Previous</a>'+
+                '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">Next</a>'+
+                '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">Last</a>';
   document.getElementById('all-page-split').innerHTML=context;
+}
+
+async function tag(value){
+  vedioNft(1);
 }
 
 async function vedioNft(pageNum){
@@ -71,7 +75,7 @@ function setVedio(result) {
         time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
         context += '<li class="ax-grid-block ax-col-8">'+
           '<div class="ax-card-block" style="background-color: floralwhite;">'+
-            '<div class="ax-videojs">'+
+            '<div class="ax-videojs" onclick="get()">'+
                 '<video id="videojs01" class="video-js" controls preload="auto" height="200">'+
                     '<source src="' + ipfs + url + '"/>'+
                 '</video>'+

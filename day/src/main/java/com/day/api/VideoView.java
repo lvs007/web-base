@@ -10,4 +10,8 @@ public class VideoView {
     return "videoview";
   }
 
+  public String get(ModelMap modelMap) {
+    return "";
+  }
+
 }

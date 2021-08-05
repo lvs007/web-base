@@ -64,9 +64,22 @@ function getRequest( url, time, callback ){
     }
     request.send( null );
 }
+document.getElementById('fileInput').addEventListener('change', function selectedFileChanged() {
+  if (this.files.length === 0) {
+    console.log('No file selected.');
+    return;
+  }
+
+  addFile(this.files[0]);
+});
+
+
 
 let url = "";
 async function addFile(file) {
+    if (!checkNetwork()) {
+      return;
+    }
     const ipfs = window.IpfsHttpClient.create({host:ipAddr, port:ipPort, protocol:'http'});
 //    const Buffer = window.IpfsHttpClient.constructor().Buffer;
 //    const newReader = new FileReader();
@@ -97,6 +110,9 @@ async function addFile(file) {
 }
 
 async function createNft() {
+  if (!checkNetwork()) {
+    return;
+  }
   if(!validCreateNft()){
     return;
   }
@@ -104,7 +120,7 @@ async function createNft() {
   var title = document.getElementById('title').value;
   var keyword = getRadioBoxValue("keyword");
   var contractAddress = window.tronWeb.address.toHex(imgContractAdd);
-  if(keyword == "短视频"){
+  if(keyword == "Video"){
     contractAddress = window.tronWeb.address.toHex(vedioContractAdd);
   }
   var functions = "create(address,string,string,string)";
@@ -139,7 +155,7 @@ async function createNft() {
 //            });
           } catch (error) {
               console.log(error);
-              alert('approve失败，请重试！');
+              alert('Approval failed, please try again!');
               return;
           }
       }
@@ -149,7 +165,7 @@ async function createNft() {
       var signedTx = await tronWeb.trx.sign(tx.transaction);
       var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
       console.log(broastTx);
-      if(keyword == "短视频"){
+      if(keyword == "Video"){
         document.getElementById("tab-img").className = "ax-item";
         var vedio = document.getElementById('tab-vedio');
         vedio.className += ' ax-active';
@@ -168,12 +184,12 @@ async function tag(value){
   if(value == 1){
     context = '<div class="ax-break-xs"></div>'+
                  '<div class="ax-item ax-flex-row">'+
-                   '<span class="ax-head">类型</span>'+
+                   '<span class="ax-head">Category</span>'+
                    '<div class="ax-flex-block">'+
                      '<div class="ax-text">'+
-                       '<a id="all-img" href="###" class="ax-active" onclick="imgNft(1)">全部</a>'+
-                       '<a id="user-sell-img" href="###" onclick="usersellquery(1)">一口价</a>'+
-                       '<a id="user-pm-img" href="###" onclick="userpmquery(1)">拍卖中</a>'+
+                       '<a id="all-img" href="###" class="ax-active" onclick="imgNft(1)">All</a>'+
+                       '<a id="user-sell-img" href="###" onclick="usersellquery(1)">One-bite price</a>'+
+                       '<a id="user-pm-img" href="###" onclick="userpmquery(1)">In Auction</a>'+
                        '<input id="search-img-id" class="ax-round ax-sm" type="number" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search" onclick="getNftinfo()">Search</a>'+
                      '</div>'+
                    '</div>'+
@@ -183,12 +199,12 @@ async function tag(value){
   }else {
     context = '<div class="ax-break-xs"></div>'+
                    '<div class="ax-item ax-flex-row">'+
-                     '<span class="ax-head">类型</span>'+
+                     '<span class="ax-head">Category</span>'+
                      '<div class="ax-flex-block">'+
                        '<div class="ax-text">'+
-                         '<a id="all-img" href="###" class="ax-active" onclick="vedioNft(1)">全部</a>'+
-                         '<a id="user-sell-img" href="###" onclick="uservideosellquery(1)">一口价</a>'+
-                         '<a id="user-pm-img" href="###" onclick="uservideopmquery(1)">拍卖中</a>'+
+                         '<a id="all-img" href="###" class="ax-active" onclick="vedioNft(1)">All</a>'+
+                         '<a id="user-sell-img" href="###" onclick="uservideosellquery(1)">One-bite price</a>'+
+                         '<a id="user-pm-img" href="###" onclick="uservideopmquery(1)">In Auction</a>'+
                          '<input id="search-img-id" class="ax-round ax-sm" type="number" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search" onclick="getNftinfo()">Search</a>'+
                        '</div>'+
                      '</div>'+
@@ -350,13 +366,13 @@ function setContext(result,type,select) {
         var button = "";
         var liupai = "";
         if(select ==0){
-          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">卖出NFT</a>' +
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">拍卖NFT</a>' +
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">转给他人</a>';
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">Sell NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">Auction NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">Transfer to others</a>';
         }else if(select ==1){
           price = new BigNumber(tronWeb.toDecimal(result.prices[i])).div(decimals).toFixed();
           button = '<span class="ax-child">Price: ' + price + ' DAY. </span>'+
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">取消卖出</a>';
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">Cancel Auction</a>';
         }else if(select ==2){
           var endtime = tronWeb.toDecimal(result.endtimes[i]);
           var count = result.counts[i];
@@ -372,15 +388,15 @@ function setContext(result,type,select) {
                                '<span class="ax-child">End Time: ' + new Date(parseInt(endtime, 10) * 1000).toUTCString() + '</span>'+
                                '</div>';
           if(count <= 0 && endtime < Date.parse(new Date())/1000){
-            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">取消拍卖</a>';
+            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">Cancel Auction</a>';
             liupai = '<div class="wYin-fail">' +
-                       '<p>流拍</p>' +
+                       '<p>Abortive</p>' +
                      '</div>';
           }else if(count > 0 && endtime < Date.parse(new Date())/1000){
             button += 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count+
-                      '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">转移给拍卖者</a>';
+                      '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">Transfer to auctioneer</a>';
             liupai = '<div class="wYin-success">' +
-                       '<p>成功</p>' +
+                       '<p>Success</p>' +
                      '</div>';
           }else if(count > 0){
             button += 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count;
@@ -485,6 +501,9 @@ function initPop(id,type) {
 }
 //todo: 设置type区分img和video
 async function sell(type) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     var price;
     let instance;
@@ -513,6 +532,9 @@ async function sell(type) {
 }
 
 async function pm(type) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     var minprice;
     var mincall;
@@ -548,6 +570,9 @@ async function pm(type) {
 }
 
 async function transfer(type) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     var toAddress;
     let instance;
@@ -573,6 +598,9 @@ async function transfer(type) {
 }
 
 async function cancelsell(tokenId) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
     let res = await instance.cancel(tokenId).send({
@@ -590,6 +618,9 @@ async function cancelsell(tokenId) {
 }
 
 async function cancelpm(tokenId) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
     let res = await instance.receive(tokenId).send({
@@ -610,31 +641,31 @@ function setPageSplit(total,totalPage,currentPage,onclickFun){
   if(totalPage <= 1){
     return;
   }
-  var context = '<a class="ax-total">共'+total+'条</a>'+
-                '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">首页</a>'+
-                '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">上一页</a>'+
-                '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">下一页</a>'+
-                '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">尾页</a>';
+  var context = '<a class="ax-total">Total:'+total+'</a>'+
+                  '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">First</a>'+
+                  '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">Previous</a>'+
+                  '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">Next</a>'+
+                  '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">Last</a>';
   document.getElementById('page-split').innerHTML=context;
 }
 
 function validCreateNft () {
   if(document.getElementById('fileInput').value=="") {
-    alert('请选择上传的文件');
+    alert('Please select the file to be uploaded');
     return false;
   }
   var title = document.getElementById('title');
   if(title.value == '') {
-    alert('请输入标题');
+    alert('Please enter a title');
     return false;
   }
   var desc = document.getElementById('desc');
   if(desc.value == '') {
-    alert('请输入简介');
+    alert('Please enter a profile');
     return false;
   }
   if(url==''){
-    alert('请等待文件上传');
+    alert('Please wait for the file to be uploaded');
     return false;
   }
   return true;
@@ -731,4 +762,8 @@ async function getNftinfo(){
     console.log(error);
     alert(error.message);
   }
+}
+
+function changeAgentContent(){
+    document.getElementById("inputFileAgent").value = document.getElementById("fileInput").value;
 }

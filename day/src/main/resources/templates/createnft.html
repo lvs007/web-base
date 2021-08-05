@@ -8,7 +8,6 @@
   <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
   <script src='/static/js/bignumber.js'></script>
-  <script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
 <!--  <script type="text/javascript" src="backend.js?2019.06.03.v2"> </script>-->
   <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>
 <!--  <script th:src="@{/static/plugins/jquery.validate/jquery.validate.min.js}" type="text/javascript"></script>-->
@@ -16,27 +15,6 @@
 </head>
 <!--style="background-image:url(/static/images/backg.jpg); background-size:cover;"-->
 <body>
-<!--<nav class="ax-flex-col">-->
-<!--  ...-->
-<!--</nav>-->
-
-<!--<header class="ax-header">-->
-<!--  <div class="ax-row" style="background-color: #333333;">-->
-<!--    <div class="ax-col">-->
-<!--      <a href="###" class="ax-logo"><img src="/static/images/logo.png" /></a>-->
-<!--    </div>-->
-<!--    <div class="ax-nav ax-scrollnav-h" id="article-nav02" style="background-color: #333333;">-->
-<!--      <div class="ax-item" id="h1"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff" onclick="select('h1')">首页</a><span class="ax-line"></span></div>-->
-<!--      <div class="ax-item" id="h2"><a href="/v1/home/home#ax-scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff" onclick="select('h2')">新闻动态</a><span class="ax-line"></span></div>-->
-<!--      <div class="ax-item" id="h3"><a href="/v1/home/home#ax-scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff" onclick="select('h3')">产品中心</a><span class="ax-line"></span></div>-->
-<!--      <div class="ax-item" id="h4"><a href="/v1/home/home#ax-scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff" onclick="select('h4')">关于</a><span class="ax-line"></span></div>-->
-<!--      <span class="ax-btns">-->
-<!--        <button type="button" class="ax-btn ax-sm ax-longest" id="address-home"></button>-->
-<!--      </span>-->
-
-<!--    </div>-->
-<!--  </div>-->
-<!--</header>-->
 <header class="ax-header">
   <nav>
     <div class="ax-row" style="background-color: #37517e;">
@@ -45,22 +23,22 @@
       </div>
       <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
         <div class="ax-item">
-          <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home#scrollnav" class="ax-text ax-scrollnav-link" style="color:#fff">首页</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">特点</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">代币</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">路线图</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">新闻</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">团队</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">问题</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">联系方式</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">Features</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">Token</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">Roadmap</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">News</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">Team</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">FAQ</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Contact</a><span class="ax-line"></span></li>
         </div>
-        <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">服务<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
+        <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
           <ul class="ax-outer">
             <!--class="ax-selected"-->
-            <li><a href="###">挖矿</a></li>
-            <li><a href="/v1/create/createnft">NFT制作</a></li>
-            <li><a href="/v1/market/market">NFT市场</a></li>
-            <li><a href="/v1/video-view/view">短视频</a></li>
+            <li><a href="###">Mint</a></li>
+            <li><a href="/v1/create/createnft">NFT Creation</a></li>
+            <li><a href="/v1/market/market">NFT Market</a></li>
+            <li><a href="/v1/video-view/view">NFT Video</a></li>
           </ul>
         </div>
         <span class="ax-btns">
@@ -81,21 +59,19 @@
     <div class="ax-card-block" style="background-color: floralwhite;">
         <div class="ax-form-group">
           <section class="demo-section-border ">
-            NFT 制作
+            NFT Production
           </section>
         </div>
 <!--        <div class="ax-break-md"></div>-->
         <div class="ax-form-group">
           <div class="ax-flex-row">
-            <div class="ax-form-label">分 类：</div>
+            <div class="ax-form-label">Category：</div>
             <div class="ax-flex-block">
               <div class="ax-row">
-                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="艺术品" checked="" type="radio"/><span>艺术品</span></label></div>
-                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="字画" type="radio"/><span>字画</span></label></div>
-                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="短视频" type="radio"/><span>短视频</span></label></div>
-                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="音乐" type="radio"/><span>音乐</span></label></div>
-                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="动漫" type="radio"/><span>动漫</span></label></div>
-                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="其他" type="radio"/><span>其他</span></label></div>
+                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="Picture" checked="" type="radio"/><span>Picture</span></label></div>
+                <div class="ax-col ax-col-1"><label class="ax-radio"><input name="keyword" value="Video" type="radio"/><span>Video</span></label></div>
+                <div class="ax-col ax-col-3"></div>
+                <div class="ax-col ax-col-3"></div>
                 <div class="ax-col ax-col-3"></div>
                 <div class="ax-col ax-col-3"></div>
                 <div class="ax-col ax-col-3"></div>
@@ -103,25 +79,40 @@
             </div>
           </div>
         </div>
-<!--        <div class="ax-break-md"></div>-->
+        <div class="ax-break-md"></div>
         <div class="ax-form-group">
           <div class="ax-flex-row">
-            <div class="ax-form-label">文 件：</div>
+            <div class="ax-form-label">File：</div>
             <div class="ax-flex-block">
               <div class="ax-row">
 <!--                <div class="ax-file" data-placeholder="点击选择文件" data-text="选择文件">-->
-                  <input name="nftFile" type="file" id="fileInput" data-text="选择文件"/>
+<!--                  <input name="nftFile" type="file" id="fileInput" data-text="Select a file"/>-->
 <!--                </div>-->
+                <input type="file" id="fileInput" name="nftFile" style="display:none" onchange="changeAgentContent()" />
+                <input type="text" class="ax-round ax-sm" value="Please select a file" readonly="" disabled="disabled" id="inputFileAgent" style="width:215px"/>
+                <input type="button" class="ax-btn ax-info ax-gradient ax-sm" onclick="document.getElementById('fileInput').click()" value="Select a file" />
 
               </div>
             </div>
           </div>
         </div>
+<!--      <div class="ax-form-group ax-sm">-->
+<!--        <div class="ax-flex-row">-->
+<!--          <div class="ax-form-label">File：</div>-->
+<!--          <div class="ax-form-con">-->
+<!--            <div class="ax-form-input">-->
+<!--              <div class="ax-file" data-placeholder="Select a file" data-text="Select a file">-->
+<!--                <input name="nftFile" type="file" id="fileInput" class="ax-sm"/>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <!--      <div class="ax-break-md"></div>-->
       <div class="ax-form-group">
         <div class="ax-flex-row">
-          <div class="ax-form-label">标 题：</div>
+          <div class="ax-form-label">Title：</div>
           <div class="ax-flex-block">
             <div class="ax-row">
               <div class="ax-col ax-col-1">
@@ -134,11 +125,11 @@
 <!--      <div class="ax-break-md"></div>-->
       <div class="ax-form-group">
         <div class="ax-flex-row">
-          <div class="ax-form-label">简 介：</div>
+          <div class="ax-form-label">Introduction：</div>
           <div class="ax-flex-block">
             <div class="ax-row">
               <div class="ax-col ax-col-1">
-                <textarea id="desc" cols="" rows="" placeholder="简介" style="width:300px;height:100px;"></textarea>
+                <textarea id="desc" cols="" rows="" placeholder="Introduction" style="width:300px;height:100px;"></textarea>
               </div>
             </div>
           </div>
@@ -147,7 +138,7 @@
 <!--      <div class="ax-break-md"></div>-->
       <div class="ax-form-group">
         <div class="ax-flex-row">
-          <a href="###" class="ax-btn ax-primary ax-sm ax-round" onclick="createNft()">制作NFT</a>
+          <a href="###" class="ax-btn ax-primary ax-sm ax-round" onclick="createNft()">Create NFT</a>
         </div>
       </div>
     </div>
@@ -157,8 +148,8 @@
 <div class="ax-padding">
   <div class="ax-tab">
     <div class="ax-menu-page ax-tab-nav">
-      <a id="tab-img" href="###" class="ax-item" onclick="tag(1)"><i class="ax-iconfont ax-icon-image"></i>图片NFT</a>
-      <a id="tab-vedio" href="###" class="ax-item" onclick="tag(2)"><i class="ax-iconfont ax-icon-video"></i>短视频NFT</a>
+      <a id="tab-img" href="###" class="ax-item" onclick="tag(1)"><i class="ax-iconfont ax-icon-image"></i>Picture NFT</a>
+      <a id="tab-vedio" href="###" class="ax-item" onclick="tag(2)"><i class="ax-iconfont ax-icon-video"></i>Video NFT</a>
     </div>
   </div>
 
@@ -176,40 +167,8 @@
   </div>
 
 </div>
+  <div class="push"></div>
 </main>
-
-<!--<div style="display: none" id="pop-sell-w">-->
-<!--    <div class="ax-window-contain">-->
-<!--      <div class="ax-window-title">Setting NFT Price</div>-->
-<!--      <div class="ax-break-line"></div>-->
-<!--      <div class="ax-window-content">-->
-<!--        <div class="ax-emulate">-->
-<!--          <div class="ax-form-group">-->
-<!--            <div class="ax-flex-row">-->
-<!--              <div class="ax-form-label">价 格：</div>-->
-<!--              <div class="ax-form-con">-->
-<!--                <div class="ax-form-input"><input name="username" placeholder="输入价格" type="number"/></div>-->
-<!--              </div>-->
-<!--              <span class="ax-form-txt ax-color-primary ax-iconfont ax-icon-check-o-fill"></span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="ax-break-line"></div>-->
-<!--      <div class="ax-padding ax-window-operate">-->
-<!--        <div class="ax-row">-->
-<!--          <div class="ax-btns">-->
-<!--            <a href="###" class="ax-btn ax-sm ax-info ax-gradient ax-close">取消</a>-->
-<!--            <span class="ax-gutter-line"></span>-->
-<!--            <a href="###" class="ax-btn ax-sm ax-info ax-gradient ax-primary ax-close" onclick="sell()">确定</a>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--    </div>-->
-<!--</div>-->
-
 
 <div id="pop-sell-w" style="display: none;background-color: floralwhite;">
   <div class="ax-window-title" style="background-color: floralwhite;">Price Setting</div>
@@ -217,7 +176,7 @@
 <!--  <div class="ax-padding">-->
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-window-label">价 格：</div>
+        <div class="ax-window-label">Price：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -231,19 +190,19 @@
 <!--  </div>-->
   <div class="ax-break-line"></div>
   <div class="ax-row ax-operate">
-    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="sell(1)">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="sell(1)">Sell</a>
   </div>
 </div>
 
 <div id="pop-pm-w" style="display: none;background-color: floralwhite;">
-  <div class="ax-window-title" style="background-color: floralwhite;">拍卖设置</div>
+  <div class="ax-window-title" style="background-color: floralwhite;">Auction Setting</div>
   <div class="ax-break-line"></div>
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">最低成交价格：</div>
+        <div class="ax-form-label">Lowest Price：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -259,7 +218,7 @@
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">每次最低加价：</div>
+        <div class="ax-form-label">Minimum Increase Per Bid：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -275,7 +234,7 @@
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">拍卖接收时间：</div>
+        <div class="ax-form-label">Auction Ending Time：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -288,18 +247,18 @@
   </div>
   <div class="ax-break-line"></div>
   <div class="ax-row ax-operate">
-    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="pm(1)">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="pm(1)">Auction</a>
   </div>
 </div>
 
 <div id="pop-zr-w" style="display: none;background-color: floralwhite;">
-  <div class="ax-window-title" style="background-color: floralwhite;">转账NFT</div>
+  <div class="ax-window-title" style="background-color: floralwhite;">Transfer NFT</div>
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">接收账户：</div>
+        <div class="ax-form-label">Receive Account：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -312,9 +271,9 @@
   </div>
   <div class="ax-break-line"></div>
   <div class="ax-row ax-operate">
-    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer(1)">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer(1)">Transfer</a>
   </div>
 </div>
 
@@ -325,7 +284,7 @@
   <!--  <div class="ax-padding">-->
   <div class="ax-form-group">
     <div class="ax-flex-row">
-      <div class="ax-window-label">价 格：</div>
+      <div class="ax-window-label">Price：</div>
       <div class="ax-flex-block">
         <div class="ax-row">
           <div class="ax-col ax-col-1">
@@ -339,19 +298,19 @@
   <!--  </div>-->
   <div class="ax-break-line"></div>
   <div class="ax-row ax-operate">
-    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="sell(2)">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="sell(2)">Sell</a>
   </div>
 </div>
 
 <div id="pop-pm-w-v" style="display: none;background-color: floralwhite;">
-  <div class="ax-window-title" style="background-color: floralwhite;">拍卖设置</div>
+  <div class="ax-window-title" style="background-color: floralwhite;">Auction Setting</div>
   <div class="ax-break-line"></div>
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">最低成交价格：</div>
+        <div class="ax-form-label">Lowest Price：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -367,7 +326,7 @@
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">每次最低加价：</div>
+        <div class="ax-form-label">Minimum Increase Per Bid：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -383,7 +342,7 @@
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">拍卖接收时间：</div>
+        <div class="ax-form-label">Auction Ending Time：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -396,18 +355,18 @@
   </div>
   <div class="ax-break-line"></div>
   <div class="ax-row ax-operate">
-    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="pm(2)">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="pm(2)">Auction</a>
   </div>
 </div>
 
 <div id="pop-zr-w-v" style="display: none;background-color: floralwhite;">
-  <div class="ax-window-title" style="background-color: floralwhite;">转账NFT</div>
+  <div class="ax-window-title" style="background-color: floralwhite;">Transfer NFT</div>
   <div class="ax-padding">
     <div class="ax-form-group">
       <div class="ax-flex-row">
-        <div class="ax-form-label">接收账户：</div>
+        <div class="ax-form-label">Receive Account：</div>
         <div class="ax-flex-block">
           <div class="ax-row">
             <div class="ax-col ax-col-1">
@@ -420,9 +379,9 @@
   </div>
   <div class="ax-break-line"></div>
   <div class="ax-row ax-operate">
-    <a href="###" class="ax-col ax-col-8 ax-close">取消</a>
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
     <span class="ax-gutter-line"></span>
-    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer(2)">确定</a>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer(2)">Transfer</a>
   </div>
 </div>
 
@@ -431,7 +390,7 @@
   <div class="ax-padding">
     <div class="ax-row ax-split">
       <div class="ax-col ax-copyright">
-        <a href="###">DAYNFT</a>版权所有　Copyright © 2021 DAY Finance 为您提供丝滑般的用户体验
+        <a href="###">DAYNFT</a>　Copyright © 2021 DAY Finance Providing you with a silky smooth user experience
       </div>
       <div class="ax-operate">
         <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
@@ -447,50 +406,7 @@
 <script src="https://src.axui.cn/src/js/ax.min.js" type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
-
-<script type="text/javascript">
-
-document.getElementById('fileInput').addEventListener('change', function selectedFileChanged() {
-  if (this.files.length === 0) {
-    console.log('No file selected.');
-    return;
-  }
-
-  addFile(this.files[0]);
-});
-
-
-window.onload = function() {
-/* <![CDATA[ */
-  if (!window.tronWeb) {
-    const HttpProvider = TronWeb.providers.HttpProvider;
-    const fullNode = new HttpProvider('https://api.trongrid.io');
-    const solidityNode = new HttpProvider('https://api.trongrid.io');
-    const eventServer = 'https://api.trongrid.io/';
-
-    const tronWeb = new TronWeb(
-        fullNode,
-        solidityNode,
-        eventServer,
-    );
-
-    window.tronWeb = tronWeb;
-  }
-  if (window.tronWeb && window.tronWeb.defaultAddress) {
-    var char = "***";
-    var str = window.tronWeb.defaultAddress.base58;
-    if(str && str.length>8){
-    str = str.substring(0, 8) + char + str.substring(str.length - 8);
-    }else{
-    str = "";
-    }
-    document.getElementById('address-home').innerText=str;
-    tag(1);
-  }
-/* ]]> */
-};
-
-</script>
+<script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
 
 </body>
 </html>

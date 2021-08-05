@@ -5,11 +5,11 @@ async function tag(value){
   if(value == 1){
     context = '<div class="ax-break-xs"></div>'+
                  '<div class="ax-item ax-flex-row">'+
-                   '<span class="ax-head">类型</span>'+
+                   '<span class="ax-head">Category</span>'+
                    '<div class="ax-flex-block">'+
                      '<div class="ax-text">'+
-                       '<a id="sell-img" class="ax-active" href="###" onclick="imgNft(1)">一口价</a>'+
-                       '<a id="pm-img" href="###" onclick="pmquery(1)">拍卖中</a>'+
+                       '<a id="sell-img" class="ax-active" href="###" onclick="imgNft(1)">One-bite price</a>'+
+                       '<a id="pm-img" href="###" onclick="pmquery(1)">In Auction</a>'+
                        '<input id="search-img-id" class="ax-round ax-sm" type="number" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search" onclick="getNftinfo()">Search</a>'+
                      '</div>'+
                    '</div>'+
@@ -19,11 +19,11 @@ async function tag(value){
   }else {
     context = '<div class="ax-break-xs"></div>'+
                    '<div class="ax-item ax-flex-row">'+
-                     '<span class="ax-head">类型</span>'+
+                     '<span class="ax-head">Category</span>'+
                      '<div class="ax-flex-block">'+
                        '<div class="ax-text">'+
-                         '<a id="sell-img" class="ax-active" href="###" onclick="vedioNft(1)">一口价</a>'+
-                         '<a id="pm-img" href="###" onclick="vediopmquery(1)">拍卖中</a>'+
+                         '<a id="sell-img" class="ax-active" href="###" onclick="vedioNft(1)">One-bite price</a>'+
+                         '<a id="pm-img" href="###" onclick="vediopmquery(1)">In Auction</a>'+
                          '<input id="search-img-id" class="ax-round ax-sm" type="number" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search" onclick="getNftinfo()">Search</a>'+
                        '</div>'+
                      '</div>'+
@@ -175,6 +175,9 @@ async function querycontract(pageNum,contractAdd,type,select){
 }
 
 async function buy(tokenId) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
     var lock = await instance.lockmap(tokenId).call();
@@ -198,6 +201,9 @@ async function buy(tokenId) {
 }
 
 async function receive(tokenId){
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
     var lock = await instance.lockmap(tokenId).call();
@@ -272,11 +278,11 @@ function setContext(result,type,select) {
             if(finaluser != "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"){
               button += '<div class="ax-flex-row"><span class="ax-child">Winner: ' + finaluser + '</span></div>';
               liupai = '<div class="wYin-success">' +
-                         '<p>成功</p>' +
+                         '<p>Success</p>' +
                        '</div>';
             } else{
               liupai = '<div class="wYin-fail">' +
-                         '<p>流拍</p>' +
+                         '<p>Abortive</p>' +
                        '</div>';
             }
             button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="receive('+id+')">Receive</a>';
@@ -307,15 +313,8 @@ function setContext(result,type,select) {
             '<div class="ax-des ax-ell-2-des">'+
               desc +
             '</div>'+
-//            '<div class="ax-keywords">'+
-//              '<div class="ax-flex-row">'+
-//                'createTime:'+time +
-//              '</div>'+
-//            '</div>'+
             '<div class="">'+
-//              '<div class="ax-flex-row">'+
               button +
-//              '</div>'+
             '</div>'+
           '</div>'+
         '</li>';
@@ -349,6 +348,9 @@ function initPop(id,type) {
 }
 
 async function bid(type) {
+  if (!checkNetwork()) {
+    return;
+  }
   try{
     var bidprice;
     let instance;
@@ -380,11 +382,11 @@ function setPageSplit(total,totalPage,currentPage,onclickFun){
   if(totalPage <= 1){
     return;
   }
-  var context = '<a class="ax-total">共'+total+'条</a>'+
-                '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">首页</a>'+
-                '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">上一页</a>'+
-                '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">下一页</a>'+
-                '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">尾页</a>';
+  var context = '<a class="ax-total">Total:'+total+'</a>'+
+                  '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">First</a>'+
+                  '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">Previous</a>'+
+                  '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">Next</a>'+
+                  '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">Last</a>';
   document.getElementById('all-page-split').innerHTML=context;
 }
 

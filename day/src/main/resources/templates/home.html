@@ -7,7 +7,6 @@
   <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
-<!--  <script type="text/javascript" th:src="@{/static/js/nav.js}"></script>-->
 <!--  <script type="text/javascript" src="backend.js?2019.06.03.v2"> </script>-->
   <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>
 <!--  <script th:src="@{/static/plugins/jquery.validate/jquery.validate.min.js}" type="text/javascript"></script>-->
@@ -27,22 +26,22 @@
     </div>
     <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
       <div class="ax-item">
-        <li class="ax-scrollnav-item" data-section="scrollnav"><a href="#scrollnav" class="ax-text ax-scrollnav-link" style="color:#fff">首页</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">特点</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">代币</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">路线图</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">新闻</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">团队</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">问题</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">联系方式</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">Features</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">Token</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">Roadmap</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">News</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">Team</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">FAQ</a><span class="ax-line"></span></li>
+        <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Contact</a><span class="ax-line"></span></li>
       </div>
-      <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">服务<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
+      <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
         <ul class="ax-outer">
           <!--class="ax-selected"-->
-          <li><a href="###">挖矿</a></li>
-          <li><a href="/v1/create/createnft">NFT制作</a></li>
-          <li><a href="/v1/market/market">NFT市场</a></li>
-          <li><a href="/v1/video-view/view">短视频</a></li>
+          <li><a href="###">Mint</a></li>
+          <li><a href="/v1/create/createnft">NFT Creation</a></li>
+          <li><a href="/v1/market/market">NFT Market</a></li>
+          <li><a href="/v1/video-view/view">NFT Video</a></li>
         </ul>
       </div>
       <span class="ax-btns">
@@ -71,7 +70,7 @@
     <section id="scrollnav-1" class="section-bg content1 section1">
       <div class="section-title">
         <h2>
-          特点
+          Features
         </h2>
         <p>
           Diagon Alley NFT intelligent management platform is committed to becoming the most professional decentralized NFT management platform in the world.
@@ -160,7 +159,7 @@
       </div>
 
     </section>
-    <section id="scrollnav-2" class="content2 section2">
+    <section id="scrollnav-2" class="content2">
       <div class="section-title">
         <h2>
           Token
@@ -250,7 +249,7 @@
         </div>
       </div>
     </section>
-    <section id="scrollnav-3" class="content3 section3">
+    <section id="scrollnav-3" class="content3">
       <div class="section-title">
         <h2>
           Roadmap
@@ -265,8 +264,8 @@
             <div></div>
           </div>
           <div class="ax-text">
-            <div class="ax-title">团队建立</div>
-            <div class="ax-des">世界顶尖高校的区块链信仰者，为了让广大的用户参与到互联网的浪潮中来，秉承去中心化的理念，他们走到了一起，创建了DAY</div>
+            <div class="ax-title">Team Building</div>
+            <div class="ax-des">Blockchain believers from the world's top universities have come together to create DAY in order to engage a wide range of users in the wave of web 3.0, adhering to the concept of decentralization</div>
           </div>
         </div>
         <div class="ax-item">
@@ -277,7 +276,7 @@
             <div></div>
           </div>
           <div class="ax-text">
-            <div class="ax-title">平台概念设想与验证</div>
+            <div class="ax-title">Platform concept conception and validation</div>
             <div class="ax-des">。。。</div>
           </div>
         </div>
@@ -289,7 +288,7 @@
             <div></div>
           </div>
           <div class="ax-text">
-            <div class="ax-title">发布白皮书</div>
+            <div class="ax-title">Publish white paper</div>
             <div class="ax-des">。。。</div>
           </div>
         </div>
@@ -301,7 +300,7 @@
             <div></div>
           </div>
           <div class="ax-text">
-            <div class="ax-title">DAY NFT智能平台上线</div>
+            <div class="ax-title">DAY NFT smart platform is online</div>
             <div class="ax-des">。。。</div>
           </div>
         </div>
@@ -313,7 +312,7 @@
             <div></div>
           </div>
           <div class="ax-text">
-            <div class="ax-title">NFT交易功能上线</div>
+            <div class="ax-title">NFT trading function is online</div>
             <div class="ax-des">。。。</div>
           </div>
         </div>
@@ -325,7 +324,7 @@
             <div></div>
           </div>
           <div class="ax-text">
-            <div class="ax-title">短视频服务上线</div>
+            <div class="ax-title">Video service is online</div>
             <div class="ax-des">。。。</div>
           </div>
         </div>
@@ -423,6 +422,25 @@
 
       <div class="ax-break"></div>
 
+      <div class="ax-box ax-border ax-radius box-faq">
+        <div class="ax-box-header ax-row">
+          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+          <div class="ax-col"><b class="ax-title">What can I do on the DAY platform?</b></div>
+          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+        </div>
+        <div class="ax-break-line"></div>
+        <div class="ax-box-body ax-article" style="display: none;">
+          <p>
+            1. You can create NFTs of images and videos, while trading, auctioning and transferring NFTs.
+          </p>
+          <p>
+            2. You can also watch NFT short videos and get the corresponding viewing revenue.
+            In addition, NFT short video authors can get the corresponding income.
+          </p>
+
+        </div>
+      </div>
+
     </section>
     <section id="scrollnav-7" class="content7 section7">
       <div class="section-title">
@@ -436,12 +454,12 @@
 <!--          <a href="###" class="ax-logo"><img src="/static/images/logo.png" style="height: 50px;"/></a>-->
 <!--        </div>-->
         <div class="ax-col ax-copyright">
-          <a href="###">DAYNFT</a>版权所有　Copyright © 2021 DAY Finance 为您提供丝滑般的用户体验
+          <a href="###">DAYNFT</a>　Copyright © 2021 DAY Finance Providing you with a silky smooth user experience
         </div>
         <div class="ax-operate">
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
+          <a target="_blank" href="https://github.com/day-nft" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
+          <a target="_blank" href="https://t.me/diagon_alley_day" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
+          <a target="_blank" href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
           <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
         </div>
       </div>
@@ -461,37 +479,26 @@
 <script src='https://src.axui.cn/src/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/hc-sticky/hc-sticky.min.js'></script>
-
+<script type="text/javascript" src="/static/js/nav.js"></script>
+<script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
 <script type="text/javascript">
-window.onload = function() {
-/* <![CDATA[ */
-  if (!window.tronWeb) {
-    const HttpProvider = TronWeb.providers.HttpProvider;
-    const fullNode = new HttpProvider('https://api.trongrid.io');
-    const solidityNode = new HttpProvider('https://api.trongrid.io');
-    const eventServer = 'https://api.trongrid.io/';
+<!--  window.addEventListener('load', function() {-->
+<!--            if (!window.web3) {//用来判断你是否安装了metamask-->
+<!--              window.alert('Please install MetaMask first.');//如果没有会去提示你先去安装-->
+<!--              return;-->
+<!--            }-->
+<!--            if (!web3.eth.coinbase) {//这个是判断你有没有登录，coinbase是你此时选择的账号-->
+<!--              window.alert('Please activate MetaMask first.');-->
+<!--              return;-->
+<!--            }-->
+<!--          // Checking if Web3 has been injected by the browser (Mist/MetaMask)-->
+<!--            if (typeof web3 !== 'undefined') {-->
 
-    const tronWeb = new TronWeb(
-        fullNode,
-        solidityNode,
-        eventServer,
-    );
+<!--                // Use the browser's ethereum provider-->
+<!--                web3.personal.sign(web3.fromUtf8("Hello from wanghui!"), web3.eth.coinbase, console.log);-->
 
-    window.tronWeb = tronWeb;
-  }
-  if (window.tronWeb && window.tronWeb.defaultAddress) {
-    var char = "***";
-    var str = window.tronWeb.defaultAddress.base58;
-    if(str && str.length>8){
-    str = str.substring(0, 8) + char + str.substring(str.length - 8);
-    }else{
-    str = "";
-    }
-    document.getElementById('address-home').innerText=str;
-  }
-/* ]]> */
-};
-
+<!--　　　　　　　}-->
+<!--　　　　});-->
 </script>
 
 </body>
@@ -518,14 +525,12 @@ window.onload = function() {
 
   }
   section{
-    height:700px;
-    background-color: rgba(0,0,0,.04);
+    background-color: #f5f5f5;
     margin:10px;
     padding: 60px 0;
     overflow: hidden;
   }
 </style>
 <!--      width: calc(50% - 20px);-->
-<script type="text/javascript" src="/static/js/nav.js"></script>
-<script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
+
 </html>
