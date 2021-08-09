@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Home</title>
+  <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+<!--<nav class="ax-flex-col">-->
+<!--  ...-->
+<!--</nav>-->
+
+<header class="ax-header">
+  <nav>
+    <div class="ax-row" style="background-color: #37517e;">
+      <div class="ax-col">
+        <a href="###" class="ax-logo"><img src="/static/images/logo.png" /></a>
+      </div>
+      <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
+        <div class="ax-item">
+          <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">Features</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">Token</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">Roadmap</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">News</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">Team</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">FAQ</a><span class="ax-line"></span></li>
+          <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Contact</a><span class="ax-line"></span></li>
+        </div>
+        <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
+          <ul class="ax-outer">
+            <!--class="ax-selected"-->
+            <li><a href="/v1/mint/mint">Mint</a></li>
+            <li><a href="/v1/create/createnft">NFT Creation</a></li>
+            <li><a href="/v1/market/market">NFT Market</a></li>
+            <li><a href="/v1/video-view/view">NFT Video</a></li>
+          </ul>
+        </div>
+        <span class="ax-btns">
+        <button type="button" class="ax-btn ax-sm ax-longest" id="address-home"></button>
+      </span>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="ax-space-header"></div>
+
+<!--main-->
+<main>
+<!--  <p th:text="${window.tronWeb.address}">address</p>-->
+  <span id="type" style="display:none" hidden="hidden" th:text="${type}"></span>
+
+  <div class="" style="text-align:center">
+    <a href="###" class="ax-logo"><img class="img-logo-detail-token" src="/static/images/logo.png" /></a>
+  </div>
+  <div class="ax-h2 " style="text-align:center;padding-bottom: 0px;">
+    DAY Pool
+  </div>
+  <div style="text-align:center;color: rgb(170, 149, 133);">
+    <span>Pledge DAY and earn MH</span>
+  </div>
+  <div class="ax-padding" style="text-align:center">
+<!--    <div class="ax-grid ax-space-xxl ax-split">-->
+      <ul class="ax-grid-inner">
+        <li class="ax-grid-block ax-col-5">
+          <div class="ax-col ax-card-block " style="text-align:center;margin: 10px;border: 0px;">
+          </div>
+        </li>
+        <li class="ax-grid-block ax-col-7">
+<!--          <div class="ax-card-block" style="">-->
+<!--            <div class="ax-row ax-split">-->
+              <div class="ax-col ax-card-block card-div" style="text-align:center;margin: 10px;">
+                <div class="">
+                  <a href="###" class="ax-logo"><img class="img-logo-token" src="/static/images/logo.png" /></a>
+                </div>
+                <div id="detail_harverst" style="margin-top: 20px;">0.00000</div>
+                <div style="color: rgb(128, 94, 73);margin-bottom: 40px;">
+                  <span>MH earned</span>
+                </div>
+                <div class="">
+                  <a href="###" style="font-size: 24px;" class="ax-btn ax-long ax-reverse ax-lg" th:onclick="'harvest('+${type}+')'">Harvest</a>
+                </div>
+              </div>
+          </li>
+          <li class="ax-grid-block ax-col-7">
+              <div class="ax-col ax-card-block card-div" style="text-align:center;margin: 10px;">
+                <div class="">
+                  <a href="###" class="ax-logo"><img class="img-logo-token" src="/static/images/logo.png" /></a>
+                </div>
+                <div id="detail_stake" style="margin-top: 20px;">0.00000</div>
+                <div style="color: rgb(128, 94, 73);margin-bottom: 40px;">
+                  <span>DAY Staked</span>
+                </div>
+<!--                <div id="day_amount" style="color: rgb(128, 94, 73);">-->
+<!--                  <span>0.0000 DAY.</span>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  <input id="stake_amount" class="ax-form-input ax-round ax-sm" type="number" style="width:250px"/>-->
+<!--                </div>-->
+                <div class="">
+                  <a id="stake" href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg">Stake</a>
+                  <a id="unStake" href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg">UnStake</a>
+                </div>
+              </div>
+<!--            </div>-->
+
+<!--          </div>-->
+        </li>
+        <li class="ax-grid-block ax-col-5">
+          <div class="ax-col ax-card-block" style="text-align:center;margin: 10px;border: 0px;">
+          </div>
+        </li>
+      </ul>
+<!--    </div>-->
+  </div>
+  <div class="push"></div>
+</main>
+
+<!--渐显窗口-->
+<div class="ax-window" data-mask="true" data-in="fadeIn" id="stake_window">
+  <div class="ax-window-overlay"></div>
+  <div class="ax-window-contain">
+    <a href="###" class="ax-window-close"><i class="ax-iconfont ax-icon-close"></i></a>
+    <div id="title" class="ax-window-title" style="text-align: center;padding-left: 0px;margin: 10px;">
+      Stake DAY Tokens
+    </div>
+    <div class="ax-window-content" style="margin: 20px;">
+      <div class="" style="-webkit-justify-content: space-between!important;display: -webkit-flex!important;">
+        <span id="stake-text">stake</span>
+        <span id="balance">balance:</span>
+      </div>
+      <div style="border: 1px solid #5915e1;border-radius: 5px;">
+        <input id="amount" class="ax-round ax-sm" type="number" style="border: 0px;width: 89.8%;"/>
+        <a id="setMaxAmount" class="ax-btn ax-sm" style="background: #5915e1;color: #fff;" href="###" th:onclick="'setMaxAmount('+${type}+',1)'">Max</a>
+      </div>
+    </div>
+    <div class="ax-padding ax-window-operate">
+      <div class="ax-row">
+<!--        <div class="ax-col">-->
+<!--          <div class="ax-explain">您还要看更多么？</div>-->
+<!--        </div>-->
+          <a href="###" class="ax-btn ax-text ax-ignore ax-window-close">取消</a>
+          <a id="btn-submit" href="###" class="ax-btn ax-primary ax-window-close" th:onclick="'stake('+${type}+')'">Stake</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<footer>
+  <div class="ax-padding">
+    <div class="ax-row ax-split">
+      <div class="ax-col ax-copyright">
+        <a href="###">DAYNFT</a>　Copyright © 2021 DAY Finance Providing you with a silky smooth user experience
+      </div>
+      <div class="ax-operate">
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
+        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://src.axui.cn/src/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="https://src.axui.cn/src/js/ax.min.js" type="text/javascript"></script>
+<script src='https://src.axui.cn/src/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
+<script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
+<script type="text/javascript" th:src="@{/static/js/mint.js}"></script>
+<script type="text/javascript">
+  /* <![CDATA[ */
+
+  window.onload = function() {
+    var type = document.getElementById('type').innerText;
+    if(init(false)){
+      setDetailValue(type);
+    }
+  };
+
+  $("#stake").click(async function () {
+    var type = document.getElementById('type').innerText;
+    var balance = await balanceOf(3);
+    document.getElementById('balance').innerHTML = "balance:"+balance;
+    if(type == 2){
+      document.getElementById('title').innerHTML = "Stake DAY + NFT Tokens";
+    }
+    $("#stake_window").addClass("ax-window-show");
+  });
+
+  $("#unStake").click(async function () {
+    var type = document.getElementById('type').innerText;
+    var balance = await getStakeNum(type);
+    document.getElementById('balance').innerHTML = "stake balance:"+balance;
+    document.getElementById('stake-text').innerHTML = "unStake";
+    document.getElementById('btn-submit').innerHTML = "UnStake";
+    document.getElementById('btn-submit').onclick = function(){
+      unStake(type);
+    };
+    document.getElementById('setMaxAmount').onclick = function(){
+      setMaxAmount(type,2);
+    };
+    if(type == 1){
+      document.getElementById('title').innerHTML = "UnStake DAY Tokens";
+    }else if(type == 2){
+      document.getElementById('title').innerHTML = "UnStake DAY + NFT Tokens";
+    }
+    $("#stake_window").addClass("ax-window-show");
+  });
+
+  /* ]]> */
+</script>
+</body>
+</html>

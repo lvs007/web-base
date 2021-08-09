@@ -35,7 +35,7 @@
         <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
           <ul class="ax-outer">
             <!--class="ax-selected"-->
-            <li><a href="###">Mint</a></li>
+            <li><a href="/v1/mint/mint">Mint</a></li>
             <li><a href="/v1/create/createnft">NFT Creation</a></li>
             <li><a href="/v1/market/market">NFT Market</a></li>
             <li><a href="/v1/video-view/view">NFT Video</a></li>
@@ -407,6 +407,10 @@
 <script src='https://src.axui.cn/src/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
 <script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
-
+<script>
+  window.onload = function() {
+    init(true);
+  };
+</script>
 </body>
 </html>

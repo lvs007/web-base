@@ -140,6 +140,7 @@ async function createNft() {
       let userAdress = window.tronWeb.defaultAddress.base58;
       let instance = await tronWeb.contract().at(tokenContractAdd);
       let number = await instance.allowance(userAdress,contractAddress).call();
+      number = tronWeb.toDecimal(number);
       if(number < 10000000000000000000){
         try {
             var parameter1 = [{type:'address',value:''},{type:'uint256',value:'1000000000000000000000000000'}]

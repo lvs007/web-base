@@ -38,7 +38,7 @@
       <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
         <ul class="ax-outer">
           <!--class="ax-selected"-->
-          <li><a href="###">Mint</a></li>
+          <li><a href="/v1/mint/mint">Mint</a></li>
           <li><a href="/v1/create/createnft">NFT Creation</a></li>
           <li><a href="/v1/market/market">NFT Market</a></li>
           <li><a href="/v1/video-view/view">NFT Video</a></li>
@@ -280,7 +280,7 @@
             <div class="ax-des">。。。</div>
           </div>
         </div>
-        <div class="ax-item ax-active">
+        <div class="ax-item">
           <span class="ax-head">2021 Q2</span>
           <div class="ax-mark">
             <div></div>
@@ -292,7 +292,7 @@
             <div class="ax-des">。。。</div>
           </div>
         </div>
-        <div class="ax-item">
+        <div class="ax-item ax-active">
           <span class="ax-head">2021 Q3</span>
           <div class="ax-mark">
             <div></div>
@@ -337,6 +337,7 @@
           News
         </h2>
       </div>
+
     </section>
     <section id="scrollnav-5" class="content5">
       <div class="section-title">
@@ -437,7 +438,22 @@
             2. You can also watch NFT short videos and get the corresponding viewing revenue.
             In addition, NFT short video authors can get the corresponding income.
           </p>
+        </div>
+      </div>
 
+      <div class="ax-break"></div>
+
+      <div class="ax-box ax-border ax-radius box-faq">
+        <div class="ax-box-header ax-row">
+          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+          <div class="ax-col"><b class="ax-title">How do I get the DAY token?</b></div>
+          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+        </div>
+        <div class="ax-break-line"></div>
+        <div class="ax-box-body ax-article" style="display: none;">
+          <p>
+            1. You can purchase through the trading platform.
+          </p>
         </div>
       </div>
 
@@ -482,6 +498,9 @@
 <script type="text/javascript" src="/static/js/nav.js"></script>
 <script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
 <script type="text/javascript">
+  window.onload = function() {
+    init(true);
+  };
 <!--  window.addEventListener('load', function() {-->
 <!--            if (!window.web3) {//用来判断你是否安装了metamask-->
 <!--              window.alert('Please install MetaMask first.');//如果没有会去提示你先去安装-->

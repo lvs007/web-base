@@ -32,7 +32,7 @@
         <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
           <ul class="ax-outer">
             <!--class="ax-selected"-->
-            <li><a href="###">Mint</a></li>
+            <li><a href="/v1/mint/mint">Mint</a></li>
             <li><a href="/v1/create/createnft">NFT Creation</a></li>
             <li><a href="/v1/market/market">NFT Market</a></li>
             <li><a href="/v1/video-view/view">NFT Video</a></li>
@@ -73,11 +73,12 @@
 <!--  </div>-->
 <!--  <div class="ax-break-xs"></div>-->
   <div class="ax-item ax-flex-row ax-search-box">
-    <span class="ax-head">Search</span><div class="ax-flex-block">
-    <div class="ax-text">
-      <input class="ax-round ax-sm" type="text" placeholder="Keyword Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search">Search</a>
+<!--    <span class="ax-head">Search</span>-->
+    <div class="ax-flex-block">
+      <div class="ax-text">
+        <input class="ax-round ax-sm" type="text" placeholder="NFT ID Search" style="width:200px"/><a href="###" class="ax-iconfont ax-icon-search">Search</a>
+      </div>
     </div>
-  </div>
   </div>
   <div class="ax-break-md"></div>
   <div class="ax-break-line"></div>
@@ -118,6 +119,10 @@
 <script src='https://src.axui.cn/src/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
 <script type="text/javascript" th:src="@{/static/js/view.js}"></script>
-
+<script>
+  window.onload = function() {
+    init(true);
+  };
+</script>
 </body>
 </html>
