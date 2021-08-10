@@ -318,9 +318,6 @@ function setContext(result) {
       context += '</ul>';
     }
     document.getElementById('pt-list').innerHTML=context;
-    for(var k = 0; k < length; k++) {
-        initPop(result.ids[k]);
-    }
 }
 
 var currentTokenId = -1;
@@ -338,22 +335,20 @@ function initPop(id) {
 
 }
 
-async function transfer(type) {
+async function transfer() {
   if (!checkNetwork()) {
     return;
   }
-  var contractAddress = getContractAddress(type);
   try{
     var toAddress = document.getElementById('toAddress').value;
-    let instance = await tronWeb.contract().at(contractAddress);
+    let instance = await tronWeb.contract().at(mhNftContractAdd);
     let res = await instance.transfer(toAddress,currentTokenId).send({
         feeLimit:100000000,
         callValue:0,
         shouldPollResponse:false
     });
     console.log(res);
-    alert('Send success');
-    mhNft(1);
+    mhnftlist();
   } catch (error) {
     console.log(error);
     alert('Send fail');
@@ -372,24 +367,170 @@ function setPageSplit(total,totalPage,currentPage,onclickFun){
   document.getElementById('page-split').innerHTML=context;
 }
 
-function validCreateNft () {
-  if(document.getElementById('fileInput').value=="") {
-    alert('Please select the file to be uploaded');
-    return false;
+async function buyBox(){
+  if (!checkNetwork()) {
+    return;
   }
-  var title = document.getElementById('title');
-  if(title.value == '') {
-    alert('Please enter a title');
-    return false;
+  try{
+    var amount = new BigNumber(100);
+    amount = amount.multipliedBy(decimals).toFixed();
+    await approve(mhTokenContractAdd,mhboxContractAdd,amount);
+    let instance = await tronWeb.contract().at(mhboxContractAdd);
+    let res = await instance.buy(amount).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    sleep(1000);
+    boxlist();
+  } catch (error) {
+    console.log(error);
+    alert('Buy fail');
   }
-  var desc = document.getElementById('desc');
-  if(desc.value == '') {
-    alert('Please enter a profile');
-    return false;
+}
+
+async function openBox(boxId){
+  if (!checkNetwork()) {
+    return;
   }
-  if(url==''){
-    alert('Please wait for the file to be uploaded');
-    return false;
+  try{
+    let instance = await tronWeb.contract().at(mhboxContractAdd);
+    let res = await instance.open(boxId).send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log("openBox: "+res);
+    sleep(1000);
+    boxlist();
+  } catch (error) {
+    console.log(error);
+    alert('Open fail');
   }
-  return true;
+}
+
+async function boxlist(){
+  mhnftlist();
+  let userAdress = window.tronWeb.defaultAddress.base58;
+  let instance = await tronWeb.contract().at(mhboxContractAdd);
+  let result = await instance.boxOfOwner(userAdress).call();
+  setBoxContext(result);
+}
+
+async function mhnftlist(){
+  let userAdress = window.tronWeb.defaultAddress.base58;
+  let instance = await tronWeb.contract().at(mhNftContractAdd);
+  let result = await instance.tokenOfOwner(userAdress).call();
+  setMHNFTContext(result);
+}
+
+function setBoxContext(result) {
+    var context = "";
+    var col = 4;
+    var length = result.ids.length;
+    var line = Math.ceil(length / col);
+    var url = "https://src.axui.cn/examples/images/image-7.jpg";
+    var title = "";
+    var desc = "";
+    var time = "";
+    for(var k = 0, i = 0; k < line; k++) {
+      context += '<ul class="ax-grid-inner">';
+      for(var j = 0; j < col && i < length; j++,i++) {
+        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="openBox('+result.ids[i]+')">Open Box</a>';
+        var typeContext = '<div class="ax-img">'+
+                  '<a target="_blank" href="' + url + '" class="ax-figure" style="background-image:url(' + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+                  '</div>';
+        context += '<li class="ax-grid-block ax-col-8">'+
+          '<div class="ax-card-block" style="background-color: floralwhite;padding: 3px;">'+
+            typeContext +
+            '<div class="ax-title">'+
+              '<a href="###" class="ax-ell-title"> Box ID：'+result.ids[i] + '</a>'+
+            '</div>'+
+            '<div class="ax-keywords">'+
+                button +
+            '</div>'+
+          '</div>'+
+        '</li>';
+      }
+      context += '</ul>';
+    }
+    document.getElementById('pt-list').innerHTML=context;
+}
+
+function setMHNFTContext(result) {
+    var context = "";
+    var col = 4;
+    var length = result.ids.length;
+    var line = Math.ceil(length / col);
+    var url = "https://src.axui.cn/examples/images/image-7.jpg";
+    var title = "";
+    var desc = "";
+    var time = "";
+    for(var k = 0, i = 0; k < line; k++) {
+      context += '<ul class="ax-grid-inner">';
+      for(var j = 0; j < col && i < length; j++,i++) {
+        var levelAndUrl = getLevelAndUrl(result.levels[i]);
+        url =  "http://www.daynft.org/static/images/" + levelAndUrl.url;
+        var liupai = '<div class="wYin-success">' +
+                       '<p>'+levelAndUrl.l+'</p>' +
+                     '</div>';
+        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">Transfer NFT</a>';
+        var typeContext = '<div class="ax-img">'+
+                  '<a target="_blank" href="' + url + '" class="ax-figure" style="background-image:url(' + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+                  '</div>';
+        context += '<li class="ax-grid-block ax-col-8">'+
+          '<div class="ax-card-block" style="background-color: floralwhite;padding: 3px;">'+
+            typeContext +
+            liupai +
+            '<div class="ax-title">'+
+              '<a href="###" class="ax-ell-title"> MH NFT ID：'+result.ids[i] + '</a>'+
+            '</div>'+
+            '<div class="ax-keywords">'+
+                button +
+            '</div>'+
+          '</div>'+
+        '</li>';
+      }
+      context += '</ul>';
+    }
+    document.getElementById('mhnft-list').innerHTML=context;
+    for(var k = 0; k < length; k++) {
+        initPop(result.ids[k]);
+    }
+}
+
+function getLevelAndUrl(level){
+  if(level == 0){
+    return {l:"V1",url:"6.jpeg"};
+  }else if(level == 1){
+    return {l:"V2",url:"4.jpeg"};
+  }else if(level == 2){
+    return {l:"V3",url:"1.jpeg"};
+  }else if(level == 3){
+    return {l:"V4",url:"1.jpeg"};
+  }else if(level == 4){
+    return {l:"V5",url:"1.jpeg"};
+  }
+  return {l:"None",url:"logo.png"};
+}
+
+async function approve(contractAddress,to,amount){
+  var issuerAddress = window.tronWeb.defaultAddress.hex;
+  let userAdress = window.tronWeb.defaultAddress.base58;
+  let instance = await tronWeb.contract().at(contractAddress);
+  let number = await instance.allowance(userAdress,to).call();
+  number = tronWeb.toDecimal(number);
+  if(number < amount){
+    try {
+        var parameter1 = [{type:'address',value:''},{type:'uint256',value:'1000000000000000000000000000'}]
+        parameter1[0].value = tronWeb.address.fromHex(to);
+        var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,"approve(address,uint256)", {},parameter1,issuerAddress);
+        var signedTx = await tronWeb.trx.sign(tx.transaction);
+        var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
+      } catch (error) {
+          console.log(error);
+          alert('Approval failed, please try again!');
+          return;
+      }
+  }
 }

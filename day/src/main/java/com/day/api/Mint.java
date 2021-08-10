@@ -14,8 +14,11 @@ public class Mint {
   public String mintDetail(@RequestParam(name = "type", required = true) String type,
       ModelMap modelMap) {
 
-    modelMap.put("type", type);
-    return "mintdetail";
+    if (type.equals("1")) {
+      return "mintdetail";
+    } else {
+      return "mintnftdetail";
+    }
   }
 
 }

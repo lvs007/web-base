@@ -52,14 +52,15 @@
 <!--main-->
 <main>
 <!--  <p th:text="${window.tronWeb.address}">address</p>-->
+
   <div class="" style="text-align:center">
     <a href="###" class="ax-logo"><img class="img-logo-detail-token" src="/static/images/logo.png" /></a>
   </div>
   <div class="ax-h2 " style="text-align:center;padding-bottom: 0px;">
-    DAY Pool
+    DAY + NFT Pool
   </div>
   <div style="text-align:center;color: rgb(170, 149, 133);">
-    <span>Pledge DAY and earn MH</span>
+    <span>Pledge DAY + NFT and earn MH</span>
   </div>
   <div class="ax-padding" style="text-align:center">
 <!--    <div class="ax-grid ax-space-xxl ax-split">-->
@@ -80,7 +81,7 @@
                   <span>MH earned</span>
                 </div>
                 <div class="">
-                  <a href="###" style="font-size: 24px;" class="ax-btn ax-long ax-reverse ax-lg" th:onclick="'harvest(1)'">Harvest</a>
+                  <a href="###" style="font-size: 24px;" class="ax-btn ax-long ax-reverse ax-lg" th:onclick="'harvest(2)'">Harvest</a>
                 </div>
               </div>
           </li>
@@ -115,6 +116,43 @@
       </ul>
 <!--    </div>-->
   </div>
+  <div class="ax-break-xs"></div>
+  <div class="ax-row ax-split">
+    <div class="ax-col border-div" style="margin-right: 5px;">
+      <div class="ax-filter ax-border">
+        <div class="ax-break-xs"></div>
+        <div class="ax-item ax-flex-row">
+          <span class="ax-head">BUY MH BOX</span>
+          <div class="ax-flex-block">
+            <div class="ax-text">
+              <a href="###" class="ax-active" onclick="buyBox()">Buy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ax-break-xs"></div>
+      <div class="ax-grid ax-space-xxl ax-split-3" id="pt-list" onclick="">
+
+      </div>
+    </div>
+    <div class="ax-col border-div" style="margin-left: 5px;">
+      <div class="ax-filter ax-border">
+        <div class="ax-break-xs"></div>
+        <div class="ax-item ax-flex-row">
+          <span class="ax-head">MH NFT</span>
+          <div class="ax-flex-block">
+            <div class="ax-text">
+              <a href="###" class="ax-active" onclick="mergeNft()">Merge NFT</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ax-break-xs"></div>
+      <div class="ax-grid ax-space-xxl ax-split-3" id="mhnft-list" onclick="">
+
+      </div>
+    </div>
+  </div>
   <div class="push"></div>
 </main>
 
@@ -124,7 +162,7 @@
   <div class="ax-window-contain">
     <a href="###" class="ax-window-close"><i class="ax-iconfont ax-icon-close"></i></a>
     <div id="title" class="ax-window-title" style="text-align: center;padding-left: 0px;margin: 10px;">
-      Stake DAY Tokens
+      Stake DAY + NFT Tokens
     </div>
     <div class="ax-window-content" style="margin: 20px;">
       <div class="" style="-webkit-justify-content: space-between!important;display: -webkit-flex!important;">
@@ -133,7 +171,7 @@
       </div>
       <div style="border: 1px solid #5915e1;border-radius: 5px;">
         <input id="amount" class="ax-round ax-sm" type="number" style="border: 0px;width: 89.8%;"/>
-        <a id="setMaxAmount" class="ax-btn ax-sm" style="background: #5915e1;color: #fff;" href="###" th:onclick="'setMaxAmount(1,1)'">Max</a>
+        <a id="setMaxAmount" class="ax-btn ax-sm" style="background: #5915e1;color: #fff;" href="###" th:onclick="'setMaxAmount(2,1)'">Max</a>
       </div>
     </div>
     <div class="ax-padding ax-window-operate">
@@ -142,13 +180,36 @@
 <!--          <div class="ax-explain">您还要看更多么？</div>-->
 <!--        </div>-->
           <a href="###" class="ax-btn ax-text ax-ignore ax-window-close">取消</a>
-          <a id="btn-submit" href="###" class="ax-btn ax-primary ax-window-close" th:onclick="'stake(1)'">Stake</a>
+          <a id="btn-submit" href="###" class="ax-btn ax-primary ax-window-close" th:onclick="'stake(2)'">Stake</a>
       </div>
     </div>
 
   </div>
 </div>
 
+<div id="pop-zr-w" style="display: none;background-color: floralwhite;">
+  <div class="ax-window-title" style="background-color: floralwhite;">Transfer MH NFT</div>
+  <div class="ax-padding">
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-form-label">Receive Account：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="toAddress" class="ax-round ax-sm" type="text" style="width:300px"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ax-break-line"></div>
+  <div class="ax-row ax-operate">
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
+    <span class="ax-gutter-line"></span>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer()">Transfer</a>
+  </div>
+</div>
 
 <footer>
   <div class="ax-padding">
@@ -176,7 +237,8 @@
 
   window.onload = function() {
     if(init(false)){
-      setDetailValue(1);
+      setDetailValue(2);
+      boxlist();
     }
   };
 
@@ -187,7 +249,7 @@
   });
 
   $("#unStake").click(async function () {
-    var type = 1;
+    var type = 2;
     var balance = await getStakeNum(type);
     document.getElementById('balance').innerHTML = "stake balance:"+balance;
     document.getElementById('stake-text').innerHTML = "unStake";
@@ -198,7 +260,7 @@
     document.getElementById('setMaxAmount').onclick = function(){
       setMaxAmount(type,2);
     };
-    document.getElementById('title').innerHTML = "UnStake DAY Tokens";
+    document.getElementById('title').innerHTML = "UnStake DAY + NFT Tokens";
     $("#stake_window").addClass("ax-window-show");
   });
 
