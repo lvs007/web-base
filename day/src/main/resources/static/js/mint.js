@@ -168,7 +168,10 @@ async function stake(type){
   if(type == 1){
     await stakeDay(type,amount);
   }else if(type == 2){
-
+    var myselect=document.getElementById("select");
+    var index=myselect.selectedIndex;
+    var nftId = myselect.options[index].value;
+    await nftStake(type,amount,nftId);
   }
   setDetailValue(type);
 }
@@ -215,6 +218,8 @@ async function nftStake(type,amount,nftId) {
   }
   var contractAddress = getContractAddress(type);
   try{
+    await approve(tokenContractAdd,contractAddress,amount);
+    await approveNft(mhNftContractAdd,contractAddress,nftId);
     let instance = await tronWeb.contract().at(contractAddress);
     let res = await instance.stake(amount,nftId).send({
         feeLimit:100000000,
@@ -417,11 +422,21 @@ async function boxlist(){
   setBoxContext(result);
 }
 
+function setSelect(result){
+  var context = '<option value="0">Select a NFT</option>';
+  var length = result.ids.length;
+  for(var i=0;i<length ;i++){
+    context += '<option value="'+result.ids[i]+'">NFT ID:'+result.ids[i]+',Level:'+result.levels[i]+'</option>';
+  }
+  document.getElementById('select').innerHTML = context;
+}
+
 async function mhnftlist(){
   let userAdress = window.tronWeb.defaultAddress.base58;
   let instance = await tronWeb.contract().at(mhNftContractAdd);
   let result = await instance.tokenOfOwner(userAdress).call();
   setMHNFTContext(result);
+  setSelect(result);
 }
 
 function setBoxContext(result) {
@@ -533,4 +548,21 @@ async function approve(contractAddress,to,amount){
           return;
       }
   }
+}
+
+async function approveNft(contractAddress,to,nftId){
+  try {
+      var issuerAddress = window.tronWeb.defaultAddress.hex;
+      var parameter1 = [{type:'address',value:''},{type:'uint256',value:'0'}]
+      parameter1[0].value = tronWeb.address.fromHex(to);
+      parameter1[1].value = nftId;
+
+      var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,"approve(address,uint256)", {},parameter1,issuerAddress);
+      var signedTx = await tronWeb.trx.sign(tx.transaction);
+      var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
+    } catch (error) {
+        console.log(error);
+        alert('Approval failed, please try again!');
+        return;
+    }
 }

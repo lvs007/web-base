@@ -170,8 +170,12 @@
         <span id="balance">balance:</span>
       </div>
       <div style="border: 1px solid #5915e1;border-radius: 5px;">
-        <input id="amount" class="ax-round ax-sm" type="number" style="border: 0px;width: 89.8%;"/>
+        <input id="amount" class="ax-round ax-sm" type="number" style="border: 0px;width: 55.8%;"/>
         <a id="setMaxAmount" class="ax-btn ax-sm" style="background: #5915e1;color: #fff;" href="###" th:onclick="'setMaxAmount(2,1)'">Max</a>
+        <select style="width:33%;height: calc(38px - 10px);" id="select">
+          <option value="">Select a NFT</option>
+        </select>
+<!--        <input id="nftId" class="ax-round ax-sm" type="number" placeholder="NFT ID" style="border: 0px;width: 30.8%;"/>-->
       </div>
     </div>
     <div class="ax-padding ax-window-operate">
