@@ -10,12 +10,6 @@ function getContractAddress(type){
   }
 }
 
-function formatNumber(result){
-  var BN = BigNumber.clone();
-  BN.config({DECIMAL_PLACES:4});
-  return new BN(tronWeb.toDecimal(result)).div(decimals).toNumber();
-}
-
 async function balanceOf(type)
 {
     if (!checkNetwork()) {

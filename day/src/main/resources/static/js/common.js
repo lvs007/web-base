@@ -101,5 +101,50 @@ function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+function formatNumber(result){
+  var BN = BigNumber.clone();
+  BN.config({DECIMAL_PLACES:4});
+  return new BN(tronWeb.toDecimal(result)).div(decimals).toNumber();
+}
+
+function formatNumberDecimal(result,decimals){
+  var BN = BigNumber.clone();
+  BN.config({DECIMAL_PLACES:4});
+  return new BN(tronWeb.toDecimal(result)).div(decimals).toNumber();
+}
+
+async function receiveDay(){
+  try{
+    let instance = await tronWeb.contract().at("TUCXYV1PoGN659ByWu2Q52atLyxdJxMJuV");
+    let res = await instance.receive().send({
+        feeLimit:100000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+  }catch (error) {
+    console.log(error);
+  }
+}
+
+async function wallet() {
+  try{
+    let userAdress = window.tronWeb.defaultAddress.base58;
+    let instance = await tronWeb.contract().at(tokenContractAdd);
+    var result = await instance.balanceOf(userAdress).call();
+    var dayAmount = formatNumber(result);
+    instance = await tronWeb.contract().at(mhTokenContractAdd);
+    result = await instance.balanceOf(userAdress).call();
+    var mhAmount = formatNumber(result);
+    var trxAmount = await tronWeb.trx.getBalance(userAdress);
+    trxAmount = formatNumberDecimal(trxAmount,1000000);
+    document.getElementById('trx').innerText="TRX balance: "+trxAmount;
+    document.getElementById('day').innerText="DAY balance: "+dayAmount;
+    document.getElementById('mh').innerText="MH balance: "+mhAmount;
+    $("#stake_window").addClass("ax-window-show");
+  }catch (error) {
+    console.log(error);
+  }
+}
+
 
 
