@@ -30,19 +30,19 @@ beforeNode = "";
 
 var finish = false;
 
-function init(show){
+function init(show,isTime){
   if(finish){
     return true;
   }
 
-  if(!window.tronWeb){
+  if(!isTime && !window.tronWeb){
     alert('Please install TronLink plugin first!');
     return false;
   }
 
   beforeAccount = window.tronWeb.defaultAddress.base58;
   beforeNode = window.tronWeb.fullNode.host;
-  if (!checkNetwork()) {
+  if (!isTime && !checkNetwork()) {
     return false;
   }
   if (window.tronWeb && window.tronWeb.defaultAddress) {

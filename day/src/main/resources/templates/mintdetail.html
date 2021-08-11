@@ -173,13 +173,13 @@
 <script type="text/javascript" th:src="@{/static/js/mint.js}"></script>
 <script type="text/javascript">
   /* <![CDATA[ */
-  var int=self.setInterval("initValue()",1000);
+  var int=self.setInterval("initValue(true)",1000);
   window.onload = function() {
-    initValue();
+    initValue(false);
   };
 
-  function initValue(){
-    if(init(false)){
+  function initValue(isTime){
+    if(init(false,isTime)){
       setDetailValue(1);
     }
   }
