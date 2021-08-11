@@ -173,12 +173,16 @@
 <script type="text/javascript" th:src="@{/static/js/mint.js}"></script>
 <script type="text/javascript">
   /* <![CDATA[ */
-
+  var int=self.setInterval("initValue()",1000);
   window.onload = function() {
+    initValue();
+  };
+
+  function initValue(){
     if(init(false)){
       setDetailValue(1);
     }
-  };
+  }
 
   $("#stake").click(async function () {
     var balance = await balanceOf(3);

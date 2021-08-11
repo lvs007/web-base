@@ -236,18 +236,18 @@ body{min-height:100%;margin:0;padding:0;position:relative;}
 main{
   width:80%;
   margin:14px auto;
-  min-height:100%;
+  min-height:calc(100% - 40px);
   margin-bottom: -100px; /* 等于footer的高度 padding-bottom:100px;*/
 }/* main的padding-bottom值要等于或大于footer的height值 background-color: #bdb76b; background-color: #ffc0cb;*/
 footer{
   position:relative;
   bottom:0;
   width:80%;
-  height:100px;
+  height:40px;
   left: 10%;
 }
 .push {
-  height: 100px;
+  height: 40px;
 }
 
 .ax-window-label {

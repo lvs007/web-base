@@ -498,6 +498,7 @@
 <script type="text/javascript" src="/static/js/nav.js"></script>
 <script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
 <script type="text/javascript">
+  var int=self.setInterval("init(true)",1000);
   window.onload = function() {
     init(true);
   };

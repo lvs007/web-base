@@ -28,7 +28,13 @@ const tron_server = "https://nile.trongrid.io";
 beforeAccount = "";
 beforeNode = "";
 
+var finish = false;
+
 function init(show){
+  if(finish){
+    return true;
+  }
+
   if(!window.tronWeb){
     alert('Please install TronLink plugin first!');
     return false;
@@ -51,6 +57,7 @@ function init(show){
     if(show){
       tag(1);
     }
+    finish = true;
     return true;
   }
   return false;
@@ -80,6 +87,9 @@ window.addEventListener('message', function (e) {
 
 function checkNetwork() {
   var host = window.tronWeb.fullNode.host;
+  if(host.includes('127.0.0.1')){
+    return false;
+  }
   if (!host.includes('nile')) {
     alert('Please switch TronLink network to nile test network! The function is still in testing!');
     return false;
