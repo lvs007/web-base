@@ -43,38 +43,10 @@
   </div>
 </div>
 
-<header class="ax-header">
-  <div class="ax-row" style="background-color: #37517e;">
-    <div class="ax-col">
-      <a href="###" class="ax-logo"><img src="/static/images/logo.png" /></a>
-    </div>
-    <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
-      <div class="ax-item">
-        <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">News</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">Features</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">Token</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">Roadmap</a><span class="ax-line"></span></li>
+<header class="ax-header" id="header">
 
-        <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">Team</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">FAQ</a><span class="ax-line"></span></li>
-        <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Contact</a><span class="ax-line"></span></li>
-      </div>
-      <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
-        <ul class="ax-outer">
-          <!--class="ax-selected"-->
-          <li style="margin: 0px;"><a href="/v1/mint/mint">Mint</a></li>
-          <li style="margin: 0px;"><a href="/v1/create/createnft">NFT Creation</a></li>
-          <li style="margin: 0px;"><a href="/v1/market/market">NFT Market</a></li>
-          <li style="margin: 0px;"><a href="/v1/video-view/view">NFT Video</a></li>
-        </ul>
-      </div>
-      <span class="ax-btns">
-        <button type="button" class="ax-btn ax-sm ax-longest" id="address-home" onclick="wallet()"></button>
-      </span>
-    </div>
-  </div>
 </header>
+<script type="text/javascript" th:src="@{/static/js/header.js}"></script>
 <div class="ax-space-header"></div>
 <section class="section">
   <div class="ax-row ax-split toppage">
@@ -86,7 +58,8 @@
         After the official launch, we will give participating users an airdrop of DAY tokens</h2>
       <div>
         <a href="###" class="ax-btn ax-primary ax-round">White paper</a>
-        <a href="###" class="ax-btn ax-primary ax-round" onclick="receiveDay()">Receive test tokens</a>
+        <a target="_blank" href="https://nileex.io/join/getJoinPage" class="ax-btn ax-primary ax-round">Receive TRX tokens</a>
+        <a href="###" class="ax-btn ax-primary ax-round" onclick="receiveDay()">Receive DAY tokens</a>
       </div>
     </div>
     <div class="ax-col-12 div-split-m15">
@@ -99,30 +72,31 @@
     <section id="scrollnav-4" class="content4">
       <div class="section-title">
         <h2>
-          News
+          Latest News
         </h2>
       </div>
 
     </section>
-    <section id="scrollnav-1" class="section-bg content1 section1">
+    <section id="scrollnav-1" class="content1 section1">
       <div class="section-title">
         <h2>
           Features
         </h2>
         <p>
-          Diagon Alley NFT intelligent management platform is committed to becoming the most professional decentralized NFT management platform in the world.
-          The final product is a trustless, transparent, and well-incentive platform for NFT production, trading, auctions and other operations.
-          It will publish its own chains, and will provide cross-chain services for NFTs on different chains.
-          Based on Substrate development, combined with Polkadot’s cross-chain ecology, it introduces unlimited possibilities for NFT transactions.
-          The Diagon Alley NFT intelligent service platform is committed to exploring user needs, expanding the scale of the NFT field, reducing user thresholds, and enabling users to conduct large-scale transactions safely and at low cost.
-          It is the responsibility of the building to expand and accumulate the NFT user pool.
+          Functions: production, trading, auctions, collect ...
+        </p>
+        <p>
+          Fees: Super low handling fee. The first phase is based on the BSC or TRON, and later will release main network
+        </p>
+        <p>
+          Professional, Transparency, Security decentralized NFT management platform
         </p>
       </div>
       <div class="ax-grid ax-space-md">
 <!--        ax-grid-inner-->
         <ul class="">
           <li class="ax-grid-block ax-col-6">
-            <div class="ax-box ax-radius">
+            <div class="ax-box ax-radius card-div">
               <div class="ax-box-header">
                 <div class="ax-row">
                   <i class="ax-adorn ax-iconfont ax-icon-star"></i>
@@ -134,13 +108,13 @@
                 </div>
               </div>
               <div class="ax-box-body ax-padding ax-xl">
-                Magic Hamper tokens can be used to obtain a magic hamper.
-                Users can collect cards of interest (or valuable) by purchasing different series of magic hamper, art auction function, game character image auction function, and so on.
+                Magic Hamper tokens can be used to obtain a magic hamper. Magic hamper can open a card.
+                Users can collect cards of interest (or valuable) by purchasing different series of magic hamper, and so on.
               </div>
             </div>
           </li>
           <li class="ax-grid-block ax-col-6">
-            <div class="ax-box  ax-radius">
+            <div class="ax-box  ax-radius card-div">
               <div class="ax-box-header">
                 <div class="ax-row">
                   <i class="ax-adorn ax-iconfont ax-icon-star"></i>
@@ -152,14 +126,13 @@
                 </div>
               </div>
               <div class="ax-box-body ax-padding ax-xl">
-                In the current Magic Hamper Token mining, the tokens (MH) obtained in the early stage of the Magic Hamper need to be obtained in the form of platform currency DAY mining.
-                When DAY mining is over, all subsequent MH tokens are mined through MH tokens and NFT magic hamper cards, which are divided into 3 years.
-                Each NFT mining cycle is one month, and a total of 10 million MH tokens will be mined. Each account is only allowed to use one NFT Magic Hamper Card for mining.
+                MH is all mint out through DAY and NFT magic hamper cards.
+                Genesis mining is done using DAY. Combined mining(DAY + NFT) will be opened after the end of the Genesis mining.
               </div>
             </div>
           </li>
           <li class="ax-grid-block ax-col-6">
-            <div class="ax-box  ax-radius">
+            <div class="ax-box  ax-radius card-div">
               <div class="ax-box-header">
                 <div class="ax-row">
                   <i class="ax-adorn ax-iconfont ax-icon-star"></i>
@@ -172,23 +145,25 @@
               </div>
               <div class="ax-box-body ax-padding ax-xl">
                 The current management of NFT mainly includes: NFT production, NFT trading, and NFT auction.
+                Users can perform various transactions and manipulations of NFT on the platform.
               </div>
             </div>
           </li>
           <li class="ax-grid-block ax-col-6">
-            <div class="ax-box  ax-radius">
+            <div class="ax-box  ax-radius card-div">
               <div class="ax-box-header">
                 <div class="ax-row">
                   <i class="ax-adorn ax-iconfont ax-icon-star"></i>
                   <div class="ax-col">
-                    <div class="ax-title">Short Video Service</div>
-                    <div class="ax-des">The Great China</div>
+                    <div class="ax-title">Video Service</div>
+                    <div class="ax-des">The Great NFT</div>
                   </div>
                   <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
                 </div>
               </div>
               <div class="ax-box-body ax-padding ax-xl">
-                Each short video will be mapped to become an NFT, and the content of the short video will be stored on BT, which is completely decentralized storage. Each video will correspond to a unique NFT. The user has full ownership of this NFT. The value generated by this NFT belongs to the user and is not subject to exploitation and control by centralized platforms.
+                Each video will be mapped to an NFT, and the video will be stored on BTFS or IPFS.
+                The value generated by this NFT belongs to the user and is not subject to exploitation and control by centralized platforms.
               </div>
             </div>
           </li>
@@ -237,18 +212,18 @@
       </div>
       <div class="ax-row ax-split skills">
         <div class="ax-col-115 div-split-m15">
-          <img src="/static/images/token.png" class="img-fluid" alt=""/>
+          <img src="/static/images/tokenyw.png" class="img-fluid" alt=""/>
         </div>
         <div class="ax-col-115 div-split-m15 content">
-          <h3>TOKEN DISTRIBUTION</h3>
+          <h3>DAY TOKEN DISTRIBUTION</h3>
           <p class="font-italic">
-            blah blah blah...
+
           </p>
           <div class="skills-content">
             <div class="progress">
-              <span class="skill">Mining <i class="val">60%</i></span>
+              <span class="skill">Platform Foundation <i class="val">35%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width: 35%;">
                 </div>
               </div>
             </div>
@@ -260,23 +235,23 @@
               </div>
             </div>
             <div class="progress">
-              <span class="skill"> Early Community <i class="val">10%</i></span>
+              <span class="skill"> Early Community <i class="val">20%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
                 </div>
               </div>
             </div>
             <div class="progress">
-              <span class="skill"> Business &amp; Media Partnership <i class="val">10%</i></span>
+              <span class="skill"> Ecological development <i class="val">20%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
                 </div>
               </div>
             </div>
             <div class="progress">
-              <span class="skill"> Team <i class="val">10%</i></span>
+              <span class="skill"> Team <i class="val">15%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%;">
                 </div>
               </div>
             </div>
@@ -378,7 +353,7 @@
       </div>
       <div class="ax-row ax-split">
         <div class="ax-col">
-          <div class="ax-box ax-border ax-radius box-man">
+          <div class="ax-box ax-border ax-radius box-man card-div">
             <div class="ax-box-header ax-row">
               <div class="ax-col">
                 <div class="ax-title">Kiven</div>
@@ -397,7 +372,7 @@
           </div>
         </div>
         <div class="ax-col">
-          <div class="ax-box ax-border ax-radius box-man">
+          <div class="ax-box ax-border ax-radius box-man card-div">
             <div class="ax-box-header ax-row">
               <div class="ax-col">
                 <div class="ax-title">Wolf King</div>
@@ -422,7 +397,7 @@
         </h2>
       </div>
 
-      <div class="ax-box ax-border ax-radius box-faq">
+      <div class="ax-box ax-border ax-radius box-faq card-div">
         <div class="ax-box-header ax-row">
           <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
           <div class="ax-col"><b class="ax-title">What is DAY?</b></div>
@@ -453,7 +428,7 @@
 
       <div class="ax-break"></div>
 
-      <div class="ax-box ax-border ax-radius box-faq">
+      <div class="ax-box ax-border ax-radius box-faq card-div">
         <div class="ax-box-header ax-row">
           <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
           <div class="ax-col"><b class="ax-title">What can I do on the DAY platform?</b></div>
@@ -473,7 +448,7 @@
 
       <div class="ax-break"></div>
 
-      <div class="ax-box ax-border ax-radius box-faq">
+      <div class="ax-box ax-border ax-radius box-faq card-div">
         <div class="ax-box-header ax-row">
           <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
           <div class="ax-col"><b class="ax-title">How do I get the DAY token?</b></div>
@@ -486,37 +461,50 @@
           </p>
         </div>
       </div>
+      <div class="ax-break"></div>
+
+      <div class="ax-box ax-border ax-radius box-faq card-div">
+        <div class="ax-box-header ax-row">
+          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+          <div class="ax-col"><b class="ax-title">What can MH token be used for?</b></div>
+          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+        </div>
+        <div class="ax-break-line"></div>
+        <div class="ax-box-body ax-article" style="display: none;">
+          <p>
+            1. You can buy Mining Magic Box.Mining magic box can have about 43% probability to open the magic box card.
+               Using the Magic Box cards and DAY combination mining can increase the profit of mining
+          </p>
+          <p>
+            2. You can buy the series magic box for collection.
+          </p>
+        </div>
+      </div>
 
     </section>
     <section id="scrollnav-7" class="content7 section7">
       <div class="section-title">
         <h2>
-          Contact
+          Strategic partners
         </h2>
       </div>
 
-      <div class="ax-row ax-split">
-<!--        <div class="ax-col ax-copyright">-->
-<!--          <a href="###" class="ax-logo"><img src="/static/images/logo.png" style="height: 50px;"/></a>-->
-<!--        </div>-->
-        <div class="ax-col ax-copyright">
-          <a href="###">DAYNFT</a>　Copyright © 2021 DAY Finance Providing you with a silky smooth user experience
-        </div>
-        <div class="ax-operate">
-          <a target="_blank" href="https://github.com/day-nft" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
-          <a target="_blank" href="https://t.me/diagon_alley_day" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
-          <a target="_blank" href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
-          <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
-        </div>
+      <div class="ax-row">
+
       </div>
+
     </section>
 
   </div>
 
 
   <div class="ax-clear"></div>
-
+  <div class="push"></div>
 </main>
+
+<footer id="footer">
+
+</footer>
 
 <!--ax-valign ax-bottom-->
 
@@ -529,26 +517,9 @@
 <script type="text/javascript" th:src="@{/static/js/common.js}"></script>
 <script type="text/javascript">
   window.onload = function() {
-    self.setInterval("init(false,true)",1000);
+    self.setInterval("init(false,true)",interval);
     init(false,false);
   };
-<!--  window.addEventListener('load', function() {-->
-<!--            if (!window.web3) {//用来判断你是否安装了metamask-->
-<!--              window.alert('Please install MetaMask first.');//如果没有会去提示你先去安装-->
-<!--              return;-->
-<!--            }-->
-<!--            if (!web3.eth.coinbase) {//这个是判断你有没有登录，coinbase是你此时选择的账号-->
-<!--              window.alert('Please activate MetaMask first.');-->
-<!--              return;-->
-<!--            }-->
-<!--          // Checking if Web3 has been injected by the browser (Mist/MetaMask)-->
-<!--            if (typeof web3 !== 'undefined') {-->
-
-<!--                // Use the browser's ethereum provider-->
-<!--                web3.personal.sign(web3.fromUtf8("Hello from wanghui!"), web3.eth.coinbase, console.log);-->
-
-<!--　　　　　　　}-->
-<!--　　　　});-->
 </script>
 
 </body>
@@ -575,7 +546,7 @@
 
   }
   section{
-    background-color: #f5f5f5;
+<!--    background-color: #f5f5f5;-->
     margin:10px;
     padding: 60px 0;
     overflow: hidden;

@@ -187,7 +187,7 @@ async function buy(tokenId) {
     }
 
     let res = await instance.buy(tokenId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -213,7 +213,7 @@ async function receive(tokenId){
     }
 
     let res = await instance.receive(tokenId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -301,7 +301,7 @@ function setContext(result,type,select) {
                         '</div>';
         }
         context += '<li class="ax-grid-block ax-col-8">'+
-          '<div class="ax-card-block" style="background-color: floralwhite;">'+
+          '<div class="ax-card-block card-div" style="background-color: floralwhite;">'+
             typeContext +
             liupai +
             '<div class="ax-title">'+
@@ -368,7 +368,7 @@ async function bid(type) {
     }
     bidprice = bidprice.multipliedBy(decimals).toFixed();
     let res = await instance.call(currentTokenId,bidprice).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });

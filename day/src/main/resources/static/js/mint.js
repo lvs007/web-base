@@ -88,7 +88,7 @@ async function withdraw(type,amount)
     try{
       let instance = await tronWeb.contract().at(contractAddress);
       let res = await instance.withdraw(amount).send({
-          feeLimit:100000000,
+          feeLimit:1000000000,
           callValue:0,
           shouldPollResponse:false
       });
@@ -106,7 +106,7 @@ async function harvest(type)
     try{
       let instance = await tronWeb.contract().at(contractAddress);
       let res = await instance.getReward().send({
-          feeLimit:100000000,
+          feeLimit:1000000000,
           callValue:0,
           shouldPollResponse:false
       });
@@ -119,7 +119,11 @@ async function harvest(type)
 async function unStake(type){
   var amount = document.getElementById('amount').value;
   var stake = await getStakeNum(type);
-  if(amount >= stake){
+  if(stake <= 0){
+    alert('Not stake token');
+    return;
+  }
+  if(amount >= stake || type == 2){
     await exit(type);
   }else{
     await withdraw(type,amount);
@@ -136,7 +140,7 @@ async function exit(type)
     try{
       let instance = await tronWeb.contract().at(contractAddress);
       let res = await instance.exit().send({
-          feeLimit:100000000,
+          feeLimit:1000000000,
           callValue:0,
           shouldPollResponse:false
       });
@@ -197,7 +201,7 @@ async function stakeDay(type,amount) {
 
     instance = await tronWeb.contract().at(contractAddress);
     let res = await instance.stake(amount).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -216,107 +220,13 @@ async function nftStake(type,amount,nftId) {
     await approveNft(mhNftContractAdd,contractAddress,nftId);
     let instance = await tronWeb.contract().at(contractAddress);
     let res = await instance.stake(amount,nftId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
   }catch (error) {
     console.log(error);
   }
-}
-
-async function mhNft(pageNum){
-  querycontract(pageNum,mhNftContractAdd);
-}
-
-async function querycontract(pageNum,contractAdd){
-  var tmp = pageNum;
-  if(pageNum <= 0){
-    pageNum = 1;
-    tmp = 1;
-  }
-  //
-  var pageNo = 9;
-  let userAdress = window.tronWeb.defaultAddress.base58;
-  let instance = await tronWeb.contract().at(contractAdd);
-  let number = await instance.balanceOf(userAdress).call();
-  var count = parseInt(number, 10);
-  if(count <= 0){
-    document.getElementById('pt-list').innerHTML="";
-    return;
-  }
-  var totalPage = Math.ceil(count/pageNo);
-  if(pageNum > totalPage){
-    pageNum = totalPage;
-    tmp = pageNum;
-  }
-  pageNum = totalPage - pageNum + 1;
-  var begin = count - pageNo*(totalPage - pageNum);
-  begin = begin > count ? count : begin;
-  var end = begin - pageNo;
-  end = end < 0 ? 0: end;
-  var j = 0;
-  var index = new Array();
-  for(var i = begin - 1;i>=end;i--){
-    index[j] = i;
-    j++;
-  }
-  let result = await instance.tokensOfOwnerByIndexs(userAdress,index).call();
-  document.getElementById('pt-list').innerHTML="";
-  setContext(result);
-  setPageSplit(count,totalPage,tmp,'mhNft');
-}
-
-function setContext(result) {
-    var context = "";
-    var col = 3;
-    var length = result.ids.length;
-    var line = Math.ceil(length / col);
-    var url = "https://src.axui.cn/examples/images/image-7.jpg";
-    var title = "";
-    var desc = "";
-    var time = "";
-    for(var k = 0, i = 0; k < line; k++) {
-      context += '<ul class="ax-grid-inner">';
-      for(var j = 0; j < col && i < length; j++,i++) {
-        url = result.urls[i];
-        title = result.titles[i];
-        desc = result.descs[i];
-        time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
-        var liupai = "";
-        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">Sell NFT</a>' +
-                 '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">Auction NFT</a>' +
-                 '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">Transfer to others</a>';
-        var typeContext = '<div class="ax-img">'+
-                  '<a target="_blank" href="' + ipfs + url + '" class="ax-figure" style="background-image:url(' + ipfs + url + '),url(' + local + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
-                  '</div>';
-        context += '<li class="ax-grid-block ax-col-8">'+
-          '<div class="ax-card-block" style="background-color: floralwhite;">'+
-            typeContext +
-            liupai +
-            '<div class="ax-title">'+
-              '<a href="###" class="ax-ell-title"> NFT ID：'+result.ids[i] + '</a>'+
-            '</div>'+
-            '<div class="ax-title">'+
-              '<a href="###" class="ax-ell-title">' + title + '</a>'+
-            '</div>'+
-            '<div class="ax-des ax-ell-2-des">'+
-              desc +
-            '</div>'+
-            '<div class="ax-keywords">'+
-              '<div class="ax-flex-row">'+
-                time +
-              '</div>'+
-            '</div>'+
-            '<div class="ax-keywords">'+
-                button +
-            '</div>'+
-          '</div>'+
-        '</li>';
-      }
-      context += '</ul>';
-    }
-    document.getElementById('pt-list').innerHTML=context;
 }
 
 var currentTokenId = -1;
@@ -342,7 +252,7 @@ async function transfer() {
     var toAddress = document.getElementById('toAddress').value;
     let instance = await tronWeb.contract().at(mhNftContractAdd);
     let res = await instance.transfer(toAddress,currentTokenId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -376,7 +286,7 @@ async function buyBox(){
     await approve(mhTokenContractAdd,mhboxContractAdd,amount);
     let instance = await tronWeb.contract().at(mhboxContractAdd);
     let res = await instance.buy(amount).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -395,7 +305,7 @@ async function openBox(boxId){
   try{
     let instance = await tronWeb.contract().at(mhboxContractAdd);
     let res = await instance.open(boxId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -445,7 +355,7 @@ function setBoxContext(result) {
     for(var k = 0, i = 0; k < line; k++) {
       context += '<ul class="ax-grid-inner">';
       for(var j = 0; j < col && i < length; j++,i++) {
-        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="openBox('+result.ids[i]+')">Open Box</a>';
+        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" onclick="openBox('+result.ids[i]+')">Open Box</a>';
         var typeContext = '<div class="ax-img">'+
                   '<a target="_blank" href="' + url + '" class="ax-figure" style="background-image:url(' + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
                   '</div>';
@@ -455,7 +365,7 @@ function setBoxContext(result) {
             '<div class="ax-title">'+
               '<a href="###" class="ax-ell-title"> Box ID：'+result.ids[i] + '</a>'+
             '</div>'+
-            '<div class="ax-keywords">'+
+            '<div class="">'+
                 button +
             '</div>'+
           '</div>'+
@@ -483,7 +393,7 @@ function setMHNFTContext(result) {
         var liupai = '<div class="wYin-success">' +
                        '<p>'+levelAndUrl.l+'</p>' +
                      '</div>';
-        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">Transfer NFT</a>';
+        var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="trans-'+result.ids[i]+'">Transfer NFT</a>';
         var typeContext = '<div class="ax-img">'+
                   '<a target="_blank" href="' + url + '" class="ax-figure" style="background-image:url(' + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
                   '</div>';
@@ -494,7 +404,7 @@ function setMHNFTContext(result) {
             '<div class="ax-title">'+
               '<a href="###" class="ax-ell-title"> MH NFT ID：'+result.ids[i] + '</a>'+
             '</div>'+
-            '<div class="ax-keywords">'+
+            '<div class="">'+
                 button +
             '</div>'+
           '</div>'+

@@ -205,11 +205,10 @@ section {
     font-size: 24px;
     font-family: "Jost", sans-serif;
 }
-/*section*/
+/*section background-color: rgb(55 81 126);*/
 
 .section{
     height:calc(100vh - 120px);
-    background-color: rgb(55 81 126);
     margin:0px;
 }
 .section1{
@@ -239,15 +238,16 @@ main{
   min-height:calc(100% - 40px);
   margin-bottom: -100px; /* 等于footer的高度 padding-bottom:100px;*/
 }/* main的padding-bottom值要等于或大于footer的height值 background-color: #bdb76b; background-color: #ffc0cb;*/
-footer{
+footer{/*color: #fff*/
   position:relative;
   bottom:0;
   width:80%;
   height:40px;
   left: 10%;
+  color: #fff;
 }
 .push {
-  height: 40px;
+  height: 100px;
 }
 
 .ax-window-label {
@@ -306,11 +306,24 @@ div.tYin img{
 
 .card-div {
   border-radius: 12px;
-  background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);
-
+  /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
+  /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
+  background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);
+  color: #fff;
+}
+.card-div-reverse {
+  border-radius: 12px;
+  /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
+  /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
+  background: linear-gradient(45deg,rgb(0 78 159),rgb(77 167 223),rgb(119 193 240)  100%);
+  color: #fff;
 }
 .border-div {
-  border: 1px solid #5915e1;
+  border: 1px solid #85c8f1;
   border-radius: 5px;
 }
+.btn-a {
+  margin-right: 5px;
+}
+
 

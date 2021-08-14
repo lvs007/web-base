@@ -14,39 +14,9 @@
 <!--  ...-->
 <!--</nav>-->
 
-<header class="ax-header">
-  <nav>
-    <div class="ax-row" style="background-color: #37517e;">
-      <div class="ax-col">
-        <a href="###" class="ax-logo"><img src="/static/images/logo.png" /></a>
-      </div>
-      <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
-        <div class="ax-item">
-          <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">News</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">Features</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">Token</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">Roadmap</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">Team</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">FAQ</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Contact</a><span class="ax-line"></span></li>
-        </div>
-        <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
-          <ul class="ax-outer">
-            <!--class="ax-selected"-->
-            <li style="margin: 0px;"><a href="/v1/mint/mint">Mint</a></li>
-            <li style="margin: 0px;"><a href="/v1/create/createnft">NFT Creation</a></li>
-            <li style="margin: 0px;"><a href="/v1/market/market">NFT Market</a></li>
-            <li style="margin: 0px;"><a href="/v1/video-view/view">NFT Video</a></li>
-          </ul>
-        </div>
-        <span class="ax-btns">
-        <button type="button" class="ax-btn ax-sm ax-longest" id="address-home"></button>
-      </span>
-      </div>
-    </div>
-  </nav>
+<header class="ax-header" id="header">
 </header>
+<script type="text/javascript" th:src="@{/static/js/header.js}"></script>
 <div class="ax-space-header"></div>
 
 <!--main-->
@@ -66,7 +36,7 @@
 <!--    <div class="ax-grid ax-space-xxl ax-split">-->
       <ul class="ax-grid-inner">
         <li class="ax-grid-block ax-col-5">
-          <div class="ax-col ax-card-block " style="text-align:center;margin: 10px;border: 0px;">
+          <div class=" " style="text-align:center;margin: 10px;border: 0px;">
           </div>
         </li>
         <li class="ax-grid-block ax-col-7">
@@ -102,7 +72,7 @@
 <!--                </div>-->
                 <div class="">
                   <a id="stake" href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg">Stake</a>
-                  <a id="unStake" href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg">UnStake</a>
+                  <a href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg" onclick="unStake(2)">UnStake</a><!--id="unStake" -->
                 </div>
               </div>
 <!--            </div>-->
@@ -110,7 +80,7 @@
 <!--          </div>-->
         </li>
         <li class="ax-grid-block ax-col-5">
-          <div class="ax-col ax-card-block" style="text-align:center;margin: 10px;border: 0px;">
+          <div class="" style="text-align:center;margin: 10px;border: 0px;">
           </div>
         </li>
       </ul>
@@ -118,8 +88,8 @@
   </div>
   <div class="ax-break-xs"></div>
   <div class="ax-row ax-split">
-    <div class="ax-col-12 border-div" style="margin-right: 5px;">
-      <div class="ax-filter ax-border">
+    <div class="ax-col-12 border-div" style="margin-left: -2px;">
+      <div class="ax-filter ax-border border-div">
         <div class="ax-break-xs"></div>
         <div class="ax-item ax-flex-row">
           <span class="ax-head">BUY MH BOX</span>
@@ -135,8 +105,8 @@
 
       </div>
     </div>
-    <div class="ax-col-12 border-div" style="margin-left: 5px;">
-      <div class="ax-filter ax-border">
+    <div class="ax-col-12 border-div" style="margin-right: -2px;">
+      <div class="ax-filter ax-border border-div">
         <div class="ax-break-xs"></div>
         <div class="ax-item ax-flex-row">
           <span class="ax-head">MH NFT</span>
@@ -159,9 +129,9 @@
 <!--渐显窗口-->
 <div class="ax-window" data-mask="true" data-in="fadeIn" id="stake_window">
   <div class="ax-window-overlay"></div>
-  <div class="ax-window-contain">
+  <div class="ax-window-contain card-div-reverse">
     <a href="###" class="ax-window-close"><i class="ax-iconfont ax-icon-close"></i></a>
-    <div id="title" class="ax-window-title" style="text-align: center;padding-left: 0px;margin: 10px;">
+    <div id="title" class="" style="text-align: center;padding-left: 0px;margin: 10px;line-height: 38px;">
       Stake DAY + NFT Tokens
     </div>
     <div class="ax-window-content" style="margin: 20px;">
@@ -215,20 +185,8 @@
   </div>
 </div>
 
-<footer>
-  <div class="ax-padding">
-    <div class="ax-row ax-split">
-      <div class="ax-col ax-copyright">
-        <a href="###">DAYNFT</a>　Copyright © 2021 DAY Finance Providing you with a silky smooth user experience
-      </div>
-      <div class="ax-operate">
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
-      </div>
-    </div>
-  </div>
+<footer id="footer">
+
 </footer>
 
 <script src="https://src.axui.cn/src/js/jquery-1.10.2.min.js" type="text/javascript"></script>
@@ -238,21 +196,34 @@
 <script type="text/javascript" th:src="@{/static/js/mint.js}"></script>
 <script type="text/javascript">
   /* <![CDATA[ */
-  var int=self.setInterval("initValue(true)",1000);
+  var int=self.setInterval("initValue(true)",interval);
   window.onload = function() {
     initValue(false);
   };
-
+  var count = 0;
   function initValue(isTime) {
     if(init(false,isTime)){
       setDetailValue(2);
-      boxlist();
+      if(count < 3) {
+        boxlist();
+      }
+      count++;
     }
   }
 
   $("#stake").click(async function () {
+    var type = 2;
     var balance = await balanceOf(3);
     document.getElementById('balance').innerHTML = "balance:"+balance;
+    document.getElementById('stake-text').innerHTML = "stake";
+    document.getElementById('btn-submit').innerHTML = "Stake";
+    document.getElementById('btn-submit').onclick = function(){
+      stake(type)
+    };
+    document.getElementById('setMaxAmount').onclick = function(){
+      setMaxAmount(type,1);
+    };
+    document.getElementById('title').innerHTML = "Stake DAY + NFT Tokens";
     $("#stake_window").addClass("ax-window-show");
   });
 

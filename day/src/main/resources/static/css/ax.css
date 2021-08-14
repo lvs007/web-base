@@ -21,7 +21,12 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
-  background-color: #fff;
+  /*background: purple url(/static/images/background.jpeg);/*background-color: #fff;*/
+  background: linear-gradient(0deg
+    , rgb(0 78 159),rgb(77 167 223), rgb(119 193 240) 50%, rgb(119 193 240),rgb(77 167 223), rgb(0 78 159));
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-attachment: fixed;
 }
 :focus {
   outline: 0;
@@ -8944,6 +8949,9 @@ textarea.ax-check-ad:focus {
 }
 .ax-header {
   /*background-color: #fff;*/
+  background: purple url(/static/images/header.png);/*background-color: #fff;*/
+  background-repeat: no-repeat;
+  background-size: 100%;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
   transition: all 0.1s linear;
   position: fixed;
@@ -11152,8 +11160,8 @@ textarea.ax-check-ad:focus {
 .ax-scrollnav-v li.ax-active:before {
   background-color: #198cff;
 }
+/*background-color: #fff;*/
 .ax-scrollnav-h {
-  background-color: #fff;
   line-height: 38px;
   text-align: center;
   position: relative;

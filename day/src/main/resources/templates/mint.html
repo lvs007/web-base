@@ -15,39 +15,9 @@
 <!--  ...-->
 <!--</nav>-->
 
-<header class="ax-header">
-  <nav>
-    <div class="ax-row" style="background-color: #37517e;">
-      <div class="ax-col">
-        <a href="###" class="ax-logo"><img src="/static/images/logo.png" /></a>
-      </div>
-      <div class="ax-nav ax-scrollnav-h" style="background-color: #37517e;" id="article-nav1">
-        <div class="ax-item">
-          <li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-4"><a href="/v1/home/home#scrollnav-4" class="ax-text ax-scrollnav-link" style="color:#fff">News</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-1"><a href="/v1/home/home#scrollnav-1" class="ax-text ax-scrollnav-link" style="color:#fff">Features</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-2"><a href="/v1/home/home#scrollnav-2" class="ax-text ax-scrollnav-link" style="color:#fff">Token</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-3"><a href="/v1/home/home#scrollnav-3" class="ax-text ax-scrollnav-link" style="color:#fff">Roadmap</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-5"><a href="/v1/home/home#scrollnav-5" class="ax-text ax-scrollnav-link" style="color:#fff">Team</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-6"><a href="/v1/home/home#scrollnav-6" class="ax-text ax-scrollnav-link" style="color:#fff">FAQ</a><span class="ax-line"></span></li>
-          <li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Contact</a><span class="ax-line"></span></li>
-        </div>
-        <div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>
-          <ul class="ax-outer">
-            <!--class="ax-selected"-->
-            <li style="margin: 0px;"><a href="/v1/mint/mint">Mint</a></li>
-            <li style="margin: 0px;"><a href="/v1/create/createnft">NFT Creation</a></li>
-            <li style="margin: 0px;"><a href="/v1/market/market">NFT Market</a></li>
-            <li style="margin: 0px;"><a href="/v1/video-view/view">NFT Video</a></li>
-          </ul>
-        </div>
-        <span class="ax-btns">
-        <button type="button" class="ax-btn ax-sm ax-longest" id="address-home"></button>
-      </span>
-      </div>
-    </div>
-  </nav>
+<header class="ax-header" id="header">
 </header>
+<script type="text/javascript" th:src="@{/static/js/header.js}"></script>
 <div class="ax-space-header"></div>
 
 <!--main-->
@@ -96,20 +66,8 @@
   <div class="push"></div>
 </main>
 
-<footer>
-  <div class="ax-padding">
-    <div class="ax-row ax-split">
-      <div class="ax-col ax-copyright">
-        <a href="###">DAYNFT</a>　Copyright © 2021 DAY Finance Providing you with a silky smooth user experience
-      </div>
-      <div class="ax-operate">
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>
-        <a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>
-      </div>
-    </div>
-  </div>
+<footer id="footer">
+
 </footer>
 
 <script src="https://src.axui.cn/src/js/jquery-1.10.2.min.js" type="text/javascript"></script>
@@ -118,7 +76,7 @@
 <script src='https://src.axui.cn/src/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
 <script type="text/javascript" th:src="@{/static/js/mint.js}"></script>
 <script type="text/javascript">
-  var int=self.setInterval("initValue(true)",1000);
+  var int=self.setInterval("initValue(true)",interval);
   window.onload = function() {
     initValue(false);
   };

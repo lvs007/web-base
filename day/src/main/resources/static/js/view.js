@@ -74,7 +74,7 @@ function setVedio(result) {
         desc = result.descs[i];
         time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
         context += '<li class="ax-grid-block ax-col-8">'+
-          '<div class="ax-card-block" style="background-color: floralwhite;">'+
+          '<div class="ax-card-block card-div" style="background-color: floralwhite;">'+
             '<div class="ax-videojs" onclick="get()">'+
                 '<video id="videojs01" class="video-js" controls preload="auto" height="200">'+
                     '<source src="' + ipfs + url + '"/>'+

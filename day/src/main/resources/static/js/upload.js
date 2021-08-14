@@ -124,16 +124,6 @@ async function createNft() {
     contractAddress = window.tronWeb.address.toHex(vedioContractAdd);
   }
   var functions = "create(address,string,string,string)";
-  var options = "100000000";
-  var parameter=new Array();
-  parameter[0] = {type:'address',value:'address'};
-  parameter[0].value = window.tronWeb.defaultAddress.base58;
-  parameter[1] = {type:'string',value:'url'};
-  parameter[1].value = url;
-  parameter[2] = {type:'string',value:'desc'};
-  parameter[2].value = desc;
-  parameter[3] = {type:'string',value:'title'};
-  parameter[3].value = title;
   var issuerAddress = window.tronWeb.defaultAddress.hex;
   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
       //valid token approve
@@ -150,7 +140,7 @@ async function createNft() {
             var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
 
 //            let res = await instance.approve(contractAddress,'1000000000000000000000000000').send({
-//                feeLimit:100000000,
+//                feeLimit:1000000000,
 //                callValue:0,
 //                shouldPollResponse:true
 //            });
@@ -161,11 +151,13 @@ async function createNft() {
           }
       }
       //
-      var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,functions, {},parameter,issuerAddress);
-//          var tx = await tronWeb.transactionBuilder.sendTrx('TN9RRaXkCFtTXRso2GdTZxSxxwufzxLQPP', 10, 'TTSFjEG3Lu9WkHdp4JrWYhbGP6K1REqnGQ')
-      var signedTx = await tronWeb.trx.sign(tx.transaction);
-      var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
-      console.log(broastTx);
+      instance = await tronWeb.contract().at(contractAddress);
+      let res = await instance.create(userAdress,url,desc,title).send({
+              feeLimit:1000000000,
+              callValue:0,
+              shouldPollResponse:false
+          });
+      console.log(res);
       if(keyword == "Video"){
         document.getElementById("tab-img").className = "ax-item";
         var vedio = document.getElementById('tab-vedio');
@@ -270,7 +262,7 @@ async function uservideopmquery(pageNum){
 //  try {
 //    let instance = await tronWeb.contract().at(tokenContractAdd);
 //    let res = await instance.approve(contractAdd,1000000000000000000000000000).send({
-//        feeLimit:100000000,
+//        feeLimit:1000000000,
 //        callValue:0,
 //        shouldPollResponse:true
 //    });
@@ -367,13 +359,13 @@ function setContext(result,type,select) {
         var button = "";
         var liupai = "";
         if(select ==0){
-          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="sell-'+result.ids[i]+'">Sell NFT</a>' +
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="pm-'+result.ids[i]+'">Auction NFT</a>' +
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="trans-'+result.ids[i]+'">Transfer to others</a>';
+          button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="sell-'+result.ids[i]+'">Sell NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="pm-'+result.ids[i]+'">Auction NFT</a>' +
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="trans-'+result.ids[i]+'">Transfer to others</a>';
         }else if(select ==1){
           price = new BigNumber(tronWeb.toDecimal(result.prices[i])).div(decimals).toFixed();
           button = '<span class="ax-child">Price: ' + price + ' DAY. </span>'+
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelsell('+result.ids[i]+')">Cancel Auction</a>';
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" onclick="cancelsell('+result.ids[i]+')">Cancel Auction</a>';
         }else if(select ==2){
           var endtime = tronWeb.toDecimal(result.endtimes[i]);
           var count = result.counts[i];
@@ -389,13 +381,13 @@ function setContext(result,type,select) {
                                '<span class="ax-child">End Time: ' + new Date(parseInt(endtime, 10) * 1000).toUTCString() + '</span>'+
                                '</div>';
           if(count <= 0 && endtime < Date.parse(new Date())/1000){
-            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">Cancel Auction</a>';
+            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" onclick="cancelpm('+result.ids[i]+')">Cancel Auction</a>';
             liupai = '<div class="wYin-fail">' +
                        '<p>Abortive</p>' +
                      '</div>';
           }else if(count > 0 && endtime < Date.parse(new Date())/1000){
             button += 'Latest bidder: '+finaluser+', Latest bid: '+finalprice+", Number of bids: "+count+
-                      '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="cancelpm('+result.ids[i]+')">Transfer to auctioneer</a>';
+                      '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" onclick="cancelpm('+result.ids[i]+')">Transfer to auctioneer</a>';
             liupai = '<div class="wYin-success">' +
                        '<p>Success</p>' +
                      '</div>';
@@ -416,7 +408,7 @@ function setContext(result,type,select) {
                         '</div>';
         }
         context += '<li class="ax-grid-block ax-col-8">'+
-          '<div class="ax-card-block" style="background-color: floralwhite;">'+
+          '<div class="ax-card-block card-div" style="background-color: floralwhite;">'+
             typeContext +
             liupai +
             '<div class="ax-title">'+
@@ -433,7 +425,7 @@ function setContext(result,type,select) {
                 time +
               '</div>'+
             '</div>'+
-            '<div class="ax-keywords">'+
+            '<div class="">'+
 //              '<div class="ax-flex-row">'+
                 button +
 //              '</div>'+
@@ -522,7 +514,7 @@ async function sell(type) {
     }
     price = price.multipliedBy(decimals).toFixed();
     let res = await instance.addMarket(currentTokenId,price).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -560,7 +552,7 @@ async function pm(type) {
     mincall = mincall.multipliedBy(decimals).toFixed();
     minprice = minprice.multipliedBy(decimals).toFixed();
     let res = await instance.addPMMarket(currentTokenId,minprice,time,mincall).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -585,7 +577,7 @@ async function transfer(type) {
       instance = await tronWeb.contract().at(vedioContractAdd);
     }
     let res = await instance.transfer(toAddress,currentTokenId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -605,7 +597,7 @@ async function cancelsell(tokenId) {
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
     let res = await instance.cancel(tokenId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -625,7 +617,7 @@ async function cancelpm(tokenId) {
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
     let res = await instance.receive(tokenId).send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });

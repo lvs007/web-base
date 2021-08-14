@@ -22,6 +22,7 @@ const nftPoolContractAdd = "TNGf9zyiUtd8t4YqUHspiFNAoTiz1bC4Sw";
 const mhNftContractAdd = "TH2hQvE7qNStfNCbfCLuEJgcCg2SezHjok";
 const mhboxContractAdd = "TVPSHeGkqgTtizzTUQVqwLNpCncHBEUQBd";
 const decimals = 1000000000000000000;
+const interval = 3000;
 
 //const tron-server = "https://api.trongrid.io";
 const tron_server = "https://nile.trongrid.io";
@@ -31,6 +32,10 @@ beforeNode = "";
 var finish = false;
 
 function init(show,isTime){
+  if(!isTime){
+    initFooter();
+  }
+
   if(finish){
     return true;
   }
@@ -117,7 +122,7 @@ async function receiveDay(){
   try{
     let instance = await tronWeb.contract().at("TUCXYV1PoGN659ByWu2Q52atLyxdJxMJuV");
     let res = await instance.receive().send({
-        feeLimit:100000000,
+        feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
@@ -145,6 +150,25 @@ async function wallet() {
     console.log(error);
   }
 }
+
+function initFooter() {
+ var footer = '<div class="ax-padding">'+
+                  '<div class="ax-row ax-split">'+
+                    '<div class="ax-col ax-copyright">'+
+                      'DAYNFT Copyright © 2021 DAY Finance Providing you with a silky smooth user experience'+
+                    '</div>'+
+                    '<div class="ax-operate">'+
+                      '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>'+
+                      '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>'+
+                      '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>'+
+                      '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>';
+  document.getElementById('footer').innerHTML=footer;
+}
+
+
 
 
 
