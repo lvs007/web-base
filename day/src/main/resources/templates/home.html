@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+  <meta http-equiv="expires" content="0"/>
   <title>Home</title>
   <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
@@ -20,12 +23,12 @@
 
 <div class="ax-window" data-mask="true" data-in="fadeIn" id="stake_window">
   <div class="ax-window-overlay"></div>
-  <div class="ax-window-contain">
+  <div class="ax-window-contain card-div">
     <a href="###" class="ax-window-close"><i class="ax-iconfont ax-icon-close"></i></a>
     <div class="contect-center">
       <a href="###" class="ax-logo"><img class="img-logo-detail-token" src="/static/images/logo.png" /></a>
     </div>
-    <div id="title" class="ax-window-title" style="text-align: center;padding-left: 0px;margin: 10px;font-size: 22px;">
+    <div id="title" class="" style="text-align: center;padding-left: 0px;margin-bottom: 50px;font-size: 26px;">
       My Account
     </div>
     <div class="ax-window-content contect-center" style="margin: 20px;">
@@ -67,32 +70,30 @@
     </div>
   </div>
 </section>
-<main>
+<main style="width:100%;">
   <div id="article1">
-    <section id="scrollnav-4" class="content4">
-      <div class="section-title">
-        <h2>
-          Latest News
-        </h2>
+    <section id="scrollnav-4" class="content4 ax-lazy">
+      <div class="section-div">
+        <div class="section-title">
+          <h2 class="ax-lazy">
+            Latest News
+          </h2>
+        </div>
       </div>
-
     </section>
-    <section id="scrollnav-1" class="content1 section1">
-      <div class="section-title">
-        <h2>
-          Features
-        </h2>
-        <p>
-          Functions: production, trading, auctions, collect ...
-        </p>
-        <p>
-          Fees: Super low handling fee. The first phase is based on the BSC or TRON, and later will release main network
-        </p>
-        <p>
-          Professional, Transparency, Security decentralized NFT management platform
-        </p>
-      </div>
-      <div class="ax-grid ax-space-md">
+    <section id="scrollnav-1" class="content1 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Features
+          </h2>
+          <p>
+            Professional, Transparency, Security decentralized NFT management platform.
+            Include production, trading, auctions, collect ... functions.
+            Super low handling fee. The first phase is based on the BSC or TRON, and later will release main network.
+          </p>
+        </div>
+        <div class="ax-grid ax-space-md ax-lazy">
 <!--        ax-grid-inner-->
         <ul class="">
           <li class="ax-grid-block ax-col-6">
@@ -126,7 +127,7 @@
                 </div>
               </div>
               <div class="ax-box-body ax-padding ax-xl">
-                MH is all mint out through DAY and NFT magic hamper cards.
+                MH token is all mint out through DAY and NFT magic hamper cards.
                 Genesis mining is done using DAY. Combined mining(DAY + NFT) will be opened after the end of the Genesis mining.
               </div>
             </div>
@@ -169,48 +170,49 @@
           </li>
         </ul>
       </div>
-
+      </div>
     </section>
-    <section id="scrollnav-2" class="content2">
-      <div class="section-title">
-        <h2>
-          Token
-        </h2>
-      </div>
-      <div class="ax-row ax-split">
-        <div class="ax-col div-split-m15">
-          <p>
-            DAY is the platform token circulating on the platform. In the future, after the main network of the platform is launched, it will serve as the circulating token of the main network. The governance of the main network needs to be carried out through DAY.
-          </p>
-          <ul>
-            <li>
-              <span class="ax-iconfont ax-icon-right-o-fill"></span>
-              MH creation mining only supports DAY, MH tokens are Magic Hamper tokens, and Magic Hamper purchases only support MH tokens.
-            </li>
-            <li>
-              <span class="ax-iconfont ax-icon-right-o-fill"></span>
-              DAY is the designated token for NFT production, and the platform supports the majority of users to make NFTs, and trade and auction works.
-            </li>
-            <li>
-              <span class="ax-iconfont ax-icon-right-o-fill"></span>
-              DAY, as the designated token platform for the auction of artworks, also supports the auction of artworks by ordinary users, and DAY is the designated auction token.
-            </li>
-          </ul>
+    <section id="scrollnav-2" class="content2 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Token
+          </h2>
         </div>
-        <div class="ax-col div-split-m15">
-          <ul>
-            <li>
-              <span class="ax-iconfont ax-icon-right-o-fill"></span>
-              Game animation derivatives only support DAY to purchase future games and animations, which is also the direction for the platform to enter.
-            </li>
-            <li>
-              <span class="ax-iconfont ax-icon-right-o-fill"></span>
-              Cross-chain support platform will use a unique cross-chain protocol and mainstream public chains such as Ethereum, TRON, Bitcoin, and Polkadot to cross-chain after the main-net goes online.
-            </li>
-          </ul>
+        <div class="ax-row ax-split ax-lazy">
+          <div class="ax-col div-split-m15">
+            <p>
+              DAY is the platform token circulating on the platform. In the future, after the main network of the platform is launched, it will serve as the circulating token of the main network. The governance of the main network needs to be carried out through DAY.
+            </p>
+            <ul>
+              <li>
+                <span class="ax-iconfont ax-icon-right-o-fill"></span>
+                MH creation mining only supports DAY, MH tokens are Magic Hamper tokens, and Magic Hamper purchases only support MH tokens.
+              </li>
+              <li>
+                <span class="ax-iconfont ax-icon-right-o-fill"></span>
+                DAY is the designated token for NFT production, and the platform supports the majority of users to make NFTs, and trade and auction works.
+              </li>
+              <li>
+                <span class="ax-iconfont ax-icon-right-o-fill"></span>
+                DAY, as the designated token platform for the auction of artworks, also supports the auction of artworks by ordinary users, and DAY is the designated auction token.
+              </li>
+            </ul>
+          </div>
+          <div class="ax-col div-split-m15">
+            <ul>
+              <li>
+                <span class="ax-iconfont ax-icon-right-o-fill"></span>
+                Game animation derivatives only support DAY to purchase future games and animations, which is also the direction for the platform to enter.
+              </li>
+              <li>
+                <span class="ax-iconfont ax-icon-right-o-fill"></span>
+                Cross-chain support platform will use a unique cross-chain protocol and mainstream public chains such as Ethereum, TRON, Bitcoin, and Polkadot to cross-chain after the main-net goes online.
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="ax-row ax-split skills">
+        <div class="ax-row ax-split skills ax-lazy">
         <div class="ax-col-115 div-split-m15">
           <img src="/static/images/tokenyw.png" class="img-fluid" alt=""/>
         </div>
@@ -260,14 +262,16 @@
 
         </div>
       </div>
-    </section>
-    <section id="scrollnav-3" class="content3">
-      <div class="section-title">
-        <h2>
-          Roadmap
-        </h2>
       </div>
-      <div class="ax-step">
+    </section>
+    <section id="scrollnav-3" class="content3 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Roadmap
+          </h2>
+        </div>
+        <div class="ax-step ax-lazy">
         <div class="ax-item">
           <span class="ax-head">2020 Q4</span>
           <div class="ax-mark">
@@ -341,17 +345,18 @@
           </div>
         </div>
       </div>
-
+      </div>
     </section>
 
-    <section id="scrollnav-5" class="content5">
-      <div class="section-title">
-        <h2>
-          Team
-        </h2>
-        <p>We are a young team with highly talented team members!</p>
-      </div>
-      <div class="ax-row ax-split">
+    <section id="scrollnav-5" class="content5 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Team
+          </h2>
+          <p>We are a young team with highly talented team members!</p>
+        </div>
+        <div class="ax-row ax-split ax-lazy">
         <div class="ax-col">
           <div class="ax-box ax-border ax-radius box-man card-div">
             <div class="ax-box-header ax-row">
@@ -389,81 +394,83 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
-    <section id="scrollnav-6" class="faq content6">
-      <div class="section-title">
-        <h2>
-          FAQ
-        </h2>
-      </div>
-
-      <div class="ax-box ax-border ax-radius box-faq card-div">
-        <div class="ax-box-header ax-row">
-          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
-          <div class="ax-col"><b class="ax-title">What is DAY?</b></div>
-          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+    <section id="scrollnav-6" class="faq content6 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            FAQ
+          </h2>
         </div>
-        <div class="ax-break-line"></div>
-        <div class="ax-box-body ax-article" style="display: none;">
-          <p>
-          DAY is the platform token circulating on the platform. In the future, after the main network of the platform is launched, it will serve as the circulating token of the main network. The governance of the main network needs to be carried out through DAY.
-          </p>
-          <p>
-            1. MH creation mining only supports DAY, MH tokens are Magic Hamper tokens, and Magic Hamper purchases only support MH tokens.
-          </p>
-          <p>
-            2. DAY is the designated token for NFT production, and the platform supports the majority of users to make NFTs, and trade and auction works.
-          </p>
-          <p>
-            3. DAY, as the designated token platform for the auction of artworks, also supports the auction of artworks by ordinary users, and DAY is the designated auction token.
-          </p>
-          <p>
-            4. Game animation derivatives only support DAY to purchase future games and animations, which is also the direction for the platform to enter.
-          </p>
-          <p>
-            5. Cross-chain support platform will use a unique cross-chain protocol and mainstream public chains such as Ethereum, TRON, Bitcoin, and Polkadot to cross-chain after the main-net goes online.
-          </p>
-        </div>
-      </div>
 
-      <div class="ax-break"></div>
-
-      <div class="ax-box ax-border ax-radius box-faq card-div">
-        <div class="ax-box-header ax-row">
-          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
-          <div class="ax-col"><b class="ax-title">What can I do on the DAY platform?</b></div>
-          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+          <div class="ax-box-header ax-row">
+            <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+            <div class="ax-col"><b class="ax-title">What is DAY?</b></div>
+            <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+          </div>
+          <div class="ax-break-line"></div>
+          <div class="ax-box-body ax-article" style="display: none;">
+            <p>
+            DAY is the platform token circulating on the platform. In the future, after the main network of the platform is launched, it will serve as the circulating token of the main network. The governance of the main network needs to be carried out through DAY.
+            </p>
+            <p>
+              1. MH creation mining only supports DAY, MH tokens are Magic Hamper tokens, and Magic Hamper purchases only support MH tokens.
+            </p>
+            <p>
+              2. DAY is the designated token for NFT production, and the platform supports the majority of users to make NFTs, and trade and auction works.
+            </p>
+            <p>
+              3. DAY, as the designated token platform for the auction of artworks, also supports the auction of artworks by ordinary users, and DAY is the designated auction token.
+            </p>
+            <p>
+              4. Game animation derivatives only support DAY to purchase future games and animations, which is also the direction for the platform to enter.
+            </p>
+            <p>
+              5. Cross-chain support platform will use a unique cross-chain protocol and mainstream public chains such as Ethereum, TRON, Bitcoin, and Polkadot to cross-chain after the main-net goes online.
+            </p>
+          </div>
         </div>
-        <div class="ax-break-line"></div>
-        <div class="ax-box-body ax-article" style="display: none;">
-          <p>
-            1. You can create NFTs of images and videos, while trading, auctioning and transferring NFTs.
-          </p>
-          <p>
-            2. You can also watch NFT short videos and get the corresponding viewing revenue.
-            In addition, NFT short video authors can get the corresponding income.
-          </p>
-        </div>
-      </div>
 
-      <div class="ax-break"></div>
+        <div class="ax-break"></div>
 
-      <div class="ax-box ax-border ax-radius box-faq card-div">
-        <div class="ax-box-header ax-row">
-          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
-          <div class="ax-col"><b class="ax-title">How do I get the DAY token?</b></div>
-          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+          <div class="ax-box-header ax-row">
+            <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+            <div class="ax-col"><b class="ax-title">What can I do on the DAY platform?</b></div>
+            <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+          </div>
+          <div class="ax-break-line"></div>
+          <div class="ax-box-body ax-article" style="display: none;">
+            <p>
+              1. You can create NFTs of images and videos, while trading, auctioning and transferring NFTs.
+            </p>
+            <p>
+              2. You can also watch NFT short videos and get the corresponding viewing revenue.
+              In addition, NFT short video authors can get the corresponding income.
+            </p>
+          </div>
         </div>
-        <div class="ax-break-line"></div>
-        <div class="ax-box-body ax-article" style="display: none;">
-          <p>
-            1. You can purchase through the trading platform.
-          </p>
-        </div>
-      </div>
-      <div class="ax-break"></div>
 
-      <div class="ax-box ax-border ax-radius box-faq card-div">
+        <div class="ax-break"></div>
+
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+          <div class="ax-box-header ax-row">
+            <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+            <div class="ax-col"><b class="ax-title">How do I get the DAY token?</b></div>
+            <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+          </div>
+          <div class="ax-break-line"></div>
+          <div class="ax-box-body ax-article" style="display: none;">
+            <p>
+              1. You can purchase through the trading platform.
+            </p>
+          </div>
+        </div>
+        <div class="ax-break"></div>
+
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
         <div class="ax-box-header ax-row">
           <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
           <div class="ax-col"><b class="ax-title">What can MH token be used for?</b></div>
@@ -480,19 +487,20 @@
           </p>
         </div>
       </div>
-
+      </div>
     </section>
-    <section id="scrollnav-7" class="content7 section7">
-      <div class="section-title">
-        <h2>
-          Strategic partners
-        </h2>
+    <section id="scrollnav-7" class="content7 section7 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Strategic partners
+          </h2>
+        </div>
+
+        <div class="ax-row">
+
+        </div>
       </div>
-
-      <div class="ax-row">
-
-      </div>
-
     </section>
 
   </div>

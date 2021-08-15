@@ -22,8 +22,12 @@ html {
   padding: 0;
   margin: 0;
   /*background: purple url(/static/images/background.jpeg);/*background-color: #fff;*/
+  /*background: linear-gradient(0deg
+    , rgb(0 78 159),rgb(77 167 223), rgb(119 193 240) 50%, rgb(119 193 240),rgb(77 167 223), rgb(0 78 159));*/
+  /*background: linear-gradient(0deg
+   , rgb(119 193 240) ,rgb(77 167 223), rgb(0 78 159),rgb(0 78 159) );*/
   background: linear-gradient(0deg
-    , rgb(0 78 159),rgb(77 167 223), rgb(119 193 240) 50%, rgb(119 193 240),rgb(77 167 223), rgb(0 78 159));
+  , rgb(119 193 240) ,rgb(212 225 232), rgb(211 227 243),rgb(0 78 159) );
   background-repeat: no-repeat;
   background-size: 100%;
   background-attachment: fixed;
@@ -8949,7 +8953,8 @@ textarea.ax-check-ad:focus {
 }
 .ax-header {
   /*background-color: #fff;*/
-  background: purple url(/static/images/header.png);/*background-color: #fff;*/
+  /*background: purple url(/static/images/header.png);/*background-color: #fff;*/
+  background: linear-gradient(0deg,rgb(36 105 177),rgb(0 78 159) );
   background-repeat: no-repeat;
   background-size: 100%;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
@@ -9702,7 +9707,7 @@ textarea.ax-check-ad:focus {
   border-radius: 3px;
   box-sizing: border-box;
   display: block;
-  padding: 14px;
+  padding: 8px;
   position: relative;
   transition: all 0.2s linear;
 }
@@ -12935,7 +12940,7 @@ textarea.ax-check-ad:focus {
 }
 /*lazyshow*/
 .ax-lazy {
-  transition: all 0.2s linear;
+  transition: all 1.2s linear;
 }
 .ax-lazy.ax-hide {
   opacity: 0;

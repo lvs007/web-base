@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+  <meta http-equiv="expires" content="0"/>
   <title>Home</title>
   <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
   <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
@@ -95,7 +98,7 @@
           <span class="ax-head">BUY MH BOX</span>
           <div class="ax-flex-block">
             <div class="ax-text">
-              <a href="###" class="ax-active" onclick="buyBox()">Buy</a>
+              <a href="###" class="ax-active" onclick="buyBox()">Buy Box</a>
             </div>
           </div>
         </div>
@@ -204,7 +207,7 @@
   function initValue(isTime) {
     if(init(false,isTime)){
       setDetailValue(2);
-      if(count < 3) {
+      if(count < 2) {
         boxlist();
       }
       count++;

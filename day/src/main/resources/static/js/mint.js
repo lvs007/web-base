@@ -290,7 +290,7 @@ async function buyBox(){
         callValue:0,
         shouldPollResponse:false
     });
-    sleep(1000);
+    await sleep(2000);
     boxlist();
   } catch (error) {
     console.log(error);
@@ -310,11 +310,36 @@ async function openBox(boxId){
         shouldPollResponse:false
     });
     console.log("openBox: "+res);
-    sleep(1000);
+    await sleep(2000);
     boxlist();
   } catch (error) {
     console.log(error);
     alert('Open fail');
+  }
+}
+
+async function mergeNft(boxId){
+  if (!checkNetwork()) {
+    return;
+  }
+  let idArr = [...set];
+  if(set.size != 5){
+    alert('Please select 5 same level nft');
+    return
+  }
+  try{
+    let instance = await tronWeb.contract().at(mhNftContractAdd);
+    let res = await instance.merge([1,2,3,4,5]).send({
+        feeLimit:1000000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log("mergeNft: "+res);
+    await sleep(2000);
+    boxlist();
+  } catch (error) {
+    console.log(error);
+    alert('Merge Nft fail');
   }
 }
 
@@ -345,7 +370,7 @@ async function mhnftlist(){
 
 function setBoxContext(result) {
     var context = "";
-    var col = 4;
+    var col = 3;
     var length = result.ids.length;
     var line = Math.ceil(length / col);
     var url = "https://src.axui.cn/examples/images/image-7.jpg";
@@ -378,7 +403,7 @@ function setBoxContext(result) {
 
 function setMHNFTContext(result) {
     var context = "";
-    var col = 4;
+    var col = 3;
     var length = result.ids.length;
     var line = Math.ceil(length / col);
     var url = "https://src.axui.cn/examples/images/image-7.jpg";
@@ -395,14 +420,14 @@ function setMHNFTContext(result) {
                      '</div>';
         var button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="trans-'+result.ids[i]+'">Transfer NFT</a>';
         var typeContext = '<div class="ax-img">'+
-                  '<a target="_blank" href="' + url + '" class="ax-figure" style="background-image:url(' + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+                  '<a onclick="selectNft('+ result.ids[i] +')" href="###" class="ax-figure" style="background-image:url(' + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
                   '</div>';
         context += '<li class="ax-grid-block ax-col-8">'+
-          '<div class="ax-card-block" style="background-color: floralwhite;padding: 3px;">'+
+          '<div id="nft-'+ result.ids[i] +'" class="ax-card-block" style="background-color: floralwhite;padding: 3px;">'+
             typeContext +
             liupai +
             '<div class="ax-title">'+
-              '<a href="###" class="ax-ell-title"> MH NFT ID：'+result.ids[i] + '</a>'+
+              '<a href="###" class="ax-ell-title"> MH NFT ID：' + result.ids[i] + '</a>'+
             '</div>'+
             '<div class="">'+
                 button +
@@ -416,6 +441,17 @@ function setMHNFTContext(result) {
     for(var k = 0; k < length; k++) {
         initPop(result.ids[k]);
     }
+}
+let set = new Set();
+function selectNft(id) {
+  var img = document.getElementById('nft-'+id);
+  if(set.has(id)){
+    set.delete(id);
+    img.className = "ax-card-block";
+  }else{
+    set.add(id);
+    img.className = "ax-card-block disable-div";
+  }
 }
 
 function getLevelAndUrl(level){

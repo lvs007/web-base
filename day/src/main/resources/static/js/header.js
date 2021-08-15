@@ -16,7 +16,7 @@ function initHeader(){
                       '<li class="ax-scrollnav-item" data-section="scrollnav-7"><a href="/v1/home/home#scrollnav-7" class="ax-text ax-scrollnav-link" style="color:#fff">Partners</a><span class="ax-line"></span></li>'+
                     '</div>'+
                     '<div class="ax-item ax-grade"><a href="###" class="ax-text" style="color:#fff">Services<i class="ax-iconfont ax-icon-down"></i></a><span class="ax-line"></span>'+
-                      '<ul class="ax-outer card-div">'+
+                      '<ul class="ax-outer card-div-blue">'+
                         '<li style="margin: 0px;"><a href="/v1/mint/mint" style="color:#fff">Mint</a></li>'+
                         '<li style="margin: 0px;"><a href="/v1/create/createnft" style="color:#fff">NFT Creation</a></li>'+
                         '<li style="margin: 0px;"><a href="/v1/market/market" style="color:#fff">NFT Market</a></li>'+

@@ -189,18 +189,17 @@ section {
   animation: name duration timing-function delay iteration-count direction;*/
 }
 
-.hero h1 {
+.hero h1 {/*color: #fff;*/
     margin: 0 0 10px 0;
     font-size: 48px;
     font-weight: 700;
     line-height: 56px;
-    color: #fff;
     font-family: "Jost", sans-serif;
     padding-top: 65px;
 }
 
-.hero h2 {
-    color: rgba(255, 255, 255, 0.6);
+.hero h2 {/*rgba(255, 255, 255, 0.6);*/
+    color: #666666;
     margin-bottom: 50px;
     font-size: 24px;
     font-family: "Jost", sans-serif;
@@ -231,6 +230,10 @@ section {
 html{height:100%;}
 body{min-height:100%;margin:0;padding:0;position:relative;}
 
+.section-div {
+  width:80%;
+  margin-left: 10%;
+}
 /*header{background-color: #ffe4c4;}*/
 main{
   width:80%;
@@ -308,22 +311,40 @@ div.tYin img{
   border-radius: 12px;
   /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
   /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
-  background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);
-  color: #fff;
+  /*background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);color: #fff;*/
+  /*background: linear-gradient(45deg,rgb(247 251 253),rgb(199 225 241), rgb(190 223 245) 100%);*/
+  background: linear-gradient(45deg,rgb(66 161 224),rgb(199 225 241), rgb(66 161 224) 100%);
 }
 .card-div-reverse {
   border-radius: 12px;
   /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
   /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
-  background: linear-gradient(45deg,rgb(0 78 159),rgb(77 167 223),rgb(119 193 240)  100%);
-  color: #fff;
+  /*background: linear-gradient(45deg,rgb(0 78 159),rgb(77 167 223),rgb(119 193 240)  100%); color: #fff;*/
+  background: linear-gradient(45deg,rgb(247 251 253),rgb(199 225 241), rgb(190 223 245) 100%);
+
 }
+.card-div-blue {
+  border-radius: 12px;
+  /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
+  /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
+  background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);color: #fff;
+}
+
 .border-div {
   border: 1px solid #85c8f1;
   border-radius: 5px;
 }
 .btn-a {
   margin-right: 5px;
+}
+
+.disable-div {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
 }
 
 
