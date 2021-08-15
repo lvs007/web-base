@@ -26,8 +26,9 @@ html {
     , rgb(0 78 159),rgb(77 167 223), rgb(119 193 240) 50%, rgb(119 193 240),rgb(77 167 223), rgb(0 78 159));*/
   /*background: linear-gradient(0deg
    , rgb(119 193 240) ,rgb(77 167 223), rgb(0 78 159),rgb(0 78 159) );*/
-  background: linear-gradient(0deg
-  , rgb(119 193 240) ,rgb(212 225 232), rgb(211 227 243),rgb(0 78 159) );
+  /*background: linear-gradient(0deg, rgb(119 193 240) ,rgb(212 225 232), rgb(211 227 243),rgb(0 78 159) );*/
+  background: linear-gradient(0deg, #77c1f0 ,#d4e1e8, #d3e3f3,#004e9f);
+
   background-repeat: no-repeat;
   background-size: 100%;
   background-attachment: fixed;
@@ -8954,7 +8955,8 @@ textarea.ax-check-ad:focus {
 .ax-header {
   /*background-color: #fff;*/
   /*background: purple url(/static/images/header.png);/*background-color: #fff;*/
-  background: linear-gradient(0deg,rgb(36 105 177),rgb(0 78 159) );
+  /*background: linear-gradient(0deg,rgb(36 105 177),rgb(0 78 159) );*/
+  background: linear-gradient(0deg,#2469b1,#004e9f );
   background-repeat: no-repeat;
   background-size: 100%;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);

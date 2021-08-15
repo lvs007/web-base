@@ -313,21 +313,24 @@ div.tYin img{
   /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
   /*background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);color: #fff;*/
   /*background: linear-gradient(45deg,rgb(247 251 253),rgb(199 225 241), rgb(190 223 245) 100%);*/
-  background: linear-gradient(45deg,rgb(66 161 224),rgb(199 225 241), rgb(66 161 224) 100%);
+  /*background: linear-gradient(45deg,rgb(66 161 224),rgb(199 225 241), rgb(66 161 224) 100%);*/
+  background: linear-gradient(45deg,#42a1e0,#c7e1f1, #42a1e0 100%);
 }
 .card-div-reverse {
   border-radius: 12px;
   /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
   /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
   /*background: linear-gradient(45deg,rgb(0 78 159),rgb(77 167 223),rgb(119 193 240)  100%); color: #fff;*/
-  background: linear-gradient(45deg,rgb(247 251 253),rgb(199 225 241), rgb(190 223 245) 100%);
+  /*background: linear-gradient(45deg,rgb(247 251 253),rgb(199 225 241), rgb(190 223 245) 100%);*/
+  background: linear-gradient(45deg,#f7fbfd,#c7e1f1, #bedff5 100%);
 
 }
 .card-div-blue {
   border-radius: 12px;
   /*background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%);*/
   /*background: linear-gradient(45deg,rgb(110 186 233), rgb(66 165 223) 100%);*/
-  background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);color: #fff;
+  /*background: linear-gradient(45deg,rgb(119 193 240),rgb(77 167 223), rgb(0 78 159) 100%);color: #fff;*/
+  background: linear-gradient(45deg,#77c1f0,#4da7df, #004e9f 100%);color: #fff;
 }
 
 .border-div {

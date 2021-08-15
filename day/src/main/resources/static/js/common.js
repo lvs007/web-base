@@ -45,12 +45,12 @@ function init(show,isTime){
     return false;
   }
 
-  beforeAccount = window.tronWeb.defaultAddress.base58;
-  beforeNode = window.tronWeb.fullNode.host;
   if (!isTime && !checkNetwork()) {
     return false;
   }
   if (window.tronWeb && window.tronWeb.defaultAddress) {
+    beforeAccount = window.tronWeb.defaultAddress.base58;
+    beforeNode = window.tronWeb.fullNode.host;
     var char = "***";
     var str = window.tronWeb.defaultAddress.base58;
     if(str && str.length>8){
