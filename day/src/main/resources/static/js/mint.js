@@ -12,11 +12,8 @@ function getContractAddress(type){
 
 async function balanceOf(type)
 {
-    if (!checkNetwork()) {
-      return;
-    }
-    var contractAddress = getContractAddress(type);
     try{
+      var contractAddress = getContractAddress(type);
       let userAdress = window.tronWeb.defaultAddress.base58;
       let instance = await tronWeb.contract().at(contractAddress);
       var result = await instance.balanceOf(userAdress).call();
@@ -29,11 +26,8 @@ async function balanceOf(type)
 
 async function getReward(type)
 {
-    if (!checkNetwork()) {
-      return;
-    }
-    var contractAddress = getContractAddress(type);
     try{
+      var contractAddress = getContractAddress(type);
       let userAdress = window.tronWeb.defaultAddress.base58;
       let instance = await tronWeb.contract().at(contractAddress);
       var result = await instance.earned(userAdress).call();
@@ -60,11 +54,8 @@ async function setDetailValue(type){
 
 async function totalSupply(type)
 {
-    if (!checkNetwork()) {
-      return;
-    }
-    var contractAddress = getContractAddress(type);
     try{
+      var contractAddress = getContractAddress(type);
       let instance = await tronWeb.contract().at(contractAddress);
       var result = await instance.totalSupply().call();
       return formatNumber(result);

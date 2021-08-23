@@ -1,0 +1,377 @@
+document.write("<script type='text/javascript' src='/static/js/common.js'></script>");
+
+async function send(contract,method,param,userHexAddress){
+  try{
+    var tx = await tronWeb.transactionBuilder.triggerSmartContract(contract,method, {1000000000},param,issuerAddress);
+    var signedTx = await tronWeb.trx.sign(tx.transaction);
+    var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
+    await sleep(1000);
+    tronWeb.trx.getTransaction(broastTx).then(function (result) {
+        if(result.ret.length > 0 && result.ret[0].contractRet == "SUCCESS") {
+          return true;
+        }
+    }).catch(function (reason) {
+        console.log('fail：' + reason);
+    });
+    return false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+params: [{
+  "from": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",//用户地址
+  "to": "0xd46e8dd67c5d32be8058bb8eb970870f07244567",//合约地址
+  "gas": "0x76c0", // 30400
+  "gasPrice": "0x9184e72a000", // 10000000000000
+  "value": "0x9184e72a", // 2441406250
+  "data": "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675"
+}]
+
+async function getNftinfo(){
+  try{
+    var tokenId = document.getElementById('search-img-id').value;
+    let instance;
+    var isImg = true;
+    if(document.getElementById("tab-img").className.includes('ax-active')){
+      instance = await tronWeb.contract().at(imgContractAdd);
+    }else{
+      isImg = false;
+      instance = await tronWeb.contract().at(vedioContractAdd);
+    }
+    var result;
+    if(document.getElementById("sell-img").className == 'ax-active'){
+      result = await instance.getselldesc(tokenId).call();
+      var r = new Object();
+      r.ids = new Array(result.id);
+      r.urls = new Array(result.url);
+      r.descs = new Array(result.desc);
+      r.titles = new Array(result.title);
+      r.times = new Array(result.time);
+      r.prices = new Array(result.price);
+      r.sells = new Array(result.sell);
+      if(isImg){
+        setImg(r,1);
+      }else{
+        setVedio(r,1);
+      }
+    }else{
+      result = await instance.getpmdesc(tokenId).call();
+      var r = new Object();
+      r.ids = new Array(result.param2[0]);
+      r.urls = new Array(result.param1[0]);
+      r.descs = new Array(result.param1[1]);
+      r.titles = new Array(result.param1[2]);
+      r.times = new Array(result.param2[1]);
+      r.minprices = new Array(result.param2[2]);
+      r.finalprices = new Array(result.param2[3]);
+      r.mincalls = new Array(result.param2[4]);
+      r.endtimes = new Array(result.param2[5]);
+      r.finalusers = new Array(result.finaluser);
+      r.counts = new Array(result.param2[6]);
+      r.states = new Array(result.param2[7]);
+      if(isImg){
+        setImg(r,2);
+      }else{
+        setVedio(r,2);
+      }
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function querycontract(pageNum,contractAdd,type,select){
+  var tmp = pageNum;
+  if(pageNum <= 0){
+    pageNum = 1;
+    tmp = 1;
+  }
+  //
+  var pageNo = 9;
+  let instance = await tronWeb.contract().at(contractAdd);
+  let number;
+  if(select == 1){
+    number = await instance.sellingnum().call();
+  }else if(select == 2){
+    number = await instance.pmingnum().call();
+  }
+  var count = parseInt(number, 10);
+  if(count <= 0){
+    document.getElementById('all-pt-list').innerHTML="";
+    return;
+  }
+  var totalPage = Math.ceil(count/pageNo);
+  if(pageNum > totalPage){
+    pageNum = totalPage;
+    tmp = pageNum;
+  }
+  pageNum = totalPage - pageNum + 1;
+  var begin = count - pageNo*(totalPage - pageNum);
+  begin = begin > count ? count : begin;
+  var end = begin - pageNo;
+  end = end < 0 ? 0: end;
+  var j = 0;
+  var index = new Array();
+  for(var i = begin-1;i>=end;i--){
+    index[j] = i;
+    j++;
+  }
+  let result;
+  if(select == 1){
+    result = await instance.queryallselling(index).call();
+  }else if(select == 2){
+    result = await instance.queryallpm(index).call();
+  }
+  document.getElementById('all-pt-list').innerHTML="";
+  if(type == 1) {
+    setImg(result,select);
+    if(select == 1){
+      setPageSplit(count,totalPage,tmp,'imgNft');
+    }else if(select == 2){
+      setPageSplit(count,totalPage,tmp,'pmquery');
+    }
+  } else {
+    setVedio(result,select);
+    if(select == 1){
+      setPageSplit(count,totalPage,tmp,'vedioNft');
+    }else if(select == 2){
+      setPageSplit(count,totalPage,tmp,'vediopmquery');
+    }
+  }
+}
+
+async function buy(tokenId) {
+  if (!checkNetwork()) {
+    return;
+  }
+  try{
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    var lock = await instance.lockmap(tokenId).call();
+    if(!lock){
+      alert('This NFT is not for sale');
+      return;
+    }
+
+    let res = await instance.buy(tokenId).send({
+        feeLimit:1000000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+    alert('Buy success.');
+    imgNft(1);
+  } catch (error) {
+    console.log(error);
+    alert(error);
+  }
+}
+
+async function receive(tokenId){
+  if (!checkNetwork()) {
+    return;
+  }
+  try{
+    let instance = await tronWeb.contract().at(imgContractAdd);
+    var lock = await instance.lockmap(tokenId).call();
+    if(!lock){
+      alert('This NFT is not for auction');
+      return;
+    }
+
+    let res = await instance.receive(tokenId).send({
+        feeLimit:1000000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+    alert('Receive success.');
+    pmquery(1);
+  } catch (error) {
+    console.log(error);
+    alert(error);
+  }
+}
+
+function setImg(result,select) {
+  setContext(result,1,select);
+}
+
+function setContext(result,type,select) {
+    var context = "";
+    var col = 3;
+    var length = result.ids.length;
+    var line = Math.ceil(length / col);
+    var url = "https://src.axui.cn/examples/images/image-7.jpg";
+    var title = "欧洲最长屋桥盛不下千年传奇";
+    var desc = "埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。";
+    var time = "3天前发布";
+    for(var k = 0, i = 0; k < line; k++) {
+      context += '<ul class="ax-grid-inner">';
+      for(var j = 0; j < col && i < length; j++,i++) {
+        id = result.ids[i];
+        url = result.urls[i];
+        title = result.titles[i];
+        desc = result.descs[i];
+        time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
+        var button = "";
+        var liupai = "";
+        if(select ==1){
+          price = new BigNumber(tronWeb.toDecimal(result.prices[i])).div(decimals).toFixed();
+          button = '<span class="ax-child">Price: ' + price + ' DAY. </span>'+
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="buy('+id+')">Buy</a>';
+        }else if(select ==2){
+          var endtime = tronWeb.toDecimal(result.endtimes[i]);
+          var count = result.counts[i];
+          var finaluser = tronWeb.address.fromHex(result.finalusers[i]);
+          var finalprice = new BigNumber(tronWeb.toDecimal(result.finalprices[i])).div(decimals).toFixed();
+          var minprice = new BigNumber(tronWeb.toDecimal(result.minprices[i])).div(decimals).toFixed();
+          var mincall = new BigNumber(tronWeb.toDecimal(result.mincalls[i])).div(decimals).toFixed();
+          if(endtime > Date.parse(new Date())/1000){
+            button = '<div class="ax-flex-row">' +
+            '<span class="ax-child">Minimum Bid: ' + minprice + ' DAY</span>'+
+                     '</div><div class="ax-flex-row">' +
+                     '<span class="ax-child">Minimum Markup:  ' + mincall + ' DAY</span>'+
+                     '</div><div class="ax-flex-row">' +
+                     '<span class="ax-child">Latest Price: ' + finalprice + ' DAY</span>'+
+                     '</div><div class="ax-flex-row">' +
+                     '<span class="ax-child">End Time: ' + new Date(parseInt(endtime, 10) * 1000).toUTCString() + '</span>'+
+                     '</div>' +
+                     '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" id="bid-'+id+'">Bid</a>';
+          }else{
+            button = '<div class="ax-flex-row">' +
+                     '<span class="ax-child">Latest Price: ' + finalprice + ' DAY</span>'+
+                     '</div>';
+            if(finaluser != "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"){
+              button += '<div class="ax-flex-row"><span class="ax-child">Winner: ' + finaluser + '</span></div>';
+              liupai = '<div class="wYin-success">' +
+                         '<p>Success</p>' +
+                       '</div>';
+            } else{
+              liupai = '<div class="wYin-fail">' +
+                         '<p>Abortive</p>' +
+                       '</div>';
+            }
+            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="receive('+id+')">Receive</a>';
+          }
+        }
+        var typeContext = "";
+        if(type == 1){
+          typeContext = '<div class="ax-img">'+
+                          '<a target="_blank" href="' + ipfs + url + '" class="ax-figure" style="background-image:url(' + ipfs + url + '),url(' + local + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+                        '</div>';
+        }else{
+          typeContext = '<div class="ax-videojs">'+
+                            '<video id="videojs01" class="video-js" controls preload="auto" height="200">'+
+                                '<source src="' + ipfs + url + '"/>'+
+                            '</video>'+
+                        '</div>';
+        }
+        context += '<li class="ax-grid-block ax-col-8">'+
+          '<div class="ax-card-block card-div" style="background-color: floralwhite;">'+
+            typeContext +
+            liupai +
+            '<div class="ax-title">'+
+              '<a href="###" class="ax-ell-title"> NFT ID：'+ id + '</a>'+
+            '</div>'+
+            '<div class="ax-title">'+
+              '<a href="###" class="ax-ell-title">' + title + '</a>'+
+            '</div>'+
+            '<div class="ax-des ax-ell-2-des">'+
+              desc +
+            '</div>'+
+            '<div class="">'+
+              button +
+            '</div>'+
+          '</div>'+
+        '</li>';
+      }
+      context += '</ul>';
+    }
+    document.getElementById('all-pt-list').innerHTML=context;
+    for(var k = 0; k < length; k++) {
+        initPop(result.ids[k],type);
+    }
+}
+var currentTokenId = -1;
+function initPop(id,type) {
+  if(type == 1){
+    $('#bid-'+id).axPopup({
+      url:'#pop-bid-w',
+      width:400,
+      padding:false,
+    });
+  }else{
+    $('#bid-'+id).axPopup({
+      url:'#pop-bid-w-v',
+      width:400,
+      padding:false,
+    });
+  }
+  $('#bid-'+id).on('click',function(e){
+    console.log(this.id);
+    currentTokenId = this.id.replace(/[^0-9]/ig,"");
+  });
+}
+
+async function bid(type) {
+  if (!checkNetwork()) {
+    return;
+  }
+  try{
+    var bidprice;
+    let instance;
+    if(type == 1){
+      bidprice = new BigNumber(document.getElementById('bidprice').value);
+      instance = await tronWeb.contract().at(imgContractAdd);
+    }else{
+      bidprice = new BigNumber(document.getElementById('bidprice-v').value);
+      instance = await tronWeb.contract().at(vedioContractAdd);
+    }
+    var lock = await instance.lockmap(currentTokenId).call();
+    if(!lock){
+      alert('This nft is not for auction');
+      return;
+    }
+    bidprice = bidprice.multipliedBy(decimals).toFixed();
+    let res = await instance.call(currentTokenId,bidprice).send({
+        feeLimit:1000000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function setPageSplit(total,totalPage,currentPage,onclickFun){
+  if(totalPage <= 1){
+    return;
+  }
+  var context = '<a class="ax-total">Total:'+total+'</a>'+
+                  '<a href="###" class="ax-first" onclick="'+onclickFun+'(1)">First</a>'+
+                  '<a href="###" class="ax-prev" onclick="'+onclickFun+'('+(currentPage - 1)+')">Previous</a>'+
+                  '<a href="###" class="ax-next" onclick="'+onclickFun+'('+(currentPage + 1)+')">Next</a>'+
+                  '<a href="###" class="ax-last" onclick="'+onclickFun+'('+totalPage+')">Last</a>';
+  document.getElementById('all-page-split').innerHTML=context;
+}
+
+async function vedioNft(pageNum){
+  document.getElementById("pm-img").className = "";
+  var obj = document.getElementById('sell-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,vedioContractAdd,2,1);
+}
+
+async function vediopmquery(pageNum){
+  document.getElementById("sell-img").className = "";
+  var obj = document.getElementById('pm-img');
+  obj.className = 'ax-active';
+  querycontract(pageNum,vedioContractAdd,2,2);
+}
+
+function setVedio(result,select) {
+  setContext(result,2,select);
+}
