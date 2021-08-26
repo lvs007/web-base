@@ -19,8 +19,8 @@ const tokenContractAdd = "TDFsqpgihK6kHJ7uh5Mmyu54UQ8D1fXTkV";
 const mhTokenContractAdd = "TBGkxmT4HX83Q4noknuCMiH76c77hTVP3x";
 const dayPoolContractAdd = "TCpe9tiEia9jYxvMurursnXiwwU1aemV1A";
 const nftPoolContractAdd = "TNGf9zyiUtd8t4YqUHspiFNAoTiz1bC4Sw";
-const mhNftContractAdd = "TH2hQvE7qNStfNCbfCLuEJgcCg2SezHjok";
-const mhboxContractAdd = "TVPSHeGkqgTtizzTUQVqwLNpCncHBEUQBd";
+const mhNftContractAdd = "TLetGWnPdLqreAgtk9NpRnXx15ggYXEPG3";
+const mhboxContractAdd = "TCDUUjLNSJFQUjfkwHuXsyHPfruFMKrbkM";
 const decimals = 1000000000000000000;
 const interval = 3000;
 

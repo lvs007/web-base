@@ -272,11 +272,9 @@ async function buyBox(){
     return;
   }
   try{
-    var amount = new BigNumber(100);
-    amount = amount.multipliedBy(decimals).toFixed();
     await approve(mhTokenContractAdd,mhboxContractAdd,amount);
     let instance = await tronWeb.contract().at(mhboxContractAdd);
-    let res = await instance.buy(amount).send({
+    let res = await instance.buy().send({
         feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
@@ -288,6 +286,27 @@ async function buyBox(){
     alert('Buy fail');
   }
 }
+
+async function buyAndOpenBox(){
+  if (!checkNetwork()) {
+    return;
+  }
+  try{
+    await approve(mhTokenContractAdd,mhboxContractAdd,amount);
+    let instance = await tronWeb.contract().at(mhboxContractAdd);
+    let res = await instance.buyAndOpen().send({
+        feeLimit:1000000000,
+        callValue:0,
+        shouldPollResponse:false
+    });
+    await sleep(2000);
+    mhnftlist();
+  } catch (error) {
+    console.log(error);
+    alert('Buy fail');
+  }
+}
+
 
 async function openBox(boxId){
   if (!checkNetwork()) {
@@ -309,7 +328,7 @@ async function openBox(boxId){
   }
 }
 
-async function mergeNft(boxId){
+async function mergeNft(){
   if (!checkNetwork()) {
     return;
   }
@@ -320,14 +339,14 @@ async function mergeNft(boxId){
   }
   try{
     let instance = await tronWeb.contract().at(mhNftContractAdd);
-    let res = await instance.merge([1,2,3,4,5]).send({
+    let res = await instance.merge(idArr).send({
         feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
     console.log("mergeNft: "+res);
     await sleep(2000);
-    boxlist();
+    mhnftlist();
   } catch (error) {
     console.log(error);
     alert('Merge Nft fail');
@@ -378,8 +397,8 @@ function setBoxContext(result) {
         context += '<li class="ax-grid-block ax-col-8">'+
           '<div class="ax-card-block" style="background-color: floralwhite;padding: 3px;">'+
             typeContext +
-            '<div class="ax-title">'+
-              '<a href="###" class="ax-ell-title"> Box ID：'+result.ids[i] + '</a>'+
+            '<div class="ax-keywords">'+
+              '<a href="###" class="">ID：'+result.ids[i] + '</a>'+
             '</div>'+
             '<div class="">'+
                 button +
@@ -417,8 +436,8 @@ function setMHNFTContext(result) {
           '<div id="nft-'+ result.ids[i] +'" class="ax-card-block" style="background-color: floralwhite;padding: 3px;">'+
             typeContext +
             liupai +
-            '<div class="ax-title">'+
-              '<a href="###" class="ax-ell-title"> MH NFT ID：' + result.ids[i] + '</a>'+
+            '<div class="ax-keywords">'+
+              '<a href="###" class="">ID：' + result.ids[i] + '</a>'+
             '</div>'+
             '<div class="">'+
                 button +

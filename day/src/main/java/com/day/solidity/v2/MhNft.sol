@@ -6,16 +6,16 @@ interface IERC165 {
 
 
 contract IERC721 is IERC165 {
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+    event Transfer(address indexed from, address indexed to, uint96 indexed tokenId);
+    event Approval(address indexed owner, address indexed approved, uint96 indexed tokenId);
 
     function balanceOf(address owner) public view returns (uint256 balance);
-    function ownerOf(uint48 tokenId) public view returns (address owner);
-    function approve(address to, uint48 tokenId) public;
-    function getApproved(uint48 tokenId) public view returns (address operator);
-    function transferFrom(address from, address to, uint48 tokenId) public;
-    function safeTransferFrom(address from, address to, uint48 tokenId) public;
-    function safeTransferFrom(address from, address to, uint48 tokenId, bytes memory data) public;
+    function ownerOf(uint96 tokenId) public view returns (address owner);
+    function approve(address to, uint96 tokenId) public;
+    function getApproved(uint96 tokenId) public view returns (address operator);
+    function transferFrom(address from, address to, uint96 tokenId) public;
+    function safeTransferFrom(address from, address to, uint96 tokenId) public;
+    function safeTransferFrom(address from, address to, uint96 tokenId, bytes memory data) public;
 }
 
 
@@ -97,7 +97,7 @@ contract ERC721 is ERC165, IERC721 {
     mapping(uint96 => address) private allowance_;
 
     mapping(uint96 => NftBo) public nftdesc;
-    uint48 public totalSupply;
+
     uint48 public userCount;
 
     struct NftBo {
@@ -111,92 +111,109 @@ contract ERC721 is ERC165, IERC721 {
         uint32 count;
     }
 
-    event Create(address owner, uint48 nftId, uint8 level);
+    event Create(address owner, uint96 nftId, uint8 level);
     // event Transfer(address from, address to, uint48 nftId);
 
     constructor () public {
         _registerInterface(_INTERFACE_ID_ERC721);
     }
 
-    function _exists(uint48 tokenId) public view returns (bool) {
-        return nftdesc[tokenId].level > 0;
+    // compress an NftBo into a 256b integer
+    function genId(uint48 userId, uint48 userNftId) internal pure returns (uint96) {
+        uint96 n = uint96(userId);
+        n = (n<<48) | userNftId;
+        return n;
+    }
+    // extract an NftBo from a 256b integer
+    function tokenIdToUserNftId(uint96 n) internal pure returns (uint48) {
+        // nftbo.index = uint48(n & ((1<<48)-1));
+        n = n >> 48;
+        return uint48(n);
+    }
+
+    function tokenIdToUserId(uint96 n) internal pure returns (uint48) {
+        return uint48(n & ((1<<48)-1));
+    }
+
+    function _exists(uint96 tokenId) public view returns (bool) {
+        return nftdesc[tokenId].owner != address(0);
     }
 
     function balanceOf(address owner) public view returns (uint256) {
         require(owner != address(0));
-        return balanceOf_[owner].length;
+        return user[owner].count;
     }
 
-    function ownerOf(uint48 tokenId) public view returns (address) {
+    function ownerOf(uint96 tokenId) public view returns (address) {
         address owner = nftdesc[tokenId].owner;
         require(owner != address(0));
         return owner;
     }
 
-    function approve(address guy, uint48 id) public {
+    function approve(address guy, uint96 id) public {
         require(guy != msg.sender, "not exist nft");
-        NftBo memory nftBo = nftdesc[id];
-        require(balanceOf_[msg.sender][nftBo.index] == id,"this nft are not your");
+        require(nftdesc[id].owner == msg.sender,"this nft are not your");
 
         allowance_[id] = guy;
 
         emit Approval(msg.sender, guy, id);
     }
 
-    function removeAllowance(uint48 id) public returns (bool) {
+    function removeAllowance(uint96 id) public returns (bool) {
         require(allowance_[id] != address(0), "not nft allowance");
-        NftBo memory nftBo = nftdesc[id];
-        require(balanceOf_[msg.sender][nftBo.index] == id,"this nft are not your");
+        require(nftdesc[id].owner == msg.sender,"this nft are not your");
 
         delete allowance_[id];
 
         return true;
     }
 
-    function getApproved(uint48 id) public view returns (address){
+    function getApproved(uint96 id) public view returns (address){
         require(allowance_[id] != address(0));
         return allowance_[id];
     }
 
-    function safeTransferFrom(address from, address to, uint48 tokenId) public {
+    function safeTransferFrom(address from, address to, uint96 tokenId) public {
         safeTransferFrom(from, to, tokenId, "");
     }
 
-    function safeTransferFrom(address from, address to, uint48 tokenId, bytes memory _data) public {
+    function safeTransferFrom(address from, address to, uint96 tokenId, bytes memory _data) public {
         transferFrom(from, to, tokenId);
         require(_checkOnERC721Received(from, to, tokenId, _data));
     }
 
-    function _mint(address owner, uint8 level) internal returns (uint256) {
-        totalSupply++;
-        NftBo memory nftBo = NftBo(owner, level, uint32(balanceOf_[owner].length));
-        nftdesc[totalSupply] = nftBo;
+    function _mint(address owner, uint8 level) internal returns (uint96) {
 
-        balanceOf_[owner].push(totalSupply);
-        emit Create(owner,totalSupply,level);
-        return totalSupply;
+        NftBo memory nftBo = NftBo(owner, level);
+        User memory userBo = user[owner];
+        if(userBo.id <= 0){
+            userCount++;
+            userBo = User(userCount,1,1);
+        }else{
+            userBo.total = userBo.total + 1;
+            userBo.count = userBo.count + 1;
+        }
+        uint96 tokenId = genId(userBo.id,userBo.total);
+        nftdesc[tokenId] = nftBo;
+        user[owner] = userBo;
+
+        emit Create(owner,tokenId,level);
+        return tokenId;
     }
 
-    function transferFrom(address src, address dst, uint48 id) public {
+    function transferFrom(address src, address dst, uint96 id) public {
         NftBo memory nftBo = nftdesc[id];
-        require(balanceOf_[src][nftBo.index] == id, "this nft is not src user");
+        require(nftBo.owner == src,"this nft are not your");
 
         if (src != msg.sender) {
             require(allowance_[id] == msg.sender, "you can not spend this nft");
             delete allowance_[id];
         }
 
-        uint256 lastTokenIndex = balanceOf_[src].length - 1;
-        uint32 tokenIndex = nftBo.index;
-        if (tokenIndex != lastTokenIndex) {
-            nftdesc[balanceOf_[src][lastTokenIndex]].index = tokenIndex;
-            balanceOf_[src][tokenIndex] = balanceOf_[src][lastTokenIndex];
-        }
-        balanceOf_[src].length--;
+        nftBo.owner = dst;
 
-        nftdesc[id].index = uint32(balanceOf_[dst].length);
         nftdesc[id].owner = dst;
-        balanceOf_[dst].push(id);
+        user[src].count = user[src].count - 1;
 
         emit Transfer(src, dst, id);
     }
@@ -243,8 +260,8 @@ contract ERC721 is ERC165, IERC721 {
 }
 
 contract IERC721Enumerable is IERC721 {
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256 tokenId);
-    function tokenByIndex(uint256 index) public view returns (uint256);
+    function tokenOfOwnerByIndex(address owner, uint48 index) public view returns (uint96 tokenId);
+    function tokenByIndex(uint256 index) public view returns (uint96);
 }
 
 contract ERC721Enumerable is ERC165, ERC721, IERC721Enumerable {
@@ -255,22 +272,35 @@ contract ERC721Enumerable is ERC165, ERC721, IERC721Enumerable {
         _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
     }
 
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {
-        require(index < balanceOf_[owner].length, "ERC721Enumerable: owner index out of bounds");
-        return balanceOf_[owner][index];
-    }
-
-    function tokenByIndex(uint256 index) public view returns (uint256) {
-        return uint256(-1);
-    }
-
-    function tokenOfOwner(address owner) public view returns (uint48[] memory ids,uint8[] memory levels) {
-        levels = new uint8[](balanceOf_[owner].length);
-        for(uint256 i=0;i<ids.length;i++){
-            levels[i] = nftdesc[balanceOf_[owner][i]].level;
+    function tokenOfOwnerByIndex(address owner, uint48 index) public view returns (uint96) {
+        require(index <= user[owner].total, "ERC721Enumerable: owner index out of bounds");
+        uint96 tokenId = genId(user[owner].id,index);
+        if(nftdesc[tokenId].owner == owner){
+            return tokenId;
         }
+        return 0;
+    }
 
-        return (balanceOf_[owner],levels);
+    function tokenByIndex(uint256 index) public view returns (uint96) {
+        return 0;
+    }
+
+    function tokenOfOwner(address owner) public view returns (uint96[] memory ids,uint8[] memory levels) {
+        User memory userBo = user[owner];
+        levels = new uint8[](userBo.count);
+        ids = new uint96[](userBo.count);
+        uint256 index = 0;
+        for(uint48 i=1;i<=userBo.total;i++){
+            uint96 tokenId = genId(userBo.id,i);
+            NftBo memory nftBo = nftdesc[tokenId];
+            if(nftBo.owner == owner){
+                levels[index] = nftBo.level;
+                ids[index] = tokenId;
+                index++;
+            }
+
+        }
+        return (ids,levels);
     }
 
 }
@@ -278,7 +308,7 @@ contract ERC721Enumerable is ERC165, ERC721, IERC721Enumerable {
 contract IERC721Metadata is IERC721 {
     function name() external view returns (string memory);
     function symbol() external view returns (string memory);
-    function tokenURI(uint256 tokenId) external view returns (string memory);
+    function tokenURI(uint96 tokenId) external view returns (string memory);
 }
 
 
@@ -303,7 +333,7 @@ contract ERC721Metadata is ERC165, ERC721, IERC721Metadata {
         return _symbol;
     }
 
-    function tokenURI(uint48 tokenId) external view returns (string memory) {
+    function tokenURI(uint96 tokenId) external view returns (string memory) {
         require(_exists(tokenId));
         string memory infoUrl;
         infoUrl = strConcat('https://blockdatanalysis.com/v1/', uint2str(tokenId));
@@ -382,31 +412,22 @@ contract MinterRole {
 
 contract ERC721Mintable is ERC721, MinterRole {
 
-    function mint(address to, uint8 level) public onlyMinter returns (uint256) {
+    function mint(address to, uint8 level) public onlyMinter returns (uint96) {
         return _mint(to, level);
     }
 
-    function merge(uint48[] memory ids) public returns (uint256) {
-        uint256 idlength = ids.length;
+    function merge(uint96[] memory ids) public returns (uint96) {
+        uint32 idlength = uint32(ids.length);
         require(idlength == 5,"id count not right");
 
         uint256 level = nftdesc[ids[0]].level;
 
-        require(ids.length <= balanceOf_[msg.sender].length,"not have enough nft");
-
-        for(uint256 i=0;i<idlength;i++){
-            uint256 lastTokenIndex = balanceOf_[msg.sender].length - 1;
-            uint32 tokenIndex = nftdesc[ids[i]].index;
-            require(ids[i] == balanceOf_[msg.sender][tokenIndex], "thoes ids are not your");
-            nftdesc[balanceOf_[msg.sender][lastTokenIndex]].index = tokenIndex;
-            balanceOf_[msg.sender][tokenIndex] = balanceOf_[msg.sender][lastTokenIndex];
-            balanceOf_[msg.sender].length--;
-        }
-
         for(uint256 i=0;i<idlength;i++){
             require(nftdesc[ids[i]].level == level,"ids level are not same");
+            require(nftdesc[ids[i]].owner == msg.sender,"this nft are not your");
             delete nftdesc[ids[i]];
         }
+        user[msg.sender].count = user[msg.sender].count - idlength;
 
         return mint(msg.sender,uint8(level)+1);
     }
@@ -460,12 +481,12 @@ contract MHNFT is ERC721Full, ERC721Mintable, Ownable {
     ERC721Full(_name, _symbol){
     }
 
-    function transfer(address _to, uint48 _tokenId) public {
+    function transfer(address _to, uint96 _tokenId) public {
         safeTransferFrom(msg.sender, _to, _tokenId);
     }
 
 
-    function create(address owner, uint8 level) public onlyMinter returns (uint256) {
+    function create(address owner, uint8 level) public onlyMinter returns (uint96) {
         return mint(owner,level);
     }
 
@@ -473,15 +494,3 @@ contract MHNFT is ERC721Full, ERC721Mintable, Ownable {
         _removeMinter(account);
     }
 }
-
-
-// contract MHNFT is IERC721, Ownable{
-//     string public name = "MOHE NFT";
-//     string public symbol = "MHNFT";
-
-//     function create(address owner, uint256 level) public onlyManager returns (uint256) {
-//         return mint(owner,level);
-//     }
-
-//     //two = 50 one; three = 20 two; four = 10 three; five = 5 four
-// }

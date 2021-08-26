@@ -93,33 +93,25 @@ contract ERC721 is ERC165, IERC721 {
     bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
     bytes4 private constant _INTERFACE_ID_ERC721 = 0x80ac58cd;
 
-    mapping(address => User) internal user;
-    mapping(uint96 => address) private allowance_;
+    mapping(address => uint48[]) internal balanceOf_;
+    mapping(uint48 => address) private allowance_;
 
-    mapping(uint96 => NftBo) public nftdesc;
+    mapping(uint48 => NftBo) public nftdesc;
     uint48 public totalSupply;
-    uint48 public userCount;
 
     struct NftBo {
         address owner;
         uint8 level;
-    }
-
-    struct User {
+        uint32 index;
         uint48 id;
-        uint48 total;
-        uint32 count;
     }
-
-    event Create(address owner, uint48 nftId, uint8 level);
-    // event Transfer(address from, address to, uint48 nftId);
 
     constructor () public {
         _registerInterface(_INTERFACE_ID_ERC721);
     }
 
     function _exists(uint48 tokenId) public view returns (bool) {
-        return nftdesc[tokenId].level > 0;
+        return nftdesc[tokenId].id > 0;
     }
 
     function balanceOf(address owner) public view returns (uint256) {
@@ -134,17 +126,19 @@ contract ERC721 is ERC165, IERC721 {
     }
 
     function approve(address guy, uint48 id) public {
+        require(nftdesc[id].id > 0, "not exist nft");
         require(guy != msg.sender, "not exist nft");
         NftBo memory nftBo = nftdesc[id];
         require(balanceOf_[msg.sender][nftBo.index] == id,"this nft are not your");
 
-        allowance_[id] = guy;
+        allowance_[nftBo.id] = guy;
 
         emit Approval(msg.sender, guy, id);
     }
 
     function removeAllowance(uint48 id) public returns (bool) {
         require(allowance_[id] != address(0), "not nft allowance");
+        require(nftdesc[id].id > 0,"not exist nft");
         NftBo memory nftBo = nftdesc[id];
         require(balanceOf_[msg.sender][nftBo.index] == id,"this nft are not your");
 
@@ -169,16 +163,18 @@ contract ERC721 is ERC165, IERC721 {
 
     function _mint(address owner, uint8 level) internal returns (uint256) {
         totalSupply++;
-        NftBo memory nftBo = NftBo(owner, level, uint32(balanceOf_[owner].length));
+        NftBo memory nftBo = NftBo(owner, level, uint32(balanceOf_[owner].length), totalSupply);
         nftdesc[totalSupply] = nftBo;
 
         balanceOf_[owner].push(totalSupply);
-        emit Create(owner,totalSupply,level);
+
         return totalSupply;
     }
 
     function transferFrom(address src, address dst, uint48 id) public {
+        require(nftdesc[id].id > 0,"not exist nft");
         NftBo memory nftBo = nftdesc[id];
+
         require(balanceOf_[src][nftBo.index] == id, "this nft is not src user");
 
         if (src != msg.sender) {

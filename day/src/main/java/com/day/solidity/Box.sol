@@ -100,10 +100,8 @@ contract Mohe is Ownable {
     event Open(address owner, uint48 moheNum, uint256 key);
 
     struct MoheVo {
-        address owner;
         uint48 blockNum;
         uint32 index;
-        bool open;
     }
 
     constructor(uint256 _key, address _token, address _team, address _mhnft) public Ownable() {
@@ -122,7 +120,6 @@ contract Mohe is Ownable {
     }
 
     function boxOfOwner(address owner) public view returns (uint48[] memory ids) {
-
         return moheUser[owner];
     }
 
@@ -135,7 +132,7 @@ contract Mohe is Ownable {
 
     function create() private returns(uint256){
         moheNum = moheNum + 1;//2wan
-        MoheVo memory moheVo = MoheVo(msg.sender, uint48(block.number + 1),uint32(moheUser[msg.sender].length),false);
+        MoheVo memory moheVo = MoheVo(uint48(block.number + 1),uint32(moheUser[msg.sender].length));
         moheUser[msg.sender].push(moheNum);//5wan
         moheInfo[moheNum] = moheVo;//2wan
         emit Buy(msg.sender, moheNum,moheVo.blockNum);
@@ -144,13 +141,12 @@ contract Mohe is Ownable {
 
     function open(uint48 moheNumP) public returns(uint256){
         require(moheNumP > 0);
-        require(moheInfo[moheNumP].owner == msg.sender, "this moheNum are not you");
+        require(moheUser[msg.sender][moheInfo[moheNumP].index] == moheNumP, "this moheNum are not you");
         require(moheInfo[moheNumP].blockNum <= block.number, "wait next block time open");
-        require(!moheInfo[moheNumP].open, "this mohe is open");
         uint48 latest = moheUser[msg.sender][moheUser[msg.sender].length-1];
         uint32 currentIndex = moheInfo[moheNumP].index;
         key = random(moheInfo[moheNumP].blockNum, moheNumP);
-        moheInfo[moheNumP].open = true;
+        delete moheInfo[moheNumP];
         moheUser[msg.sender][currentIndex] = latest;
         moheUser[msg.sender].length--;
         moheInfo[latest].index = uint32(currentIndex);
