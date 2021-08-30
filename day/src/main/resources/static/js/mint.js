@@ -503,11 +503,11 @@ async function approve(contractAddress,to,amount){
 async function approveNft(contractAddress,to,nftId){
   try {
       var issuerAddress = window.tronWeb.defaultAddress.hex;
-      var parameter1 = [{type:'address',value:''},{type:'uint256',value:'0'}]
+      var parameter1 = [{type:'address',value:''},{type:'uint96',value:'0'}]
       parameter1[0].value = tronWeb.address.fromHex(to);
       parameter1[1].value = nftId;
 
-      var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,"approve(address,uint256)", {},parameter1,issuerAddress);
+      var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,"approve(address,uint96)", {},parameter1,issuerAddress);
       var signedTx = await tronWeb.trx.sign(tx.transaction);
       var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
     } catch (error) {
