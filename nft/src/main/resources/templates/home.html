@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+  <meta http-equiv="expires" content="0"/>
+  <title>Home</title>
+  <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
+<!--  <script type="text/javascript" src="backend.js?2019.06.03.v2"> </script>-->
+<!--  <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>-->
+<!--  <script th:src="@{/static/plugins/jquery.validate/jquery.validate.min.js}" type="text/javascript"></script>-->
+
+</head>
+<!--style="background-image:url(/static/images/backg.jpg); background-size:cover;"-->
+<body>
+<!--<nav class="ax-flex-col">-->
+<!--  ...-->
+<!--</nav>-->
+
+<div class="ax-window" data-mask="true" data-in="fadeIn" id="stake_window">
+  <div class="ax-window-overlay"></div>
+  <div class="ax-window-contain card-div">
+    <a href="###" class="ax-window-close"><i class="ax-iconfont ax-icon-close"></i></a>
+    <div class="contect-center">
+      <a href="###" class="ax-logo"><img class="img-logo-detail-token" src="/static/images/logo.png" /></a>
+    </div>
+    <div id="title" class="" style="text-align: center;padding-left: 0px;margin-bottom: 50px;font-size: 26px;">
+      My Account
+    </div>
+    <div class="ax-window-content contect-center" style="margin: 20px;">
+      <div class="" style="">
+        <span id="trx">TRX balance:</span>
+      </div>
+      <div class="" style="">
+        <span id="day">DAY balance:</span>
+      </div>
+      <div class="" style="">
+        <span id="mh">MH balance:</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<header class="ax-header" id="header">
+
+</header>
+<script type="text/javascript" th:src="@{/static/js/header.js}"></script>
+<div class="ax-space-header"></div>
+<section class="section">
+  <div class="ax-row ax-split toppage">
+    <div class="ax-col-12 div-split-m15 hero">
+      <h1>NFT intelligent management platform</h1>
+      <h2>Accessible, Secure, Transparent</h2>
+
+      <h2 style="margin-top: 20px;">Welcome users to participate in the DAY pre-test.
+        After the official launch, we will give participating users an airdrop of DAY tokens</h2>
+      <div>
+        <a href="###" class="ax-btn ax-primary ax-round">White paper</a>
+        <a target="_blank" href="https://nileex.io/join/getJoinPage" class="ax-btn ax-primary ax-round">Receive TRX tokens</a>
+        <a href="###" class="ax-btn ax-primary ax-round" onclick="receiveDay()">Receive DAY tokens</a>
+      </div>
+    </div>
+    <div class="ax-col-12 div-split-m15">
+      <img class="img-common" src="/static/images/hero.png"/>
+    </div>
+  </div>
+</section>
+<main style="width:100%;">
+  <div id="article1">
+    <section id="scrollnav-4" class="content4 ax-lazy">
+      <div class="section-div">
+        <div class="section-title">
+          <h2 class="ax-lazy">
+            Latest News
+          </h2>
+        </div>
+      </div>
+    </section>
+    <section id="scrollnav-1" class="content1 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Features
+          </h2>
+          <p>
+            Professional, Transparency, Security decentralized NFT management platform.
+            Include production, trading, auctions, collect ... functions.
+            Super low handling fee. The first phase is based on the BSC or TRON, and later will release main network.
+          </p>
+        </div>
+        <div class="ax-grid ax-space-md ax-lazy">
+<!--        ax-grid-inner-->
+        <ul class="">
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box ax-radius card-div">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">Magic Hamper</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                Magic Hamper tokens can be used to obtain a magic hamper. Magic hamper can open a card.
+                Users can collect cards of interest (or valuable) by purchasing different series of magic hamper, and so on.
+              </div>
+            </div>
+          </li>
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box  ax-radius card-div">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">NFT Mining</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                MH token is all mint out through DAY and NFT magic hamper cards.
+                Genesis mining is done using DAY. Combined mining(DAY + NFT) will be opened after the end of the Genesis mining.
+              </div>
+            </div>
+          </li>
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box  ax-radius card-div">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">NFT Management</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                The current management of NFT mainly includes: NFT production, NFT trading, and NFT auction.
+                Users can perform various transactions and manipulations of NFT on the platform.
+              </div>
+            </div>
+          </li>
+          <li class="ax-grid-block ax-col-6">
+            <div class="ax-box  ax-radius card-div">
+              <div class="ax-box-header">
+                <div class="ax-row">
+                  <i class="ax-adorn ax-iconfont ax-icon-star"></i>
+                  <div class="ax-col">
+                    <div class="ax-title">Video Service</div>
+                    <div class="ax-des">The Great NFT</div>
+                  </div>
+                  <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-up"></i></a>
+                </div>
+              </div>
+              <div class="ax-box-body ax-padding ax-xl">
+                Each video will be mapped to an NFT, and the video will be stored on BTFS or IPFS.
+                The value generated by this NFT belongs to the user and is not subject to exploitation and control by centralized platforms.
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </section>
+
+    <section id="scrollnav-6" class="faq content6 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            FAQ
+          </h2>
+        </div>
+
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+          <div class="ax-box-header ax-row">
+            <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+            <div class="ax-col"><b class="ax-title">What is DAY?</b></div>
+            <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+          </div>
+          <div class="ax-break-line"></div>
+          <div class="ax-box-body ax-article" style="display: none;">
+            <p>
+            DAY is the platform token circulating on the platform. In the future, after the main network of the platform is launched, it will serve as the circulating token of the main network. The governance of the main network needs to be carried out through DAY.
+            </p>
+            <p>
+              1. MH creation mining only supports DAY, MH tokens are Magic Hamper tokens, and Magic Hamper purchases only support MH tokens.
+            </p>
+            <p>
+              2. DAY is the designated token for NFT production, and the platform supports the majority of users to make NFTs, and trade and auction works.
+            </p>
+            <p>
+              3. DAY, as the designated token platform for the auction of artworks, also supports the auction of artworks by ordinary users, and DAY is the designated auction token.
+            </p>
+            <p>
+              4. Game animation derivatives only support DAY to purchase future games and animations, which is also the direction for the platform to enter.
+            </p>
+            <p>
+              5. Cross-chain support platform will use a unique cross-chain protocol and mainstream public chains such as Ethereum, TRON, Bitcoin, and Polkadot to cross-chain after the main-net goes online.
+            </p>
+          </div>
+        </div>
+
+        <div class="ax-break"></div>
+
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+          <div class="ax-box-header ax-row">
+            <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+            <div class="ax-col"><b class="ax-title">What can I do on the DAY platform?</b></div>
+            <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+          </div>
+          <div class="ax-break-line"></div>
+          <div class="ax-box-body ax-article" style="display: none;">
+            <p>
+              1. You can create NFTs of images and videos, while trading, auctioning and transferring NFTs.
+            </p>
+            <p>
+              2. You can also watch NFT short videos and get the corresponding viewing revenue.
+              In addition, NFT short video authors can get the corresponding income.
+            </p>
+          </div>
+        </div>
+
+        <div class="ax-break"></div>
+
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+          <div class="ax-box-header ax-row">
+            <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+            <div class="ax-col"><b class="ax-title">How do I get the DAY token?</b></div>
+            <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+          </div>
+          <div class="ax-break-line"></div>
+          <div class="ax-box-body ax-article" style="display: none;">
+            <p>
+              1. You can purchase through the trading platform.
+            </p>
+          </div>
+        </div>
+        <div class="ax-break"></div>
+
+        <div class="ax-box ax-border ax-radius box-faq card-div ax-lazy">
+        <div class="ax-box-header ax-row">
+          <i class="ax-adorn ax-iconfont ax-icon-question-o"></i>
+          <div class="ax-col"><b class="ax-title">What can MH token be used for?</b></div>
+          <a href="###" class="ax-operate ax-box-close"><i class="ax-iconfont ax-icon-down"></i></a>
+        </div>
+        <div class="ax-break-line"></div>
+        <div class="ax-box-body ax-article" style="display: none;">
+          <p>
+            1. You can buy Mining Magic Box.Mining magic box can have about 43% probability to open the magic box card.
+               Using the Magic Box cards and DAY combination mining can increase the profit of mining
+          </p>
+          <p>
+            2. You can buy the series magic box for collection.
+          </p>
+        </div>
+      </div>
+      </div>
+    </section>
+    <section id="scrollnav-7" class="content7 section7 ax-lazy">
+      <div class="section-div">
+        <div class="section-title ax-lazy">
+          <h2>
+            Strategic partners
+          </h2>
+        </div>
+
+        <div class="ax-row">
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+  <div class="ax-clear"></div>
+  <div class="push"></div>
+</main>
+
+<footer id="footer">
+
+</footer>
+
+<!--ax-valign ax-bottom-->
+
+<script src="/static/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/static/js/ax.min.js" type="text/javascript"></script>
+<script src='/static/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
+<script src='/static/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
+<script src='/static/plugins/hc-sticky/hc-sticky.min.js'></script>
+<script type="text/javascript" th:src="@{/static/js/common.js}"></script>
+<script type="text/javascript">
+  window.onload = function() {
+    self.setInterval("init(false,true)",interval);
+    init(false,false);
+  };
+</script>
+
+</body>
+<style>
+  header,footer{
+<!--    height:60px;-->
+    background-color: rgba(0,0,0,.04);
+    z-index: 2;
+  }
+  main{
+   width:80%;
+   margin:0px auto;
+
+  }
+  .left{
+      width:calc(100% - 214px);
+      background-color: rgba(0,0,0,.04);
+      float: left;
+  }
+  .right{
+    width:200px;
+    background-color: rgba(0,0,0,.04);
+      float: right;
+
+  }
+  section{
+<!--    background-color: #f5f5f5;-->
+    margin:10px;
+    padding: 60px 0;
+    overflow: hidden;
+  }
+</style>
+<!--      width: calc(50% - 20px);-->
+
+</html>

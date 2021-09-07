@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+  default-lazy-init="false">
+
+  <description>Spring公共配置</description>
+
+<!--  <import resource="db/db.xml"/>-->
+
+  <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+  <context:component-scan base-package="com.nft.api"/>
+
+  <tx:annotation-driven proxy-target-class="true"/>
+
+  <!--<aop:aspectj-autoproxy/>-->
+
+  <!--<bean id="cacheAspect" class="liang.mvc.aspect.CacheAspect"/>-->
+
+  <!-- 系统配置文件读取 -->
+  <!-- 定义受环境影响易变的变量 -->
+  <!--<beans profile="production">-->
+  <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+  <!--<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>-->
+  <!--<property name="ignoreResourceNotFound" value="true"/>-->
+  <!--<property name="locations">-->
+  <!--<list>-->
+  <!--<value>classpath*:hibernate.properties</value>-->
+  <!--<value>classpath*:application.properties</value>-->
+  <!--<value>classpath*:application-local.properties</value>-->
+  <!--</list>-->
+  <!--</property>-->
+  <!--</bean>-->
+  <!--</beans>-->
+  <!-- 系统配置文件读取 -->
+  <bean id="propertyPlaceholderConfigurer"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+    <property name="ignoreResourceNotFound" value="true"/>
+    <property name="locations">
+      <list>
+        <value>classpath*:hibernate.properties</value>
+        <value>classpath*:/application.properties</value>
+        <value>classpath*:/application-local.properties</value>
+      </list>
+    </property>
+  </bean>
+  <bean id="propertiesManager" class="com.liang.common.util.PropertiesManager"
+    parent="propertyPlaceholderConfigurer"/>
+
+  <mvc:resources mapping="/static/**" location="classpath:/static/"/>
+
+<!--  <mvc:interceptors>-->
+
+<!--    <mvc:interceptor>-->
+<!--      <mvc:mapping path="/**"/>-->
+<!--      <mvc:exclude-mapping path="/v1/door/error"/>-->
+<!--      <mvc:exclude-mapping path="/v1/manager/system-maintain"/>-->
+<!--      <mvc:exclude-mapping path="/v1/manager/set-user-limit"/>-->
+<!--      <mvc:exclude-mapping path="/static/**"/>-->
+
+<!--      <bean class="com.liang.sangong.interceptor.RequestInterceptor"/>-->
+<!--    </mvc:interceptor>-->
+
+<!--  </mvc:interceptors>-->
+
+</beans>

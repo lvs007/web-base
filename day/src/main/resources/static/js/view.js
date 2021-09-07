@@ -69,10 +69,9 @@ function setVedio(result) {
     for(var k = 0, i = 0; k < line; k++) {
       context += '<ul class="ax-grid-inner">';
       for(var j = 0; j < col && i < length; j++,i++) {
-        url = result.urls[i];
-        title = result.titles[i];
-        desc = result.descs[i];
-        time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
+        url = tronWeb.toUtf8(result.url1[i])+tronWeb.toUtf8(result.url2[i]);
+        title = tronWeb.toUtf8(result.title[i]);
+        time = new Date(parseInt(result.createTime[i], 10) * 1000).toUTCString();
         context += '<li class="ax-grid-block ax-col-8">'+
           '<div class="ax-card-block card-div" style="background-color: floralwhite;">'+
             '<div class="ax-videojs" onclick="get()">'+
@@ -83,9 +82,9 @@ function setVedio(result) {
             '<div class="ax-title">'+
               '<a href="###" class="ax-ell-title">' + title + '</a>'+
             '</div>'+
-            '<div class="ax-des ax-ell-2-des">'+
-              desc +
-            '</div>'+
+//            '<div class="ax-des ax-ell-2-des">'+
+//              desc +
+//            '</div>'+
             '<div class="ax-keywords">'+
               '<div class="ax-flex-row">'+
                 time +

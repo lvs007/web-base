@@ -116,14 +116,13 @@ async function createNft() {
   if(!validCreateNft()){
     return;
   }
-  var desc = document.getElementById('desc').value;
   var title = document.getElementById('title').value;
   var keyword = getRadioBoxValue("keyword");
   var contractAddress = window.tronWeb.address.toHex(imgContractAdd);
   if(keyword == "Video"){
     contractAddress = window.tronWeb.address.toHex(vedioContractAdd);
   }
-  var functions = "create(address,string,string,string)";
+  var functions = "create(address,bytes32,bytes32,bytes16)";
   var issuerAddress = window.tronWeb.defaultAddress.hex;
   if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
       //valid token approve
@@ -152,12 +151,24 @@ async function createNft() {
       }
       //
       instance = await tronWeb.contract().at(contractAddress);
-      let res = await instance.create(userAdress,url,desc,title).send({
+      title = tronWeb.toHex(title);
+      var len = 64-title.length+2;
+      if(len<0){
+        title = title.substr(0,62)+"0000";
+      }else{
+        for(var i = 0;i<len;i++){
+          title += "0";
+        }
+      }
+      var url1 = tronWeb.toHex(url.substr(0,32));
+      var url2 = tronWeb.toHex(url.substr(32))+"0000";
+      let res = await instance.create(userAdress,title,url1,url2).send({
               feeLimit:1000000000,
               callValue:0,
               shouldPollResponse:false
           });
       console.log(res);
+      checkTransaction(res,"Create Success.");
       if(keyword == "Video"){
         document.getElementById("tab-img").className = "ax-item";
         var vedio = document.getElementById('tab-vedio');
@@ -314,7 +325,7 @@ async function querycontract(pageNum,contractAdd,type,select){
   }
   let result;
   if(select == 0){
-    result = await instance.tokensOfOwnerByIndexs(userAdress,index).call();
+    result = await instance.tokensOfOwnerByIndexs(userAdress,pageNo,pageNum).call();
   }else if(select == 1){
     result = await instance.queryuserselling(index).call();
   }else if(select == 2){
@@ -347,21 +358,31 @@ function setContext(result,type,select) {
     var line = Math.ceil(length / col);
     var url = "https://src.axui.cn/examples/images/image-7.jpg";
     var title = "欧洲最长屋桥盛不下千年传奇";
-    var desc = "埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。";
     var time = "3天前发布";
     for(var k = 0, i = 0; k < line; k++) {
+      if(result.ids[i]<=0){
+        break;
+      }
       context += '<ul class="ax-grid-inner">';
       for(var j = 0; j < col && i < length; j++,i++) {
-        url = result.urls[i];
-        title = result.titles[i];
-        desc = result.descs[i];
+        if(result.ids[i]<=0){
+          break;
+        }
+        url = tronWeb.toUtf8(result.url1s[i])+tronWeb.toUtf8(result.url2s[i]).replaceAll("\u0000","");
+        title = tronWeb.toUtf8(result.titles[i]).replaceAll("\u0000","");
         time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
         var button = "";
         var liupai = "";
+        var createTimeContext = "";
         if(select ==0){
           button = '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="sell-'+result.ids[i]+'">Sell NFT</a>' +
                    '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="pm-'+result.ids[i]+'">Auction NFT</a>' +
                    '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round btn-a" id="trans-'+result.ids[i]+'">Transfer to others</a>';
+          createTimeContext = '<div class="ax-keywords">'+
+                                            '<div class="ax-flex-row">'+
+                                              time +
+                                            '</div>'+
+                                          '</div>';
         }else if(select ==1){
           price = new BigNumber(tronWeb.toDecimal(result.prices[i])).div(decimals).toFixed();
           button = '<span class="ax-child">Price: ' + price + ' DAY. </span>'+
@@ -417,14 +438,10 @@ function setContext(result,type,select) {
             '<div class="ax-title">'+
               '<a href="###" class="ax-ell-title">' + title + '</a>'+
             '</div>'+
-            '<div class="ax-des ax-ell-2-des">'+
-              desc +
-            '</div>'+
-            '<div class="ax-keywords">'+
-              '<div class="ax-flex-row">'+
-                time +
-              '</div>'+
-            '</div>'+
+//            '<div class="ax-des ax-ell-2-des">'+
+//              desc +
+//            '</div>'+
+            createTimeContext +
             '<div class="">'+
 //              '<div class="ax-flex-row">'+
                 button +
@@ -443,6 +460,9 @@ function setContext(result,type,select) {
 
 var currentTokenId = -1;
 function initPop(id,type) {
+  if(id <= 0){
+    return;
+  }
   if(type == 1){
     $('#sell-'+id).axPopup({
       url:'#pop-sell-w',
@@ -519,6 +539,7 @@ async function sell(type) {
         shouldPollResponse:false
     });
     console.log(res);
+    checkTransaction(res,"Add To Market Success.");
   } catch (error) {
     console.log(error);
   }
@@ -557,6 +578,7 @@ async function pm(type) {
         shouldPollResponse:false
     });
     console.log(res);
+    checkTransaction(res,"Add To Action Market Success.");
   } catch (error) {
     console.log(error);
   }
@@ -582,7 +604,7 @@ async function transfer(type) {
         shouldPollResponse:false
     });
     console.log(res);
-    alert('Send success');
+    checkTransaction(res,"Send Success.");
     imgNft(1);
   } catch (error) {
     console.log(error);
@@ -602,7 +624,7 @@ async function cancelsell(tokenId) {
         shouldPollResponse:false
     });
     console.log(res);
-    alert('Cancel success');
+    checkTransaction(res,"Cancel Success.");
     usersellquery(1);
   } catch (error) {
     console.log(error);
@@ -616,13 +638,13 @@ async function cancelpm(tokenId) {
   }
   try{
     let instance = await tronWeb.contract().at(imgContractAdd);
-    let res = await instance.receive(tokenId).send({
+    let res = await instance.receives(tokenId).send({
         feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
     console.log(res);
-    alert('Cancel success');
+    checkTransaction(res,"Receive Success.");
     userpmquery(1);
   } catch (error) {
     console.log(error);
@@ -652,11 +674,11 @@ function validCreateNft () {
     alert('Please enter a title');
     return false;
   }
-  var desc = document.getElementById('desc');
-  if(desc.value == '') {
-    alert('Please enter a profile');
-    return false;
-  }
+//  var desc = document.getElementById('desc');
+//  if(desc.value == '') {
+//    alert('Please enter a profile');
+//    return false;
+//  }
   if(url==''){
     alert('Please wait for the file to be uploaded');
     return false;
@@ -703,8 +725,8 @@ async function getNftinfo(){
       result = await instance.getselldesc(tokenId).call();
       var r = new Object();
       r.ids = new Array(result.id);
-      r.urls = new Array(result.url);
-      r.descs = new Array(result.desc);
+      r.url1s = new Array(result.url1);
+      r.url2s = new Array(result.url2);
       r.titles = new Array(result.title);
       r.times = new Array(result.time);
       r.prices = new Array(result.price);
@@ -718,8 +740,8 @@ async function getNftinfo(){
       result = await instance.getpmdesc(tokenId).call();
       var r = new Object();
       r.ids = new Array(result.param2[0]);
-      r.urls = new Array(result.param1[0]);
-      r.descs = new Array(result.param1[1]);
+      r.url1s = new Array(result.param1[0]);
+      r.url2s = new Array(result.param1[1]);
       r.titles = new Array(result.param1[2]);
       r.times = new Array(result.param2[1]);
       r.minprices = new Array(result.param2[2]);
@@ -738,8 +760,8 @@ async function getNftinfo(){
       result = await instance.getselldesc(tokenId).call();
       var r = new Object();
       r.ids = new Array(result.id);
-      r.urls = new Array(result.url);
-      r.descs = new Array(result.desc);
+      r.url1s = new Array(result.url1);
+      r.url2s = new Array(result.url2);
       r.titles = new Array(result.title);
       r.times = new Array(result.time);
       r.prices = new Array(result.price);

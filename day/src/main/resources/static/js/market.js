@@ -76,8 +76,8 @@ async function getNftinfo(){
       result = await instance.getselldesc(tokenId).call();
       var r = new Object();
       r.ids = new Array(result.id);
-      r.urls = new Array(result.url);
-      r.descs = new Array(result.desc);
+      r.url1s = new Array(result.url1);
+      r.url2s = new Array(result.url2);
       r.titles = new Array(result.title);
       r.times = new Array(result.time);
       r.prices = new Array(result.price);
@@ -91,8 +91,8 @@ async function getNftinfo(){
       result = await instance.getpmdesc(tokenId).call();
       var r = new Object();
       r.ids = new Array(result.param2[0]);
-      r.urls = new Array(result.param1[0]);
-      r.descs = new Array(result.param1[1]);
+      r.url1s = new Array(result.param1[0]);
+      r.url2s = new Array(result.param1[1]);
       r.titles = new Array(result.param1[2]);
       r.times = new Array(result.param2[1]);
       r.minprices = new Array(result.param2[2]);
@@ -174,25 +174,26 @@ async function querycontract(pageNum,contractAdd,type,select){
   }
 }
 
-async function buy(tokenId) {
+async function buy(tokenId,type,amount) {
   if (!checkNetwork()) {
     return;
   }
   try{
-    let instance = await tronWeb.contract().at(imgContractAdd);
+    var contractAddress = selectContract(type);
+    let instance = await tronWeb.contract().at(contractAddress);
     var lock = await instance.lockmap(tokenId).call();
     if(!lock){
       alert('This NFT is not for sale');
       return;
     }
-
+    await approve(tokenContractAdd,contractAddress,amount);
     let res = await instance.buy(tokenId).send({
         feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
     console.log(res);
-    alert('Buy success.');
+    checkTransaction(res,"Buy Success.");
     imgNft(1);
   } catch (error) {
     console.log(error);
@@ -200,25 +201,25 @@ async function buy(tokenId) {
   }
 }
 
-async function receive(tokenId){
+async function receive(tokenId,type){
   if (!checkNetwork()) {
     return;
   }
   try{
-    let instance = await tronWeb.contract().at(imgContractAdd);
+    var contractAddress = selectContract(type);
+    let instance = await tronWeb.contract().at(contractAddress);
     var lock = await instance.lockmap(tokenId).call();
     if(!lock){
       alert('This NFT is not for auction');
       return;
     }
-
-    let res = await instance.receive(tokenId).send({
+    let res = await instance.receives(tokenId).send({
         feeLimit:1000000000,
         callValue:0,
         shouldPollResponse:false
     });
     console.log(res);
-    alert('Receive success.');
+    checkTransaction(res,"Receive Success.");
     pmquery(1);
   } catch (error) {
     console.log(error);
@@ -237,22 +238,26 @@ function setContext(result,type,select) {
     var line = Math.ceil(length / col);
     var url = "https://src.axui.cn/examples/images/image-7.jpg";
     var title = "欧洲最长屋桥盛不下千年传奇";
-    var desc = "埃尔福特是图林根州首府，在中世纪就是该地区的经济重镇。 它位于南北交通要道的中心位置，很多贸易物流要通过这里。格拉河从埃尔福特市中心穿过。";
     var time = "3天前发布";
     for(var k = 0, i = 0; k < line; k++) {
+      if(result.ids[i]<=0){
+        break;
+      }
       context += '<ul class="ax-grid-inner">';
       for(var j = 0; j < col && i < length; j++,i++) {
         id = result.ids[i];
-        url = result.urls[i];
-        title = result.titles[i];
-        desc = result.descs[i];
+        if(id<=0){
+          break;
+        }
+        url = tronWeb.toUtf8(result.url1s[i])+tronWeb.toUtf8(result.url2s[i]).replaceAll("\u0000","");
+        title = tronWeb.toUtf8(result.titles[i]).replaceAll("\u0000","");
         time = new Date(parseInt(result.times[i], 10) * 1000).toUTCString();
         var button = "";
         var liupai = "";
         if(select ==1){
           price = new BigNumber(tronWeb.toDecimal(result.prices[i])).div(decimals).toFixed();
           button = '<span class="ax-child">Price: ' + price + ' DAY. </span>'+
-                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="buy('+id+')">Buy</a>';
+                   '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="buy('+id+','+type+','+price+')">Buy</a>';
         }else if(select ==2){
           var endtime = tronWeb.toDecimal(result.endtimes[i]);
           var count = result.counts[i];
@@ -285,7 +290,7 @@ function setContext(result,type,select) {
                          '<p>Abortive</p>' +
                        '</div>';
             }
-            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="receive('+id+')">Receive</a>';
+            button += '<a href="###" class="ax-btn ax-info ax-gradient ax-primary ax-sm ax-round" onclick="receive('+id+','+type+')">Receive</a>';
           }
         }
         var typeContext = "";
@@ -310,9 +315,6 @@ function setContext(result,type,select) {
             '<div class="ax-title">'+
               '<a href="###" class="ax-ell-title">' + title + '</a>'+
             '</div>'+
-            '<div class="ax-des ax-ell-2-des">'+
-              desc +
-            '</div>'+
             '<div class="">'+
               button +
             '</div>'+
@@ -328,6 +330,9 @@ function setContext(result,type,select) {
 }
 var currentTokenId = -1;
 function initPop(id,type) {
+  if(id <= 0){
+    return;
+  }
   if(type == 1){
     $('#bid-'+id).axPopup({
       url:'#pop-bid-w',
@@ -373,6 +378,8 @@ async function bid(type) {
         shouldPollResponse:false
     });
     console.log(res);
+    checkTransaction(res,"Bid Success.");
+    pmquery(1);
   } catch (error) {
     console.log(error);
   }
@@ -406,4 +413,33 @@ async function vediopmquery(pageNum){
 
 function setVedio(result,select) {
   setContext(result,2,select);
+}
+
+function selectContract(type){
+  if(type == 1){
+    return imgContractAdd;
+  }else{
+    return vedioContractAdd;
+  }
+}
+
+async function approve(contractAddress,to,amount){
+  var issuerAddress = window.tronWeb.defaultAddress.hex;
+  let userAdress = window.tronWeb.defaultAddress.base58;
+  let instance = await tronWeb.contract().at(contractAddress);
+  let number = await instance.allowance(userAdress,to).call();
+  number = tronWeb.toDecimal(number);
+  if(number < amount){
+    try {
+        var parameter1 = [{type:'address',value:''},{type:'uint256',value:'1000000000000000000000000000'}]
+        parameter1[0].value = tronWeb.address.fromHex(to);
+        var tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress,"approve(address,uint256)", {},parameter1,issuerAddress);
+        var signedTx = await tronWeb.trx.sign(tx.transaction);
+        var broastTx = await tronWeb.trx.sendRawTransaction(signedTx);
+      } catch (error) {
+          console.log(error);
+          alert('Approval failed, please try again!');
+          return;
+      }
+  }
 }

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+  <meta http-equiv="expires" content="0"/>
+  <title>Home</title>
+  <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+<!--<nav class="ax-flex-col">-->
+<!--  ...-->
+<!--</nav>-->
+
+<header class="ax-header" id="header">
+</header>
+<script type="text/javascript" th:src="@{/static/js/header.js}"></script>
+<div class="ax-space-header"></div>
+
+<!--main-->
+<main>
+<!--  <p th:text="${window.tronWeb.address}">address</p>-->
+
+  <div class="" style="text-align:center">
+    <a href="###" class="ax-logo"><img class="img-logo-detail-token" src="/static/images/logo.png" /></a>
+  </div>
+  <div class="ax-h2 " style="text-align:center;padding-bottom: 0px;">
+    DAY + NFT Pool
+  </div>
+  <div style="text-align:center;color: rgb(170, 149, 133);">
+    <span>Pledge DAY + NFT and earn MH</span>
+  </div>
+  <div class="ax-padding" style="text-align:center">
+<!--    <div class="ax-grid ax-space-xxl ax-split">-->
+      <ul class="ax-grid-inner">
+        <li class="ax-grid-block ax-col-5">
+          <div class=" " style="text-align:center;margin: 10px;border: 0px;">
+          </div>
+        </li>
+        <li class="ax-grid-block ax-col-7">
+<!--          <div class="ax-card-block" style="">-->
+<!--            <div class="ax-row ax-split">-->
+              <div class="ax-col ax-card-block card-div" style="text-align:center;margin: 10px;">
+                <div class="">
+                  <a href="###" class="ax-logo"><img class="img-logo-token" src="/static/images/logo.png" /></a>
+                </div>
+                <div id="detail_harverst" style="margin-top: 20px;">0.00000</div>
+                <div style="color: rgb(128, 94, 73);margin-bottom: 40px;">
+                  <span>MH earned</span>
+                </div>
+                <div class="">
+                  <a href="###" style="font-size: 24px;" class="ax-btn ax-long ax-reverse ax-lg" th:onclick="'harvest(2)'">Harvest</a>
+                </div>
+              </div>
+          </li>
+          <li class="ax-grid-block ax-col-7">
+              <div class="ax-col ax-card-block card-div" style="text-align:center;margin: 10px;">
+                <div class="">
+                  <a href="###" class="ax-logo"><img class="img-logo-token" src="/static/images/logo.png" /></a>
+                </div>
+                <div id="detail_stake" style="margin-top: 20px;">0.00000</div>
+                <div style="color: rgb(128, 94, 73);margin-bottom: 40px;">
+                  <span>DAY Staked</span>
+                </div>
+<!--                <div id="day_amount" style="color: rgb(128, 94, 73);">-->
+<!--                  <span>0.0000 DAY.</span>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  <input id="stake_amount" class="ax-form-input ax-round ax-sm" type="number" style="width:250px"/>-->
+<!--                </div>-->
+                <div class="">
+                  <a id="stake" href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg">Stake</a>
+                  <a href="###" style="font-size: 24px;" class="ax-btn ax-reverse ax-lg" onclick="unStake(2)">UnStake</a><!--id="unStake" -->
+                </div>
+              </div>
+<!--            </div>-->
+
+<!--          </div>-->
+        </li>
+        <li class="ax-grid-block ax-col-5">
+          <div class="" style="text-align:center;margin: 10px;border: 0px;">
+          </div>
+        </li>
+      </ul>
+<!--    </div>-->
+  </div>
+  <div class="ax-break-xs"></div>
+  <div class="ax-row ax-split">
+    <div class="ax-col-12 border-div" style="margin-left: -2px;">
+      <div class="ax-filter ax-border border-div">
+        <div class="ax-break-xs"></div>
+        <div class="ax-item ax-flex-row">
+          <span class="ax-head">BUY MH BOX</span>
+          <div class="ax-flex-block">
+            <div class="ax-text">
+              <a href="###" class="ax-active" onclick="buyBox()">Buy Box</a>
+              <a href="###" class="ax-active" onclick="buyAndOpenBox()">Buy And Open Box</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ax-break-xs"></div>
+      <div class="ax-grid ax-space-xxl ax-split-3" id="pt-list" onclick="">
+
+      </div>
+    </div>
+    <div class="ax-col-12 border-div" style="margin-right: -2px;">
+      <div class="ax-filter ax-border border-div">
+        <div class="ax-break-xs"></div>
+        <div class="ax-item ax-flex-row">
+          <span class="ax-head">MH NFT</span>
+          <div class="ax-flex-block">
+            <div class="ax-text">
+              <a href="###" class="ax-active" onclick="mergeNft()">Merge NFT</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ax-break-xs"></div>
+      <div class="ax-grid ax-space-xxl ax-split-3" id="mhnft-list" onclick="">
+
+      </div>
+    </div>
+  </div>
+  <div class="push"></div>
+</main>
+
+<!--渐显窗口-->
+<div class="ax-window" data-mask="true" data-in="fadeIn" id="stake_window">
+  <div class="ax-window-overlay"></div>
+  <div class="ax-window-contain card-div-reverse">
+    <a href="###" class="ax-window-close"><i class="ax-iconfont ax-icon-close"></i></a>
+    <div id="title" class="" style="text-align: center;padding-left: 0px;margin: 10px;line-height: 38px;">
+      Stake DAY + NFT Tokens
+    </div>
+    <div class="ax-window-content" style="margin: 20px;">
+      <div class="" style="-webkit-justify-content: space-between!important;display: -webkit-flex!important;">
+        <span id="stake-text">stake</span>
+        <span id="balance">balance:</span>
+      </div>
+      <div style="border: 1px solid #5915e1;border-radius: 5px;">
+        <input id="amount" class="ax-round ax-sm" type="number" style="border: 0px;width: 55.8%;"/>
+        <a id="setMaxAmount" class="ax-btn ax-sm" style="background: #5915e1;color: #fff;" href="###" th:onclick="'setMaxAmount(2,1)'">Max</a>
+        <select style="width:33%;height: calc(38px - 10px);" id="select">
+          <option value="">Select a NFT</option>
+        </select>
+<!--        <input id="nftId" class="ax-round ax-sm" type="number" placeholder="NFT ID" style="border: 0px;width: 30.8%;"/>-->
+      </div>
+    </div>
+    <div class="ax-padding ax-window-operate">
+      <div class="ax-row">
+<!--        <div class="ax-col">-->
+<!--          <div class="ax-explain">您还要看更多么？</div>-->
+<!--        </div>-->
+          <a href="###" class="ax-btn ax-text ax-ignore ax-window-close">取消</a>
+          <a id="btn-submit" href="###" class="ax-btn ax-primary ax-window-close" th:onclick="'stake(2)'">Stake</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="pop-zr-w" style="display: none;background-color: floralwhite;">
+  <div class="ax-window-title" style="background-color: floralwhite;">Transfer MH NFT</div>
+  <div class="ax-padding">
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-form-label">Receive Account：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="toAddress" class="ax-round ax-sm" type="text" style="width:300px"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ax-break-line"></div>
+  <div class="ax-row ax-operate">
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
+    <span class="ax-gutter-line"></span>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer()">Transfer</a>
+  </div>
+</div>
+
+<footer id="footer">
+
+</footer>
+
+<script src="/static/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/static/js/ax.min.js" type="text/javascript"></script>
+<script src='/static/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
+<script src='/static/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
+<script type="text/javascript" th:src="@{/static/js/mint.js}"></script>
+<script type="text/javascript">
+  /* <![CDATA[ */
+  var int=self.setInterval("initValue(true)",interval);
+  window.onload = function() {
+    initValue(false);
+  };
+  var count = 0;
+  function initValue(isTime) {
+    if(init(false,isTime)){
+      setDetailValue(2);
+      if(count < 2) {
+        boxlist();
+      }
+      count++;
+    }
+  }
+
+  $("#stake").click(async function () {
+    var type = 2;
+    var balance = await balanceOf(3);
+    document.getElementById('balance').innerHTML = "balance:"+balance;
+    document.getElementById('stake-text').innerHTML = "stake";
+    document.getElementById('btn-submit').innerHTML = "Stake";
+    document.getElementById('btn-submit').onclick = function(){
+      stake(type)
+    };
+    document.getElementById('setMaxAmount').onclick = function(){
+      setMaxAmount(type,1);
+    };
+    document.getElementById('title').innerHTML = "Stake DAY + NFT Tokens";
+    $("#stake_window").addClass("ax-window-show");
+  });
+
+  $("#unStake").click(async function () {
+    var type = 2;
+    var balance = await getStakeNum(type);
+    document.getElementById('balance').innerHTML = "stake balance:"+balance;
+    document.getElementById('stake-text').innerHTML = "unStake";
+    document.getElementById('btn-submit').innerHTML = "UnStake";
+    document.getElementById('btn-submit').onclick = function(){
+      unStake(type);
+    };
+    document.getElementById('setMaxAmount').onclick = function(){
+      setMaxAmount(type,2);
+    };
+    document.getElementById('title').innerHTML = "UnStake DAY + NFT Tokens";
+    $("#stake_window").addClass("ax-window-show");
+  });
+
+  /* ]]> */
+</script>
+</body>
+</html>

@@ -21,6 +21,7 @@
       <module>sangong</module>
       <module>wakuang</module>
       <module>day</module>
+      <module>nft</module>
     </modules>
 
     <properties>

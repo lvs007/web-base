@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="pragma" content="no-cache"/>
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+  <meta http-equiv="expires" content="0"/>
+  <title>Home</title>
+  <link href="https://at.alicdn.com/t/font_1551254_rxrrzgz2kjc.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/ax-response.css" rel="stylesheet" type="text/css" />
+  <link href="/static/css/me.css" rel="stylesheet" type="text/css" />
+  <script src='/static/js/bignumber.js'></script>
+<!--  <script type="text/javascript" src="backend.js?2019.06.03.v2"> </script>-->
+  <script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>
+<!--  <script th:src="@{/static/plugins/jquery.validate/jquery.validate.min.js}" type="text/javascript"></script>-->
+
+</head>
+<!--style="background-image:url(/static/images/backg.jpg); background-size:cover;"-->
+<body>
+<header class="ax-header" id="header">
+</header>
+<script type="text/javascript" th:src="@{/static/js/header.js}"></script>
+<div class="ax-space-header"></div>
+
+<!--main-->
+
+<main>
+
+<div class="ax-padding">
+  <div class="ax-tab">
+    <div class="ax-menu-page ax-tab-nav">
+      <a id="tab-img" href="###" class="ax-item" onclick="tag(1)"><i class="ax-iconfont ax-icon-image"></i>My NFT</a>
+    </div>
+  </div>
+
+  <div class="ax-break-md"></div>
+  <div class="ax-filter ax-border" id="type-filter">
+
+  </div>
+  <div class="ax-break-xs"></div>
+
+  <div class="ax-grid ax-space-xxl ax-split-3" id="pt-list">
+
+  </div>
+  <div class="ax-pagination" id="page-split">
+
+  </div>
+
+</div>
+  <div class="push"></div>
+</main>
+
+<div class="card-div-reverse" id="pop-sell-w" style="display: none;background-color: floralwhite;">
+  <div class="ax-window-title card-div-reverse">Price Setting</div>
+  <div class="ax-break-line"></div>
+<!--  <div class="ax-padding">-->
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-window-label">Price：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="price" class="ax-form-input ax-round ax-sm" type="number" style="width:250px"/>
+              <span>DAY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--  </div>-->
+  <div class="ax-break-line"></div>
+  <div class="ax-row ax-operate">
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
+    <span class="ax-gutter-line"></span>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="sell(1)">Sell</a>
+  </div>
+</div>
+
+<div class="card-div-reverse" id="pop-pm-w" style="display: none;background-color: floralwhite;">
+  <div class="ax-window-title card-div-reverse">Auction Setting</div>
+  <div class="ax-break-line"></div>
+  <div class="ax-padding">
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-form-label">Lowest Price：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="minprice" class="ax-round ax-sm" type="number" style="width:300px"/>
+              <span>DAY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ax-break-line"></div>
+  <div class="ax-padding">
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-form-label">Minimum Increase Per Bid：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="mincall" class="ax-round ax-sm" type="number" style="width:300px"/>
+              <span>DAY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ax-break-line"></div>
+  <div class="ax-padding">
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-form-label">Auction Ending Time：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="endtime" class="ax-round ax-sm" type="datetime-local" style="width:300px"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ax-break-line"></div>
+  <div class="ax-row ax-operate">
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
+    <span class="ax-gutter-line"></span>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="pm(1)">Auction</a>
+  </div>
+</div>
+
+<div class="card-div-reverse" id="pop-zr-w" style="display: none;background-color: floralwhite;">
+  <div class="ax-window-title card-div-reverse">Transfer NFT</div>
+  <div class="ax-padding">
+    <div class="ax-form-group">
+      <div class="ax-flex-row">
+        <div class="ax-form-label">Receive Account：</div>
+        <div class="ax-flex-block">
+          <div class="ax-row">
+            <div class="ax-col ax-col-1">
+              <input id="toAddress" class="ax-round ax-sm" type="text" style="width:300px"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ax-break-line"></div>
+  <div class="ax-row ax-operate">
+    <a href="###" class="ax-col ax-col-8 ax-close">Cancel</a>
+    <span class="ax-gutter-line"></span>
+    <a href="###" class="ax-col ax-col-8 ax-close" onclick="transfer(1)">Transfer</a>
+  </div>
+</div>
+
+<!--ax-valign ax-bottom-->
+<footer id="footer">
+
+</footer>
+
+<script src="/static/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/static/js/ax.min.js" type="text/javascript"></script>
+<script src='/static/plugins/scrollnav/scrollnav.min.js' type="text/javascript"></script>
+<script src='/static/plugins/sticky/jquery.sticky.min.js' type="text/javascript"></script>
+<script type="text/javascript" th:src="@{/static/js/upload.js}"></script>
+<script>
+  window.onload = function() {
+    self.setInterval("init(true,true)",interval);
+    init(true,false);
+  };
+</script>
+</body>
+</html>

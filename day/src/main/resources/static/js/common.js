@@ -13,16 +13,17 @@ const gatePort = "80";
 //const ipPort = "5001";//"443";
 //const gatePort = "8080";
 
-const imgContractAdd = "TPhyBmRfk5RKSYR3Dj2kK74UNTS3RMMzcd";
-const vedioContractAdd = "TJn4ohdXDm6HFE4mSfj9jQxj9QnafcP64y";
+const imgContractAdd = "TDBydF2bcpq5UYXVgBBS2pP8Mn1ACBueou";
+const vedioContractAdd = "TLec8a7trqjj7zfMd1RSdJBmxVCjmMJM2A";
 const tokenContractAdd = "TDFsqpgihK6kHJ7uh5Mmyu54UQ8D1fXTkV";
 const mhTokenContractAdd = "TBGkxmT4HX83Q4noknuCMiH76c77hTVP3x";
 const dayPoolContractAdd = "TCpe9tiEia9jYxvMurursnXiwwU1aemV1A";
-const nftPoolContractAdd = "TQpqNi5ujGMZbeVXdJE7bAKqMcJzFx5xtk";
-const mhNftContractAdd = "TLetGWnPdLqreAgtk9NpRnXx15ggYXEPG3";
-const mhboxContractAdd = "TCDUUjLNSJFQUjfkwHuXsyHPfruFMKrbkM";
+const nftPoolContractAdd = "TDzHnbPu8qT4FSEDrj2s8qz5cmkLHrVZ4M";
+const mhNftContractAdd = "TVPTTeVBJknKWEk7kH3ThWyaoUtwaJKkZY";
+const mhboxContractAdd = "TVuvc4aDcNg38C1rfSUacXD2bBX2rhF6hv";
 const decimals = 1000000000000000000;
 const interval = 3000;
+const boxPrice = 100*decimals;
 
 //const tron-server = "https://api.trongrid.io";
 const tron_server = "https://nile.trongrid.io";
@@ -166,6 +167,20 @@ function initFooter() {
                   '</div>'+
                 '</div>';
   document.getElementById('footer').innerHTML=footer;
+}
+
+async function checkTransaction(txId,desc){
+  await sleep(3000);
+  tronWeb.trx.getTransaction(txId).then(function (result) {
+      if(result.ret.length > 0 && result.ret[0].contractRet == "SUCCESS") {
+        alert(desc);
+      } else{
+        alert('Fail: '+result.ret[0].contractRet);
+      }
+  }).catch(function (reason) {
+      alert('Fail：' + reason);
+      console.log('fail：' + reason);
+  });
 }
 
 
