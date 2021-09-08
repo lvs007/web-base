@@ -159,8 +159,8 @@ function initFooter() {
                       'DAYNFT Copyright © 2021 DAY Finance Providing you with a silky smooth user experience'+
                     '</div>'+
                     '<div class="ax-operate">'+
-                      '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>'+
-                      '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>'+
+                      '<a target="_blank" href="https://github.com/day-nft/Contract" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-github"></i></a>'+
+                      '<a target="_blank" href="https://t.me/diagon_alley_day" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-paperplane-fill"></i></a>'+
                       '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-twitter-fill"></i></a>'+
                       '<a href="###" class="ax-btn ax-line ax-lg ax-icon ax-round"><i class="ax-iconfont ax-icon-email-fill"></i></a>'+
                     '</div>'+

@@ -22,6 +22,7 @@
       <module>wakuang</module>
       <module>day</module>
       <module>nft</module>
+      <module>telegram</module>
     </modules>
 
     <properties>

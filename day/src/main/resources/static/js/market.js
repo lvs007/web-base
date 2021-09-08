@@ -296,7 +296,7 @@ function setContext(result,type,select) {
         var typeContext = "";
         if(type == 1){
           typeContext = '<div class="ax-img">'+
-                          '<a target="_blank" href="' + ipfs + url + '" class="ax-figure" style="background-image:url(' + ipfs + url + '),url(' + local + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
+                          '<a target="_blank" href="' + ipfs + url + '" class="ax-figure" style="background-image:url(' + local + url + '),url(' + ipfs + url + '),url(https://src.axui.cn/src/images/loading.gif);"></a>'+
                         '</div>';
         }else{
           typeContext = '<div class="ax-videojs">'+

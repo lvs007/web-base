@@ -8,9 +8,9 @@ function initHeader(){
                     '<div class="ax-item">'+
                       '<li class="ax-scrollnav-item" data-section="scrollnav"><a href="/v1/home/home" class="ax-text ax-scrollnav-link" style="color:#fff">Home</a><span class="ax-line"></span></li>'+
                       '<li class="ax-scrollnav-item"><a href="/v1/mint/mint" class="ax-text ax-scrollnav-link" style="color:#fff">Mint</a><span class="ax-line"></span></li>'+
-                      '<li class="ax-scrollnav-item"><a href="/v1/market/market" class="ax-text ax-scrollnav-link" style="color:#fff">NFT Market</a><span class="ax-line"></span></li>'+
-                      '<li class="ax-scrollnav-item"><a href="/v1/video-view/view" class="ax-text ax-scrollnav-link" style="color:#fff">NFT Video</a><span class="ax-line"></span></li>'+
-                      '<li class="ax-scrollnav-item"><a href="/v1/create/createnft" class="ax-text ax-scrollnav-link" style="color:#fff">My NFT</a><span class="ax-line"></span></li>'+
+                      '<li class="ax-scrollnav-item"><a href="/v1/market/market" class="ax-text ax-scrollnav-link" style="color:#fff">Market</a><span class="ax-line"></span></li>'+
+                      '<li class="ax-scrollnav-item"><a href="/v1/video-view/view" class="ax-text ax-scrollnav-link" style="color:#fff">Video</a><span class="ax-line"></span></li>'+
+                      '<li class="ax-scrollnav-item"><a href="/v1/create/createnft" class="ax-text ax-scrollnav-link" style="color:#fff">My-NFT</a><span class="ax-line"></span></li>'+
                       '<li class="ax-scrollnav-item"><a href="/v1/help/help" class="ax-text ax-scrollnav-link" style="color:#fff">Help</a><span class="ax-line"></span></li>'+
                     '</div>'+
                     '<span class="ax-btns">'+
